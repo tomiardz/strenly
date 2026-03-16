@@ -2,7 +2,7 @@ import type { AthleteRepositoryPort } from '@strenly/core/ports/athlete-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity, createAthleteInput } from '../../../__tests__/factories/athlete-factory'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeCreateAthlete } from '../create-athlete'
 
 describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () => {
@@ -26,7 +26,7 @@ describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () =
 
   describe('Authorization', () => {
     it('[1.10-UNIT-001] @p0 should return forbidden error when user lacks athletes:write permission', async () => {
-      const ctx = createMemberContext() // Viewer role lacks write permission
+      const ctx = createNoPermissionContext() // Unmapped role lacks write permission
       const input = createAthleteInput()
 
       const createAthlete = makeCreateAthlete({

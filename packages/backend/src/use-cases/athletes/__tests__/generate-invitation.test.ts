@@ -4,7 +4,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity } from '../../../__tests__/factories/athlete-factory'
 import { createInvitationData } from '../../../__tests__/factories/invitation-factory'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeGenerateInvitation } from '../generate-invitation'
 
 describe('[1.7-UNIT] generateInvitation use case', () => {
@@ -209,7 +209,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
 
   describe('Authorization', () => {
     it('[1.7-UNIT-004] @p0 should return forbidden error when user lacks athletes:write permission', async () => {
-      const ctx = createMemberContext() // Member lacks write permission
+      const ctx = createNoPermissionContext() // Unmapped role lacks write permission
       const athleteId = 'athlete-1'
 
       const generateInvitation = makeGenerateInvitation({

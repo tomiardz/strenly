@@ -4,7 +4,7 @@ import type { PlanRepositoryPort } from '@strenly/core/ports/plan-repository.por
 import type { SubscriptionRepositoryPort } from '@strenly/core/ports/subscription-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeCheckAthleteLimit } from '../check-athlete-limit'
 
 // Helper to create subscription entity
@@ -214,7 +214,7 @@ describe('checkAthleteLimit use case', () => {
 
   describe('Authorization', () => {
     it('[4.2-UNIT-001] @p0 should return forbidden error when user lacks athletes:write permission', async () => {
-      const ctx = createMemberContext() // Viewer lacks write permission
+      const ctx = createNoPermissionContext() // Unmapped role lacks write permission
 
       const checkAthleteLimit = makeCheckAthleteLimit({
         subscriptionRepository: mockSubscriptionRepository,
