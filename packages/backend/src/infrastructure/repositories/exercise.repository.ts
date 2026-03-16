@@ -247,6 +247,7 @@ export function createExerciseRepository(db: DbClient): ExerciseRepositoryPort {
 
           const createdRow = rows[0]
           if (!createdRow) {
+            // Throw to abort the transaction — caught by ResultAsync.fromPromise wrapper
             throw new Error('Insert did not return a row')
           }
 
@@ -298,6 +299,7 @@ export function createExerciseRepository(db: DbClient): ExerciseRepositoryPort {
             .returning()
 
           if (!updatedRow) {
+            // Throw to abort the transaction — caught by ResultAsync.fromPromise wrapper
             throw new Error('Exercise not found')
           }
 
