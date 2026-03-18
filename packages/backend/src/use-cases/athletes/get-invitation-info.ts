@@ -3,7 +3,7 @@ import type {
   AthleteInvitationRepositoryError,
   AthleteInvitationRepositoryPort,
 } from '@strenly/core/ports/athlete-invitation-repository.port'
-import { errAsync, okAsync, ResultAsync } from 'neverthrow'
+import { errAsync, okAsync, type ResultAsync } from 'neverthrow'
 
 export type GetInvitationInfoInput = {
   token: string
@@ -66,27 +66,29 @@ export const makeGetInvitationInfo =
         // 2. Check if valid
         const valid = isValid(invitation)
 
-        // 3. Lookup display info in parallel (org name, coach name, athlete name)
-        const orgName = deps.organizationLookup
+        // 3. Lookup display info sequentially (org name, coach name, athlete name)
+        return deps.organizationLookup
           .getOrganizationName(invitation.organizationId)
           .mapErr((e): GetInvitationInfoError => ({ type: 'repository_error', message: e.message }))
+          .andThen((orgName) => {
+            const coachNameResult = invitation.createdByUserId
+              ? deps.organizationLookup
+                  .getUserName(invitation.createdByUserId)
+                  .mapErr((e): GetInvitationInfoError => ({ type: 'repository_error', message: e.message }))
+              : okAsync<string | null, GetInvitationInfoError>(null)
 
-        const coachName = invitation.createdByUserId
-          ? deps.organizationLookup
-              .getUserName(invitation.createdByUserId)
-              .mapErr((e): GetInvitationInfoError => ({ type: 'repository_error', message: e.message }))
-          : okAsync<string | null, GetInvitationInfoError>(null)
-
-        const athleteName = deps.organizationLookup
-          .getAthleteName(invitation.athleteId, invitation.organizationId)
-          .mapErr((e): GetInvitationInfoError => ({ type: 'repository_error', message: e.message }))
-
-        return ResultAsync.combine([orgName, coachName, athleteName]).map(([orgName, coachName, athleteName]) => ({
-          athleteName: athleteName ?? 'Unknown',
-          organizationName: orgName ?? 'Unknown',
-          coachName: coachName ?? 'Unknown',
-          expiresAt: invitation.expiresAt,
-          isValid: valid,
-        }))
+            return coachNameResult.andThen((coachName) =>
+              deps.organizationLookup
+                .getAthleteName(invitation.athleteId, invitation.organizationId)
+                .mapErr((e): GetInvitationInfoError => ({ type: 'repository_error', message: e.message }))
+                .map((athleteName) => ({
+                  athleteName: athleteName ?? 'Unknown',
+                  organizationName: orgName ?? 'Unknown',
+                  coachName: coachName ?? 'Unknown',
+                  expiresAt: invitation.expiresAt,
+                  isValid: valid,
+                })),
+            )
+          })
       })
   }

@@ -2,7 +2,7 @@ import type { AthleteInvitationRepositoryPort } from '@strenly/core/ports/athlet
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createInvitationData } from '../../../__tests__/factories/invitation-factory'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeRevokeInvitation } from '../revoke-invitation'
 
 describe('[1.5-UNIT] revokeInvitation use case', () => {
@@ -91,7 +91,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
 
   describe('Authorization', () => {
     it('[1.5-UNIT-003] @p0 should return forbidden error when user lacks athletes:write permission', async () => {
-      const ctx = createMemberContext() // Member lacks write permission
+      const ctx = createNoPermissionContext() // Unmapped role lacks write permission
       const athleteId = 'athlete-1'
 
       const revokeInvitation = makeRevokeInvitation({

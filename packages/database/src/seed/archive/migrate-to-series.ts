@@ -29,6 +29,20 @@ interface LegacyPrescriptionData {
   tempo: string | null
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+function isLegacyPrescriptionData(value: unknown): value is LegacyPrescriptionData {
+  if (!isRecord(value)) return false
+  return (
+    typeof value.sets === 'number' &&
+    typeof value.repsMin === 'number' &&
+    typeof value.isAmrap === 'boolean' &&
+    typeof value.isUnilateral === 'boolean'
+  )
+}
+
 interface SeriesData {
   orderIndex: number
   reps: number | null
@@ -127,12 +141,12 @@ export async function migrateToSeriesStructure(db: DbClient): Promise<void> {
 
   let migratedCount = 0
   for (const rx of prescriptionsToMigrate) {
-    const oldData = rx.prescription as LegacyPrescriptionData | null
-
-    if (!oldData) {
-      console.log(`Skipping prescription ${rx.id}: no legacy data`)
+    if (!isLegacyPrescriptionData(rx.prescription)) {
+      console.log(`Skipping prescription ${rx.id}: no legacy data or unexpected shape`)
       continue
     }
+
+    const oldData = rx.prescription
 
     // Expand sets to series array
     // Each set becomes a separate series entry
