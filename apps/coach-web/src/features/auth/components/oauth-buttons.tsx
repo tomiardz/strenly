@@ -14,7 +14,7 @@ export function OAuthButtons() {
         provider: 'google',
         callbackURL: '/dashboard',
       })
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : 'Error al iniciar sesion con Google')
       setIsLoading(false)
     }

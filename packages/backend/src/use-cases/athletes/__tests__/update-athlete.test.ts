@@ -1,7 +1,7 @@
 import type { AthleteRepositoryPort } from '@strenly/core/ports/athlete-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateAthlete } from '../update-athlete'
 
 describe('[1.4-UNIT] updateAthlete use case', () => {
@@ -160,7 +160,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
 
   describe('Authorization', () => {
     it('[1.4-UNIT-004] @p0 should return forbidden error when user lacks athletes:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createNoPermissionContext()
 
       const updateAthlete = makeUpdateAthlete({
         athleteRepository: mockAthleteRepository,

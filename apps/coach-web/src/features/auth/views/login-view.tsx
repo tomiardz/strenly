@@ -37,7 +37,7 @@ export function LoginView() {
       } else {
         navigate({ to: '/onboarding' })
       }
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : 'Error al iniciar sesion')
       setIsLoading(false)
     }

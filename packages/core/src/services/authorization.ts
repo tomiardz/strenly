@@ -99,8 +99,9 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     'organization:read',
     // Members (read only)
     'members:read',
-    // Athletes (read only for members)
+    // Athletes (can write but not delete)
     'athletes:read',
+    'athletes:write',
     // Programs (read only for members)
     'programs:read',
     // Exercises (read only for members)

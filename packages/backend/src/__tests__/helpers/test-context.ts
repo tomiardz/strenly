@@ -46,3 +46,14 @@ export function createOwnerContext(overrides: Partial<OrganizationContext> = {})
     ...overrides,
   })
 }
+
+/**
+ * Create a test context with an unmapped role (simulates a role with no permissions).
+ * Used to test forbidden paths in use cases when no standard role lacks a given permission.
+ */
+export function createNoPermissionContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
+  return {
+    ...createTestContext(overrides),
+    memberRole: 'viewer' as unknown as 'member',
+  }
+}

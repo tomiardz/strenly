@@ -28,7 +28,7 @@ export function SignupView() {
 
       // New users always need to create an organization
       navigate({ to: '/onboarding' })
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : 'Error al crear cuenta')
       setIsLoading(false)
     }
