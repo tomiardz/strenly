@@ -1,17 +1,5 @@
 {
-  "enableAllProjectMcpServers": true,
   "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": ".claude/hooks/no-as-casting.sh"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -23,6 +11,5 @@
         ]
       }
     ]
-  },
-  "enabledPlugins": {}
+  }
 }
