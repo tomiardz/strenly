@@ -27,7 +27,7 @@ export const saveDraftProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       program: input.program,
       lastLoadedAt: input.lastLoadedAt,

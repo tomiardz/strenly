@@ -26,7 +26,7 @@ export const listPendingWorkouts = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       limit: input.limit,
       offset: input.offset,
     })

@@ -2,7 +2,7 @@ import type { WorkoutLogRepositoryPort } from '@strenly/core/ports/workout-log-r
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createWorkoutLogEntity } from '../../../__tests__/factories/workout-log-factory'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeDeleteLog } from '../delete-log'
 
 describe('deleteLog use case', () => {
@@ -22,7 +22,7 @@ describe('deleteLog use case', () => {
 
   describe('Happy Path', () => {
     it('[5.1-UNIT-001] @p0 should delete workout log successfully with admin role', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -50,7 +50,7 @@ describe('deleteLog use case', () => {
         expect.objectContaining({
           organizationId: ctx.organizationId,
           userId: ctx.userId,
-          memberRole: 'admin',
+          roles: ['manager'],
         }),
         logId,
       )
@@ -64,7 +64,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.1-UNIT-002] @p1 should delete completed log', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -91,7 +91,7 @@ describe('deleteLog use case', () => {
 
   describe('Authorization', () => {
     it('[5.2-UNIT-001] @p0 should return forbidden error when user lacks workout_log:delete permission', async () => {
-      const ctx = createMemberContext() // Member lacks delete permission
+      const ctx = createCoachContext() // Member lacks delete permission
       const logId = 'log-1'
 
       const deleteLog = makeDeleteLog({
@@ -120,7 +120,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.2-UNIT-002] @p0 should succeed when user has admin role (has workout_log:delete)', async () => {
-      const ctx = createAdminContext() // Admin has delete permission
+      const ctx = createManagerContext() // Admin has delete permission
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -146,7 +146,7 @@ describe('deleteLog use case', () => {
 
   describe('Not Found Errors', () => {
     it('[5.3-UNIT-001] @p0 should return not_found error when log does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'non-existent-log'
 
       // Mock repository returning null (not found)
@@ -178,7 +178,7 @@ describe('deleteLog use case', () => {
 
   describe('Repository Errors', () => {
     it('[5.4-UNIT-001] @p1 should return repository error when findById fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       // Mock repository failure
@@ -210,7 +210,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.4-UNIT-002] @p1 should return repository error when delete fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -251,7 +251,7 @@ describe('deleteLog use case', () => {
 
   describe('Edge Cases', () => {
     it('[5.5-UNIT-001] @p2 should handle deleting multiple logs in sequence', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId1 = 'log-1'
       const logId2 = 'log-2'
 
@@ -276,7 +276,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.5-UNIT-002] @p2 should be idempotent - trying to delete non-existent log after successful deletion', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       // First call: log exists

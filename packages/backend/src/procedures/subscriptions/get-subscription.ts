@@ -27,7 +27,7 @@ export const getSubscription = authProcedure
     const result = await getSubscriptionUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
     })
 
     if (result.isErr()) {

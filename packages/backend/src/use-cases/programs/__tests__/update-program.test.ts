@@ -2,7 +2,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramWithStructure } from '../../../__tests__/factories/program-structure-factory'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateProgram } from '../update-program'
 
 describe('[3.31-UNIT] @p2 updateProgram use case', () => {
@@ -191,7 +191,7 @@ describe('[3.31-UNIT] @p2 updateProgram use case', () => {
 
   describe('[3.31-UNIT] @p0 Authorization', () => {
     it('[3.31-UNIT-007] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createCoachContext()
       const updateProgram = makeUpdateProgram({ programRepository: mockProgramRepository })
 
       const result = await updateProgram({

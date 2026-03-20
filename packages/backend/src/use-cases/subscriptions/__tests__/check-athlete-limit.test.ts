@@ -4,7 +4,7 @@ import type { PlanRepositoryPort } from '@strenly/core/ports/plan-repository.por
 import type { SubscriptionRepositoryPort } from '@strenly/core/ports/subscription-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeCheckAthleteLimit } from '../check-athlete-limit'
 
 // Helper to create subscription entity
@@ -70,7 +70,7 @@ describe('checkAthleteLimit use case', () => {
 
   describe('Happy Path', () => {
     it('[4.1-UNIT-001] @p0 should return canAdd=true when below athlete limit', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock subscription with 5 athletes
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -104,7 +104,7 @@ describe('checkAthleteLimit use case', () => {
     })
 
     it('[4.1-UNIT-002] @p0 should return canAdd=false when at athlete limit', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock subscription at limit (10/10 athletes)
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -141,7 +141,7 @@ describe('checkAthleteLimit use case', () => {
     })
 
     it('[4.1-UNIT-003] @p1 should return canAdd=false when over athlete limit', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock subscription over limit (15/10 athletes - legacy data)
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -178,7 +178,7 @@ describe('checkAthleteLimit use case', () => {
     })
 
     it('[4.1-UNIT-004] @p1 should handle unlimited plan (athleteLimit = -1)', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock subscription with many athletes
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -241,7 +241,7 @@ describe('checkAthleteLimit use case', () => {
 
   describe('Not Found Errors', () => {
     it('[4.3-UNIT-001] @p0 should return subscription_not_found when organization has no subscription', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock no subscription found
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(okAsync(null))
@@ -268,7 +268,7 @@ describe('checkAthleteLimit use case', () => {
     })
 
     it('[4.3-UNIT-002] @p1 should return plan_not_found when subscription references non-existent plan', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock subscription with invalid plan reference
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -305,7 +305,7 @@ describe('checkAthleteLimit use case', () => {
 
   describe('Repository Errors', () => {
     it('[4.4-UNIT-001] @p1 should return repository error when subscription fetch fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock subscription repository failure
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -334,7 +334,7 @@ describe('checkAthleteLimit use case', () => {
     })
 
     it('[4.4-UNIT-002] @p1 should return repository error when plan fetch fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock subscription success
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -375,7 +375,7 @@ describe('checkAthleteLimit use case', () => {
 
   describe('Edge Cases', () => {
     it('[4.5-UNIT-001] @p2 should handle zero athletes correctly', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock new subscription with no athletes yet
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -410,7 +410,7 @@ describe('checkAthleteLimit use case', () => {
     })
 
     it('[4.5-UNIT-002] @p2 should handle remaining calculation edge case (negative difference)', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock over limit scenario
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -447,7 +447,7 @@ describe('checkAthleteLimit use case', () => {
 
   describe('Business Logic', () => {
     it('[4.6-UNIT-001] @p1 should use domain helper canAddAthlete for limit check', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Test the boundary: exactly 1 remaining spot
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(

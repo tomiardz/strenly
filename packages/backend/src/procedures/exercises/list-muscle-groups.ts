@@ -23,7 +23,7 @@ export const listMuscleGroups = authProcedure
     const result = await listMuscleGroupsUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
     })
 
     if (result.isErr()) {

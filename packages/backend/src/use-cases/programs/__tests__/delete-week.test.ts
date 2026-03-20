@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort, ProgramWithDetails } from '@strenly/core/po
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramWithStructure } from '../../../__tests__/factories/program-structure-factory'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeDeleteWeek } from '../delete-week'
 
 // Helper to create program with custom weeks for ProgramWithDetails structure
@@ -91,7 +91,7 @@ describe('[3.23-UNIT] @p2 deleteWeek use case', () => {
 
   describe('[3.23-UNIT] @p0 Authorization', () => {
     it('[3.23-UNIT-003] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createCoachContext()
       const deleteWeek = makeDeleteWeek({ programRepository: mockProgramRepository })
 
       const result = await deleteWeek({

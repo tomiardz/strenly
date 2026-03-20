@@ -28,7 +28,7 @@ export const createProgram = authProcedure
     const result = await createProgramUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       name: input.name,
       description: input.description || null,
       athleteId: input.athleteId ?? null,

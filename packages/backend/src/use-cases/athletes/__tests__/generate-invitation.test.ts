@@ -4,7 +4,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity } from '../../../__tests__/factories/athlete-factory'
 import { createInvitationData } from '../../../__tests__/factories/invitation-factory'
-import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeGenerateInvitation } from '../generate-invitation'
 
 describe('[1.7-UNIT] generateInvitation use case', () => {
@@ -43,7 +43,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
 
   describe('Happy Path', () => {
     it('[1.7-UNIT-001] @p0 should generate invitation successfully when no existing invitation', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
       const appUrl = 'https://app.example.com'
 
@@ -106,7 +106,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-002] @p0 should revoke existing invitation before creating new one', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
       const appUrl = 'https://app.example.com'
 
@@ -164,7 +164,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-003] @p1 should generate unique IDs and tokens', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId1 = 'athlete-1'
       const athleteId2 = 'athlete-2'
       const appUrl = 'https://app.example.com'
@@ -243,7 +243,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-005] @p0 should succeed when user has admin role (has athletes:write)', async () => {
-      const ctx = createAdminContext() // Admin has write permission
+      const ctx = createManagerContext() // Admin has write permission
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -275,7 +275,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
 
   describe('Validation Errors', () => {
     it('[1.7-UNIT-006] @p1 should return athlete_not_found error when athlete does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'non-existent-athlete'
 
       // Mock repository returning null
@@ -310,7 +310,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-007] @p1 should return already_linked error when athlete is already linked to user', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -353,7 +353,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
 
   describe('Repository Errors', () => {
     it('[1.7-UNIT-008] @p1 should return repository error when athlete lookup fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       // Mock repository failure
@@ -389,7 +389,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-009] @p1 should return repository error when finding existing invitation fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -433,7 +433,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-010] @p1 should return repository error when revoke fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -486,7 +486,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-011] @p1 should return repository error when create fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -533,7 +533,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
 
   describe('Edge Cases', () => {
     it('[1.7-UNIT-012] @p3 should handle custom appUrl with trailing slash', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
       const appUrl = 'https://app.example.com/' // With trailing slash
 
@@ -570,7 +570,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
     })
 
     it('[1.7-UNIT-013] @p3 should handle different appUrl domains', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
       const appUrl = 'https://staging.strenly.com'
 

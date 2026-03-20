@@ -2,7 +2,7 @@ import type { PlanRepositoryPort } from '@strenly/core/ports/plan-repository.por
 import type { SubscriptionRepositoryPort } from '@strenly/core/ports/subscription-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeCheckFeatureAccess } from '../check-feature-access'
 
 describe('checkFeatureAccess use case', () => {
@@ -172,7 +172,7 @@ describe('checkFeatureAccess use case', () => {
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(okAsync(subscription))
       vi.mocked(mockPlanRepository.findById).mockReturnValue(okAsync(plan))
 
-      const ctx = createMemberContext({ organizationId: orgId })
+      const ctx = createCoachContext({ organizationId: orgId })
       const checkFeatureAccess = makeCheckFeatureAccess({
         subscriptionRepository: mockSubscriptionRepository,
         planRepository: mockPlanRepository,

@@ -27,7 +27,7 @@ export const cloneExercise = authProcedure
     const result = await cloneExerciseUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       sourceExerciseId: input.sourceExerciseId,
       name: input.name,
     })

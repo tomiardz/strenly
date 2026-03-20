@@ -3,7 +3,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity } from '../../../__tests__/factories/exercise-factory'
 import { createExerciseRepositoryMock } from '../../../__tests__/factories/exercise-repository-mock'
-import { createAdminContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeListExercises } from '../list-exercises'
 
 describe('[2.6-UNIT] listExercises use case', () => {
@@ -15,7 +15,7 @@ describe('[2.6-UNIT] listExercises use case', () => {
 
   describe('[2.6-UNIT] Happy Path', () => {
     it('[2.6-UNIT-001] @p0 should list exercises successfully', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       const exercises = [
         createExerciseEntity({ id: 'exercise-1', organizationId: ctx.organizationId }),
@@ -48,7 +48,7 @@ describe('[2.6-UNIT] listExercises use case', () => {
     })
 
     it('[2.6-UNIT-002] @p1 should filter by movement pattern', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       vi.mocked(mockExerciseRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -70,7 +70,7 @@ describe('[2.6-UNIT] listExercises use case', () => {
     })
 
     it('[2.6-UNIT-003] @p1 should filter by muscle group', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       vi.mocked(mockExerciseRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -92,7 +92,7 @@ describe('[2.6-UNIT] listExercises use case', () => {
     })
 
     it('[2.6-UNIT-004] @p1 should apply search filter', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       vi.mocked(mockExerciseRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -114,7 +114,7 @@ describe('[2.6-UNIT] listExercises use case', () => {
     })
 
     it('[2.6-UNIT-005] @p2 should apply pagination', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       vi.mocked(mockExerciseRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -140,7 +140,7 @@ describe('[2.6-UNIT] listExercises use case', () => {
 
   describe('[2.6-UNIT] Repository Errors', () => {
     it('[2.6-UNIT-006] @p1 should return repository error when findAll fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       vi.mocked(mockExerciseRepository.findAll).mockReturnValue(
         errAsync({
@@ -169,7 +169,7 @@ describe('[2.6-UNIT] listExercises use case', () => {
 
   describe('[2.6-UNIT] Edge Cases', () => {
     it('[2.6-UNIT-007] @p2 should return empty list when no exercises exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       vi.mocked(mockExerciseRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 

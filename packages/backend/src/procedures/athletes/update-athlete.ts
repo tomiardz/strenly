@@ -25,7 +25,7 @@ export const updateAthlete = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       athleteId: input.athleteId,
       name: input.name,
       email: input.email !== undefined ? input.email || null : undefined,

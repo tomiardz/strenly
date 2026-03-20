@@ -23,7 +23,7 @@ export const listPrograms = authProcedure
     const result = await listProgramsUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       athleteId: input.athleteId,
       isTemplate: input.isTemplate,
       status: input.status,

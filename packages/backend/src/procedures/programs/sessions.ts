@@ -32,7 +32,7 @@ export const addSessionProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       name: input.name,
     })
@@ -80,7 +80,7 @@ export const updateSessionProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       sessionId: input.sessionId,
       name: input.name,
     })
@@ -129,7 +129,7 @@ export const deleteSessionProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       sessionId: input.sessionId,
     })

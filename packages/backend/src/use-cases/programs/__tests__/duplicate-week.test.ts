@@ -6,7 +6,7 @@ import type {
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramWithStructure } from '../../../__tests__/factories/program-structure-factory'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeDuplicateWeek } from '../duplicate-week'
 
 describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
@@ -55,7 +55,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
 
   describe('[3.25-UNIT] @p0 Happy Path', () => {
     it('[3.25-UNIT-001] @p0 should duplicate week successfully', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -130,7 +130,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
     })
 
     it('[3.25-UNIT-002] @p2 should duplicate week with custom name', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -195,7 +195,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
     })
 
     it('[3.25-UNIT-003] @p2 should duplicate week with sessions and exercise rows', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -258,7 +258,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
 
   describe('[3.25-UNIT] @p0 Authorization', () => {
     it('[3.25-UNIT-004] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext() // Member role lacks write permission
+      const ctx = createCoachContext() // Member role lacks write permission
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -290,7 +290,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
     })
 
     it('[3.25-UNIT-005] @p0 should succeed when user has admin role (has programs:write)', async () => {
-      const ctx = createAdminContext() // Admin role has write permission
+      const ctx = createManagerContext() // Admin role has write permission
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -343,7 +343,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
 
   describe('[3.25-UNIT] @p1 Validation Errors', () => {
     it('[3.25-UNIT-006] @p2 should return program_not_found when program does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'non-existent-program'
       const weekId = 'week-1'
 
@@ -376,7 +376,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
     })
 
     it('[3.25-UNIT-007] @p2 should return not_found when source week does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'non-existent-week'
 
@@ -428,7 +428,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
     })
 
     it('[3.25-UNIT-008] @p1 should return validation_error when name is too long', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -483,7 +483,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
 
   describe('[3.25-UNIT] @p1 Repository Errors', () => {
     it('[3.25-UNIT-009] @p1 should return repository error when findWithDetails fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -518,7 +518,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
     })
 
     it('[3.25-UNIT-010] @p1 should return repository error when duplicateWeek fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -577,7 +577,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
 
   describe('[3.25-UNIT] @p2 Edge Cases', () => {
     it('[3.25-UNIT-011] @p3 should handle empty week (no sessions)', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 
@@ -628,7 +628,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
     })
 
     it('[3.25-UNIT-012] @p2 should duplicate week in template program', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const weekId = 'week-1'
 

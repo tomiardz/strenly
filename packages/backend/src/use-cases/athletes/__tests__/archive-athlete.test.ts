@@ -1,7 +1,7 @@
 import type { AthleteRepositoryPort } from '@strenly/core/ports/athlete-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeArchiveAthlete } from '../archive-athlete'
 
 describe('[1.1-UNIT] archiveAthlete use case', () => {
@@ -20,7 +20,7 @@ describe('[1.1-UNIT] archiveAthlete use case', () => {
 
   describe('Happy Path', () => {
     it('[1.1-UNIT-001] @p0 should archive athlete successfully', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock successful archive
       vi.mocked(mockAthleteRepository.archive).mockReturnValue(okAsync(undefined))
@@ -76,7 +76,7 @@ describe('[1.1-UNIT] archiveAthlete use case', () => {
 
   describe('Not Found Errors', () => {
     it('[1.1-UNIT-003] @p1 should return not_found when athlete does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock athlete not found
       vi.mocked(mockAthleteRepository.archive).mockReturnValue(
@@ -108,7 +108,7 @@ describe('[1.1-UNIT] archiveAthlete use case', () => {
 
   describe('Repository Errors', () => {
     it('[1.1-UNIT-004] @p1 should return repository error when database fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock database failure
       vi.mocked(mockAthleteRepository.archive).mockReturnValue(
@@ -140,7 +140,7 @@ describe('[1.1-UNIT] archiveAthlete use case', () => {
 
   describe('Edge Cases', () => {
     it('[1.1-UNIT-005] @p2 should handle archiving multiple athletes in sequence', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       vi.mocked(mockAthleteRepository.archive).mockReturnValue(okAsync(undefined))
 
@@ -164,7 +164,7 @@ describe('[1.1-UNIT] archiveAthlete use case', () => {
     })
 
     it('[1.1-UNIT-006] @p2 should be idempotent - archiving already archived athlete should succeed', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock successful archive (repository handles idempotence)
       vi.mocked(mockAthleteRepository.archive).mockReturnValue(okAsync(undefined))

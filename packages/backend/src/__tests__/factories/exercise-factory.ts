@@ -12,8 +12,8 @@ import type { CreateExerciseInput } from '../../use-cases/exercises/create-exerc
  * const result = await createExercise({ ...ctx, ...input })
  */
 export function createExerciseInput(
-  overrides: Partial<Omit<CreateExerciseInput, 'organizationId' | 'userId' | 'memberRole'>> = {},
-): Omit<CreateExerciseInput, 'organizationId' | 'userId' | 'memberRole'> {
+  overrides: Partial<Omit<CreateExerciseInput, 'organizationId' | 'userId' | 'roles'>> = {},
+): Omit<CreateExerciseInput, 'organizationId' | 'userId' | 'roles'> {
   return {
     name: faker.helpers.arrayElement(['Bench Press', 'Squat', 'Deadlift', 'Overhead Press', 'Barbell Row']),
     description: faker.helpers.maybe(() => faker.lorem.sentence(), { probability: 0.5 }) ?? null,

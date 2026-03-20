@@ -25,7 +25,7 @@ export const createExercise = authProcedure
     const result = await createExerciseUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       name: input.name,
       description: input.description,
       instructions: input.instructions,

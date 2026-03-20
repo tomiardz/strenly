@@ -2,7 +2,7 @@ import type { ExerciseRepositoryPort } from '@strenly/core/ports/exercise-reposi
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity } from '../../../__tests__/factories/exercise-factory'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeArchiveExercise } from '../archive-exercise'
 
 describe('[2.3-UNIT] archiveExercise use case', () => {
@@ -21,7 +21,7 @@ describe('[2.3-UNIT] archiveExercise use case', () => {
 
   describe('[2.3-UNIT] Happy Path', () => {
     it('[2.3-UNIT-001] @p0 should archive exercise successfully with admin role', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'exercise-1'
 
       // Mock existing custom exercise (not curated)
@@ -59,7 +59,7 @@ describe('[2.3-UNIT] archiveExercise use case', () => {
 
   describe('[2.3-UNIT] Authorization', () => {
     it('[2.3-UNIT-002] @p0 should return forbidden error when user lacks exercises:write permission', async () => {
-      const ctx = createMemberContext() // Member role lacks write permission
+      const ctx = createCoachContext() // Member role lacks write permission
       const exerciseId = 'exercise-1'
 
       const archiveExercise = makeArchiveExercise({
@@ -88,7 +88,7 @@ describe('[2.3-UNIT] archiveExercise use case', () => {
     })
 
     it('[2.3-UNIT-003] @p0 should succeed when user has admin role (has exercises:write)', async () => {
-      const ctx = createAdminContext() // Admin role has write permission
+      const ctx = createManagerContext() // Admin role has write permission
       const exerciseId = 'exercise-1'
 
       const existingExercise = createExerciseEntity({
@@ -115,7 +115,7 @@ describe('[2.3-UNIT] archiveExercise use case', () => {
 
   describe('[2.3-UNIT] Not Found Errors', () => {
     it('[2.3-UNIT-004] @p1 should return not_found error when exercise does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'non-existent-exercise'
 
       // Mock repository returning null (not found)
@@ -147,7 +147,7 @@ describe('[2.3-UNIT] archiveExercise use case', () => {
 
   describe('[2.3-UNIT] Curated Exercise Protection', () => {
     it('[2.3-UNIT-005] @p1 should return cannot_archive_curated error when trying to archive curated exercise', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'curated-exercise-1'
 
       // Mock curated exercise (organizationId is null)
@@ -185,7 +185,7 @@ describe('[2.3-UNIT] archiveExercise use case', () => {
 
   describe('[2.3-UNIT] Repository Errors', () => {
     it('[2.3-UNIT-006] @p1 should return repository error when findById fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'exercise-1'
 
       // Mock repository findById failure
@@ -217,7 +217,7 @@ describe('[2.3-UNIT] archiveExercise use case', () => {
     })
 
     it('[2.3-UNIT-007] @p1 should return repository error when archive fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'exercise-1'
 
       const existingExercise = createExerciseEntity({

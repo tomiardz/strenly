@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort, ProgramWithDetails } from '@strenly/core/po
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramWithStructure } from '../../../__tests__/factories/program-structure-factory'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeDeleteSession } from '../delete-session'
 
 // Helper to create program with custom sessions for ProgramWithDetails structure
@@ -102,7 +102,7 @@ describe('[3.22-UNIT] @p2 deleteSession use case', () => {
 
   describe('[3.22-UNIT] @p0 Authorization', () => {
     it('[3.22-UNIT-003] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createCoachContext()
       const deleteSession = makeDeleteSession({ programRepository: mockProgramRepository })
 
       const result = await deleteSession({

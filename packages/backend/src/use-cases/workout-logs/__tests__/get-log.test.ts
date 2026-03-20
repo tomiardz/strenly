@@ -3,7 +3,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createWorkoutLogEntity } from '../../../__tests__/factories/workout-log-factory'
 import { createWorkoutLogRepositoryMock } from '../../../__tests__/factories/workout-log-repository-mock'
-import { createAdminContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeGetLog } from '../get-log'
 
 describe('getLog use case', () => {
@@ -15,7 +15,7 @@ describe('getLog use case', () => {
 
   describe('Happy Path', () => {
     it('[5.1-UNIT-001] @p0 should get workout log successfully with admin role', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -43,14 +43,14 @@ describe('getLog use case', () => {
         expect.objectContaining({
           organizationId: ctx.organizationId,
           userId: ctx.userId,
-          memberRole: 'admin',
+          roles: ['manager'],
         }),
         logId,
       )
     })
 
     it('[5.1-UNIT-002] @p1 should get completed log', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -79,7 +79,7 @@ describe('getLog use case', () => {
 
   describe('Not Found Errors', () => {
     it('[5.2-UNIT-001] @p0 should return not_found error when log does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'non-existent-log'
 
       vi.mocked(mockWorkoutLogRepository.findById).mockReturnValue(okAsync(null))
@@ -107,7 +107,7 @@ describe('getLog use case', () => {
 
   describe('Repository Errors', () => {
     it('[5.3-UNIT-001] @p1 should return repository error when findById fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId = 'log-1'
 
       vi.mocked(mockWorkoutLogRepository.findById).mockReturnValue(
@@ -140,7 +140,7 @@ describe('getLog use case', () => {
 
   describe('Edge Cases', () => {
     it('[5.4-UNIT-001] @p2 should handle getting multiple logs in sequence', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const logId1 = 'log-1'
       const logId2 = 'log-2'
 

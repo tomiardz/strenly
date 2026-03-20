@@ -25,7 +25,7 @@ export const saveLog = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       id: input.id,
       athleteId: input.athleteId,
       programId: input.programId,

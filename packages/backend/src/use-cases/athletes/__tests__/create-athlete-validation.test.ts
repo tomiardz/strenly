@@ -2,7 +2,7 @@ import type { AthleteRepositoryPort } from '@strenly/core/ports/athlete-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity, createAthleteInput } from '../../../__tests__/factories/athlete-factory'
-import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeCreateAthlete } from '../create-athlete'
 
 describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () => {
@@ -52,7 +52,7 @@ describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () =
     })
 
     it('[1.10-UNIT-002] @p0 should succeed when user has coach role (has athletes:write)', async () => {
-      const ctx = createAdminContext() // Coach role has write permission
+      const ctx = createManagerContext() // Coach role has write permission
       const input = createAthleteInput()
 
       const athlete = createAthleteEntity({
@@ -80,7 +80,7 @@ describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () =
 
   describe('Validation Errors', () => {
     it('[1.10-UNIT-003] @p1 should return validation error when name is empty', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const input = createAthleteInput({ name: '' }) // Invalid: empty name
 
       const createAthlete = makeCreateAthlete({
@@ -105,7 +105,7 @@ describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () =
     })
 
     it('[1.10-UNIT-004] @p1 should return validation error for malformed email', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const input = createAthleteInput({ email: 'invalid-email' })
 
       const createAthlete = makeCreateAthlete({
@@ -129,7 +129,7 @@ describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () =
 
   describe('Repository Errors', () => {
     it('[1.10-UNIT-005] @p1 should return repository error when database fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const input = createAthleteInput()
 
       // Mock repository failure

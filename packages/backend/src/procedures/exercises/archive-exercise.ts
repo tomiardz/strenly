@@ -25,7 +25,7 @@ export const archiveExercise = authProcedure
     const result = await archiveExerciseUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       exerciseId: input.exerciseId,
     })
 

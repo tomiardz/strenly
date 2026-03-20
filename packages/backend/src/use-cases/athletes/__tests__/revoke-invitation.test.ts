@@ -2,7 +2,7 @@ import type { AthleteInvitationRepositoryPort } from '@strenly/core/ports/athlet
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createInvitationData } from '../../../__tests__/factories/invitation-factory'
-import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeRevokeInvitation } from '../revoke-invitation'
 
 describe('[1.5-UNIT] revokeInvitation use case', () => {
@@ -21,7 +21,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
 
   describe('Happy Path', () => {
     it('[1.5-UNIT-001] @p0 should revoke invitation successfully with admin role', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       const invitation = createInvitationData({
@@ -49,7 +49,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
         expect.objectContaining({
           organizationId: ctx.organizationId,
           userId: ctx.userId,
-          memberRole: 'admin',
+          roles: ['manager'],
         }),
         athleteId,
       )
@@ -63,7 +63,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
     })
 
     it('[1.5-UNIT-002] @p0 should revoke pending invitation', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       const invitation = createInvitationData({
@@ -120,7 +120,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
     })
 
     it('[1.5-UNIT-004] @p0 should succeed when user has admin role (has athletes:write)', async () => {
-      const ctx = createAdminContext() // Admin has write permission
+      const ctx = createManagerContext() // Admin has write permission
       const athleteId = 'athlete-1'
 
       const invitation = createInvitationData({
@@ -146,7 +146,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
 
   describe('Not Found Errors', () => {
     it('[1.5-UNIT-005] @p1 should return invitation_not_found error when no invitation exists for athlete', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-without-invitation'
 
       // Mock repository returning null (no invitation found)
@@ -178,7 +178,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
 
   describe('Repository Errors', () => {
     it('[1.5-UNIT-006] @p1 should return repository error when findByAthleteId fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       // Mock repository failure
@@ -210,7 +210,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
     })
 
     it('[1.5-UNIT-007] @p1 should return repository error when revoke fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       const invitation = createInvitationData({
@@ -251,7 +251,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
 
   describe('Edge Cases', () => {
     it('[1.5-UNIT-008] @p2 should handle revoking already accepted invitation', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       // Invitation that was already accepted
@@ -279,7 +279,7 @@ describe('[1.5-UNIT] revokeInvitation use case', () => {
     })
 
     it('[1.5-UNIT-009] @p2 should handle revoking expired invitation', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const athleteId = 'athlete-1'
 
       // Expired invitation

@@ -23,7 +23,7 @@ export const listAthleteLogs = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       athleteId: input.athleteId,
       status: input.status,
       fromDate: input.fromDate ? new Date(input.fromDate) : undefined,

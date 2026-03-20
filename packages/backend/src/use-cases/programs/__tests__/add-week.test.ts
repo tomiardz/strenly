@@ -4,7 +4,7 @@ import type { ProgramRepositoryPort, ProgramWithDetails } from '@strenly/core/po
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramWithStructure } from '../../../__tests__/factories/program-structure-factory'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeAddWeek } from '../add-week'
 
 // Helper to create program with custom weeks
@@ -205,7 +205,7 @@ describe('[3.19-UNIT] @p2 addWeek use case', () => {
 
   describe('[3.19-UNIT] @p0 Authorization', () => {
     it('[3.19-UNIT-005] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createCoachContext()
       const addWeek = makeAddWeek({
         programRepository: mockProgramRepository,
         generateId: mockGenerateId,

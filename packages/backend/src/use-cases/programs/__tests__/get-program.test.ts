@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramRepositoryMock } from '../../../__tests__/factories/program-repository-mock'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeGetProgram } from '../get-program'
 
 // Helper to create minimal program aggregate
@@ -46,7 +46,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
 
   describe('[3.7-UNIT] @p0 Happy Path', () => {
     it('[3.7-UNIT-001] @p0 should get program successfully with member role', async () => {
-      const ctx = createMemberContext() // Member has read permission
+      const ctx = createCoachContext() // Member has read permission
       const programId = 'program-1'
 
       const program = createProgramAggregate({ id: programId, organizationId: ctx.organizationId })
@@ -78,14 +78,14 @@ describe('[3.7-UNIT] getProgram use case', () => {
         expect.objectContaining({
           organizationId: ctx.organizationId,
           userId: ctx.userId,
-          memberRole: 'member',
+          roles: ['coach'],
         }),
         programId,
       )
     })
 
     it('[3.7-UNIT-002] @p1 should get template program', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'template-1'
 
       const program = createProgramAggregate({
@@ -115,7 +115,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
     })
 
     it('[3.7-UNIT-003] @p1 should get program assigned to athlete', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
       const athleteId = 'athlete-1'
 
@@ -144,7 +144,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
     })
 
     it('[3.7-UNIT-004] @p2 should get program with complete aggregate hierarchy', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
 
       const program = createProgramAggregate({
@@ -205,7 +205,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
 
   describe('[3.8-UNIT] @p1 Not Found Errors', () => {
     it('[3.8-UNIT-001] @p1 should return not_found error when program does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'non-existent-program'
 
       // Mock repository returning null (not found)
@@ -232,7 +232,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
     })
 
     it('[3.8-UNIT-002] @p1 should return not_found error when user lacks access to program from other organization', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'other-org-program'
 
       // Repository returns null when program belongs to another organization
@@ -258,7 +258,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
 
   describe('[3.9-UNIT] @p2 Repository Errors', () => {
     it('[3.9-UNIT-001] @p2 should return repository error when database fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'program-1'
 
       // Mock repository failure
@@ -292,7 +292,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
 
   describe('[3.10-UNIT] @p2 Edge Cases', () => {
     it('[3.10-UNIT-001] @p2 should handle program with no weeks', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'empty-program'
 
       const program = createProgramAggregate({
@@ -320,7 +320,7 @@ describe('[3.7-UNIT] getProgram use case', () => {
     })
 
     it('[3.10-UNIT-002] @p3 should handle archived program', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const programId = 'archived-program'
 
       const program = createProgramAggregate({

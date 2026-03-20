@@ -3,7 +3,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity } from '../../../__tests__/factories/exercise-factory'
 import { createExerciseRepositoryMock } from '../../../__tests__/factories/exercise-repository-mock'
-import { createAdminContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeGetExercise } from '../get-exercise'
 
 describe('[2.5-UNIT] getExercise use case', () => {
@@ -15,7 +15,7 @@ describe('[2.5-UNIT] getExercise use case', () => {
 
   describe('[2.5-UNIT] Happy Path', () => {
     it('[2.5-UNIT-001] @p0 should get exercise successfully with admin role', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'exercise-1'
 
       const exercise = createExerciseEntity({
@@ -48,7 +48,7 @@ describe('[2.5-UNIT] getExercise use case', () => {
     })
 
     it('[2.5-UNIT-002] @p1 should get exercise with complete data', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'exercise-1'
 
       const exercise = createExerciseEntity({
@@ -76,7 +76,7 @@ describe('[2.5-UNIT] getExercise use case', () => {
 
   describe('[2.5-UNIT] Not Found Errors', () => {
     it('[2.5-UNIT-003] @p1 should return not_found error when exercise does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'non-existent-exercise'
 
       vi.mocked(mockExerciseRepository.findById).mockReturnValue(okAsync(null))
@@ -104,7 +104,7 @@ describe('[2.5-UNIT] getExercise use case', () => {
 
   describe('[2.5-UNIT] Repository Errors', () => {
     it('[2.5-UNIT-004] @p1 should return repository error when findById fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId = 'exercise-1'
 
       vi.mocked(mockExerciseRepository.findById).mockReturnValue(
@@ -137,7 +137,7 @@ describe('[2.5-UNIT] getExercise use case', () => {
 
   describe('[2.5-UNIT] Edge Cases', () => {
     it('[2.5-UNIT-005] @p2 should handle getting multiple exercises in sequence', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const exerciseId1 = 'exercise-1'
       const exerciseId2 = 'exercise-2'
 
