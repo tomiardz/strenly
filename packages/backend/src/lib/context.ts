@@ -1,5 +1,5 @@
 import type { TAuth } from '@strenly/auth'
-import type { MemberRole } from '@strenly/contracts/common/roles'
+import type { OrganizationRole } from '@strenly/core/services/authorization'
 import type { DbClient } from '@strenly/database'
 
 /**
@@ -28,5 +28,5 @@ export type SessionContext = BaseContext & {
  */
 export type AuthContext = SessionContext & {
   organization: { id: string; name: string; slug: string }
-  membership: { id: string; role: MemberRole }
+  membership: { id: string; roles: OrganizationRole[] }
 }
