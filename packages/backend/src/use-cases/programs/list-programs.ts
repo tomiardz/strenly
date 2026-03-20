@@ -28,7 +28,7 @@ export const makeListPrograms =
   (deps: Dependencies) =>
   (input: ListProgramsInput): ResultAsync<ListProgramsResult, ListProgramsError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:read')) {
+    if (!hasPermission(input.roles, 'programs:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to list programs',
@@ -38,7 +38,7 @@ export const makeListPrograms =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Fetch programs with filtering

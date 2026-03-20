@@ -28,7 +28,7 @@ export const makeCreateAthlete =
   (deps: Dependencies) =>
   (input: CreateAthleteInput): ResultAsync<Athlete, CreateAthleteError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'athletes:write')) {
+    if (!hasPermission(input.roles, 'athletes:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to create athletes',
@@ -58,7 +58,7 @@ export const makeCreateAthlete =
 
     // 3. Persist
     return deps.athleteRepository
-      .create({ organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }, athlete)
+      .create({ organizationId: input.organizationId, userId: input.userId, roles: input.roles }, athlete)
       .mapErr(
         (e): CreateAthleteError => ({
           type: 'repository_error',

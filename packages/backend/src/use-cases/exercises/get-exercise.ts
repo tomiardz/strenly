@@ -21,7 +21,7 @@ export const makeGetExercise =
   (deps: Dependencies) =>
   (input: GetExerciseInput): ResultAsync<Exercise, GetExerciseError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'exercises:read')) {
+    if (!hasPermission(input.roles, 'exercises:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to view exercises',
@@ -29,7 +29,7 @@ export const makeGetExercise =
     }
 
     // 2. Fetch exercise with organization scope (repository handles access control)
-    const ctx = { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }
+    const ctx = { organizationId: input.organizationId, userId: input.userId, roles: input.roles }
     return deps.exerciseRepository
       .findById(ctx, input.exerciseId)
       .mapErr(

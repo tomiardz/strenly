@@ -38,14 +38,14 @@ export const makeUpdatePrescription =
   (deps: Dependencies) =>
   (input: UpdatePrescriptionInput): ResultAsync<string | null, UpdatePrescriptionError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to modify programs',
       })
     }
 
-    const ctx = { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }
+    const ctx = { organizationId: input.organizationId, userId: input.userId, roles: input.roles }
 
     // 2. Parse the notation to series array
     const parsedSeries = parsePrescriptionToSeries(input.notation)

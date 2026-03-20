@@ -100,7 +100,7 @@ export const makeDuplicateProgram =
   (deps: Dependencies) =>
   (input: DuplicateProgramInput): ResultAsync<Program, DuplicateProgramError> => {
     // 1. Authorization FIRST - duplicating creates a new program
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to create programs',
@@ -110,7 +110,7 @@ export const makeDuplicateProgram =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Load source program aggregate

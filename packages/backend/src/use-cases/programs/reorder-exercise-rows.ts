@@ -22,14 +22,14 @@ export const makeReorderExerciseRows =
   (deps: Dependencies) =>
   (input: ReorderExerciseRowsInput): ResultAsync<void, ReorderExerciseRowsError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to modify programs',
       })
     }
 
-    const ctx = { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }
+    const ctx = { organizationId: input.organizationId, userId: input.userId, roles: input.roles }
 
     // 2. Fetch row metadata to check groups
     return deps.programRepository

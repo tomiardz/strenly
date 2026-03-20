@@ -71,7 +71,7 @@ export const makeCreateProgram =
   (deps: Dependencies) =>
   (input: CreateProgramInput): ResultAsync<Program, CreateProgramError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to create programs',
@@ -81,7 +81,7 @@ export const makeCreateProgram =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Generate default weeks with empty sessions

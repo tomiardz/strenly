@@ -24,7 +24,7 @@ export const makeDeleteLog =
   (deps: Dependencies) =>
   (input: DeleteLogInput): ResultAsync<void, DeleteLogError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'workout_log:delete')) {
+    if (!hasPermission(input.roles, 'workout_log:delete')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to delete workout logs',
@@ -34,7 +34,7 @@ export const makeDeleteLog =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Verify log exists before deleting

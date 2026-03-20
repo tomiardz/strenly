@@ -84,7 +84,7 @@ export const makeSaveDraft =
   (deps: Dependencies) =>
   (input: SaveDraftInput): ResultAsync<SaveDraftResult, SaveDraftError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to edit programs',
@@ -94,7 +94,7 @@ export const makeSaveDraft =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Build CreateProgramInput by adding id and organizationId

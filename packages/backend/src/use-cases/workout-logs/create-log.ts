@@ -104,7 +104,7 @@ export const makeCreateLog =
   (deps: Dependencies) =>
   (input: CreateLogInput): ResultAsync<WorkoutLog, CreateLogError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'workout_log:create')) {
+    if (!hasPermission(input.roles, 'workout_log:create')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to log workouts',
@@ -114,7 +114,7 @@ export const makeCreateLog =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Check if log already exists for this athlete/session/week

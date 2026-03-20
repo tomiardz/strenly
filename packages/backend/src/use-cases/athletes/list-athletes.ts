@@ -26,7 +26,7 @@ export const makeListAthletes =
   (deps: Dependencies) =>
   (input: ListAthletesInput): ResultAsync<ListAthletesResult, ListAthletesError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'athletes:read')) {
+    if (!hasPermission(input.roles, 'athletes:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to list athletes',
@@ -36,7 +36,7 @@ export const makeListAthletes =
     // 2. Fetch athletes with filtering
     return deps.athleteRepository
       .findAll(
-        { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole },
+        { organizationId: input.organizationId, userId: input.userId, roles: input.roles },
         {
           status: input.status,
           search: input.search,

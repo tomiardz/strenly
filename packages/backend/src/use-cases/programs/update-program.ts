@@ -28,7 +28,7 @@ export const makeUpdateProgram =
   (deps: Dependencies) =>
   (input: UpdateProgramInput): ResultAsync<Program, UpdateProgramError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to update programs',
@@ -38,7 +38,7 @@ export const makeUpdateProgram =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Fetch existing program

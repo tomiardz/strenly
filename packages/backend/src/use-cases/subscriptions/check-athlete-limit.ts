@@ -29,7 +29,7 @@ export const makeCheckAthleteLimit =
   (deps: Dependencies) =>
   (input: CheckAthleteLimitInput): ResultAsync<CheckAthleteLimitResult, CheckAthleteLimitError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'athletes:write')) {
+    if (!hasPermission(input.roles, 'athletes:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to add athletes',

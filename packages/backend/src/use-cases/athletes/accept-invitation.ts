@@ -90,7 +90,7 @@ export const makeAcceptInvitation =
             const ctx = {
               organizationId: invitation.organizationId,
               userId: input.userId,
-              memberRole: 'member' as const,
+              roles: ['athlete'] as const,
             }
 
             return deps.athleteRepository

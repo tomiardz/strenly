@@ -32,7 +32,7 @@ export const makeGetLogBySession =
   (deps: Dependencies) =>
   (input: GetLogBySessionInput): ResultAsync<WorkoutLog | null, GetLogBySessionError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'workout_log:read')) {
+    if (!hasPermission(input.roles, 'workout_log:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to view workout logs',
@@ -42,7 +42,7 @@ export const makeGetLogBySession =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Query by athlete/session/week - returns null if not found

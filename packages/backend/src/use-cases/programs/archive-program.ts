@@ -23,7 +23,7 @@ export const makeArchiveProgram =
   (deps: Dependencies) =>
   (input: ArchiveProgramInput): ResultAsync<Program, ArchiveProgramError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:delete')) {
+    if (!hasPermission(input.roles, 'programs:delete')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to archive programs',
@@ -33,7 +33,7 @@ export const makeArchiveProgram =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Fetch existing program
