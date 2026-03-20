@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramRepositoryMock } from '../../../__tests__/factories/program-repository-mock'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeListPrograms } from '../list-programs'
 
 // Helper to create minimal program for list results

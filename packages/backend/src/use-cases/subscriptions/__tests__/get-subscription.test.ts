@@ -4,7 +4,7 @@ import type { PlanRepositoryPort } from '@strenly/core/ports/plan-repository.por
 import type { SubscriptionRepositoryPort } from '@strenly/core/ports/subscription-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeGetSubscription } from '../get-subscription'
 
 // Helper to create plan entity

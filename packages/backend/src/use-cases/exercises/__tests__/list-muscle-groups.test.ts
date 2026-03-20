@@ -2,7 +2,7 @@ import type { MuscleGroupRepositoryPort } from '@strenly/core/ports/muscle-group
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createMuscleGroupRepositoryMock } from '../../../__tests__/factories/muscle-group-repository-mock'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeListMuscleGroups } from '../list-muscle-groups'
 
 describe('[2.7-UNIT] listMuscleGroups use case', () => {

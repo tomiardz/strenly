@@ -6,7 +6,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity } from '../../../__tests__/factories/athlete-factory'
 import { createProgramWithStructure } from '../../../__tests__/factories/program-structure-factory'
-import { createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeCreateLog } from '../create-log'
 
 describe('createLog use case', () => {
@@ -225,7 +225,7 @@ describe('createLog use case', () => {
 
   describe('Authorization', () => {
     it('[5.2-UNIT-001] @p0 should return forbidden error when user lacks workout_log:create permission', async () => {
-      const ctx = createCoachContext()
+      const ctx = createManagerContext()
       const createLog = makeCreateLog({
         workoutLogRepository: mockWorkoutLogRepository,
         programRepository: mockProgramRepository,

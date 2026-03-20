@@ -1,7 +1,7 @@
 import type { ProgramRepositoryPort, ProgramWeek } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateWeek } from '../update-week'
 
 describe('[3.33-UNIT] @p2 updateWeek use case', () => {

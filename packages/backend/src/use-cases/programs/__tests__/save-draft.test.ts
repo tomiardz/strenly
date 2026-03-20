@@ -2,7 +2,7 @@ import type { Program } from '@strenly/core/domain/entities/program/program'
 import type { ProgramRepositoryPort } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import type { ProgramDataInput } from '../save-draft'
 import { makeSaveDraft } from '../save-draft'
 

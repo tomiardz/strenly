@@ -1,7 +1,7 @@
 import type { ProgramRepositoryPort, ProgramSession } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateSession } from '../update-session'
 
 describe('[3.32-UNIT] @p2 updateSession use case', () => {

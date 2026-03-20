@@ -1,4 +1,4 @@
-import { type OrganizationRole, isValidRole } from '@strenly/core/services/authorization'
+import { isValidRole, type OrganizationRole } from '@strenly/core/services/authorization'
 
 /**
  * Parses a comma-separated role string into validated OrganizationRole array.

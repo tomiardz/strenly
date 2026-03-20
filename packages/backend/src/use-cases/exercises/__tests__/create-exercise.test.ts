@@ -2,7 +2,7 @@ import type { ExerciseRepositoryPort } from '@strenly/core/ports/exercise-reposi
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity, createExerciseInput } from '../../../__tests__/factories/exercise-factory'
-import { createManagerContext, createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeCreateExercise } from '../create-exercise'
 
 describe('[2.1-UNIT] createExercise use case', () => {
@@ -77,7 +77,7 @@ describe('[2.1-UNIT] createExercise use case', () => {
     })
 
     it('[2.1-UNIT-002] @p0 should create exercise with minimal required fields', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const input = { name: 'Squat' } // Only required field
 
       const exercise = createExerciseEntity({
@@ -113,7 +113,7 @@ describe('[2.1-UNIT] createExercise use case', () => {
 
   describe('[2.1-UNIT] Authorization', () => {
     it('[2.1-UNIT-003] @p0 should return forbidden error when user lacks exercises:write permission', async () => {
-      const ctx = createCoachContext() // Viewer role lacks write permission
+      const ctx = createManagerContext() // Manager role lacks exercises:write permission
       const input = createExerciseInput()
 
       const createExercise = makeCreateExercise({
@@ -139,7 +139,7 @@ describe('[2.1-UNIT] createExercise use case', () => {
     })
 
     it('[2.1-UNIT-004] @p0 should succeed when user has admin role (has exercises:write)', async () => {
-      const ctx = createManagerContext() // Admin role has write permission
+      const ctx = createCoachContext() // Coach role has exercises:write permission
       const input = createExerciseInput()
 
       const exercise = createExerciseEntity({
@@ -169,7 +169,7 @@ describe('[2.1-UNIT] createExercise use case', () => {
 
   describe('[2.1-UNIT] Validation Errors', () => {
     it('[2.1-UNIT-005] @p1 should return validation error when name is empty', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const input = createExerciseInput({ name: '' }) // Invalid: empty name
 
       const createExercise = makeCreateExercise({
@@ -196,7 +196,7 @@ describe('[2.1-UNIT] createExercise use case', () => {
 
   describe('[2.1-UNIT] Repository Errors', () => {
     it('[2.1-UNIT-006] @p1 should return repository error when database fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const input = createExerciseInput()
 
       // Mock repository failure
@@ -228,7 +228,7 @@ describe('[2.1-UNIT] createExercise use case', () => {
 
   describe('[2.1-UNIT] Edge Cases', () => {
     it('[2.1-UNIT-007] @p2 should handle null optional fields correctly', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const input = createExerciseInput({
         description: null,
         instructions: null,
@@ -270,7 +270,7 @@ describe('[2.1-UNIT] createExercise use case', () => {
     })
 
     it('[2.1-UNIT-008] @p2 should create multiple exercises with unique IDs in parallel', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       let idCounter = 0
       const generateUniqueId = vi.fn(() => `exercise-${++idCounter}`)
 

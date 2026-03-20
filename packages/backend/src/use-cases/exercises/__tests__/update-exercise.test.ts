@@ -2,7 +2,7 @@ import type { ExerciseRepositoryPort } from '@strenly/core/ports/exercise-reposi
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity } from '../../../__tests__/factories/exercise-factory'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateExercise } from '../update-exercise'
 
 describe('[2.2-UNIT] updateExercise use case', () => {

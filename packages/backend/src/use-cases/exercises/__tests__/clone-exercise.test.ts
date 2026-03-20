@@ -2,7 +2,7 @@ import type { ExerciseRepositoryPort } from '@strenly/core/ports/exercise-reposi
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity } from '../../../__tests__/factories/exercise-factory'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeCloneExercise } from '../clone-exercise'
 
 describe('[2.4-UNIT] cloneExercise use case', () => {
@@ -25,7 +25,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
 
   describe('[2.4-UNIT] Happy Path', () => {
     it('[2.4-UNIT-001] @p0 should clone curated exercise successfully with custom name', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceExerciseId = 'curated-bench-press'
 
       // Mock source curated exercise
@@ -92,7 +92,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
     })
 
     it('[2.4-UNIT-002] @p0 should clone exercise with default "(Custom)" suffix when name not provided', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceExerciseId = 'curated-squat'
 
       const sourceExercise = createExerciseEntity({
@@ -131,7 +131,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
     })
 
     it('[2.4-UNIT-003] @p1 should clone custom exercise from organization', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceExerciseId = 'org-custom-exercise'
 
       // Mock source custom exercise from same org
@@ -173,7 +173,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
 
   describe('[2.4-UNIT] Authorization', () => {
     it('[2.4-UNIT-004] @p0 should return forbidden error when user lacks exercises:write permission', async () => {
-      const ctx = createCoachContext() // Member role lacks write permission
+      const ctx = createManagerContext() // Manager role lacks exercises:write permission
       const sourceExerciseId = 'exercise-1'
 
       const cloneExercise = makeCloneExercise({
@@ -203,7 +203,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
     })
 
     it('[2.4-UNIT-005] @p0 should succeed when user has admin role (has exercises:write)', async () => {
-      const ctx = createManagerContext() // Admin role has write permission
+      const ctx = createCoachContext() // Coach role has exercises:write permission
       const sourceExerciseId = 'exercise-1'
 
       const sourceExercise = createExerciseEntity({
@@ -238,7 +238,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
 
   describe('[2.4-UNIT] Source Not Found Errors', () => {
     it('[2.4-UNIT-006] @p1 should return source_not_found error when source exercise does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceExerciseId = 'non-existent-exercise'
 
       // Mock repository returning null (not found)
@@ -271,7 +271,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
 
   describe('[2.4-UNIT] Repository Errors', () => {
     it('[2.4-UNIT-007] @p1 should return repository error when findById fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceExerciseId = 'exercise-1'
 
       // Mock repository findById failure
@@ -304,7 +304,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
     })
 
     it('[2.4-UNIT-008] @p1 should return repository error when create fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceExerciseId = 'exercise-1'
 
       const sourceExercise = createExerciseEntity({
@@ -347,7 +347,7 @@ describe('[2.4-UNIT] cloneExercise use case', () => {
 
   describe('[2.4-UNIT] Edge Cases', () => {
     it('[2.4-UNIT-009] @p2 should preserve all source exercise properties except ID and organizationId', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceExerciseId = 'source-1'
 
       const sourceExercise = createExerciseEntity({

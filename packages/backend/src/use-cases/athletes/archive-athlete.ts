@@ -29,10 +29,7 @@ export const makeArchiveAthlete =
 
     // 2. Archive (soft delete - sets status to inactive)
     return deps.athleteRepository
-      .archive(
-        { organizationId: input.organizationId, userId: input.userId, roles: input.roles },
-        input.athleteId,
-      )
+      .archive({ organizationId: input.organizationId, userId: input.userId, roles: input.roles }, input.athleteId)
       .mapErr((e): ArchiveAthleteError => {
         if (e.type === 'NOT_FOUND') {
           return { type: 'not_found', athleteId: input.athleteId }

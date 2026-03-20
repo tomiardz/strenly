@@ -2,7 +2,7 @@ import type { WorkoutLogRepositoryPort } from '@strenly/core/ports/workout-log-r
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createWorkoutLogEntity } from '../../../__tests__/factories/workout-log-factory'
-import { createManagerContext, createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeDeleteLog } from '../delete-log'
 
 describe('deleteLog use case', () => {

@@ -30,10 +30,7 @@ export const makeGetAthlete =
 
     // 2. Fetch athlete
     return deps.athleteRepository
-      .findById(
-        { organizationId: input.organizationId, userId: input.userId, roles: input.roles },
-        input.athleteId,
-      )
+      .findById({ organizationId: input.organizationId, userId: input.userId, roles: input.roles }, input.athleteId)
       .mapErr(
         (e): GetAthleteError => ({
           type: 'repository_error',
