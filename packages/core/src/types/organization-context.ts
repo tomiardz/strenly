@@ -1,5 +1,7 @@
+import type { OrganizationRole } from '../services/authorization'
+
 export type OrganizationContext = {
   organizationId: string
   userId: string
-  memberRole: 'owner' | 'admin' | 'member'
+  roles: OrganizationRole[]
 }

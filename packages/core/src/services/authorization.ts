@@ -1,4 +1,11 @@
-export type Role = 'owner' | 'admin' | 'member'
+export type OrganizationRole = 'owner' | 'manager' | 'coach' | 'athlete'
+
+export const ORGANIZATION_ROLES: readonly OrganizationRole[] = [
+  'owner',
+  'manager',
+  'coach',
+  'athlete',
+] as const
 
 export type Permission =
   // Organization management
@@ -30,13 +37,7 @@ export type Permission =
   | 'workout_log:update'
   | 'workout_log:delete'
 
-const ROLE_HIERARCHY: Record<Role, number> = {
-  owner: 100,
-  admin: 80,
-  member: 40,
-}
-
-const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
+const ROLE_PERMISSIONS: Record<OrganizationRole, readonly Permission[]> = {
   owner: [
     // Organization
     'organization:read',
@@ -67,65 +68,49 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
     'workout_log:update',
     'workout_log:delete',
   ],
-  admin: [
-    // Organization (no delete)
+  manager: [
     'organization:read',
     'organization:manage',
-    // Members (can invite/remove but not change roles)
     'members:read',
     'members:invite',
     'members:remove',
-    // Billing (read only)
     'billing:read',
-    // Athletes
+    'athletes:read',
+  ],
+  coach: [
+    'members:read',
     'athletes:read',
     'athletes:write',
     'athletes:delete',
-    // Programs
     'programs:read',
     'programs:write',
     'programs:delete',
-    // Exercises
     'exercises:read',
     'exercises:write',
-    // Workout Logs
     'workout_log:create',
     'workout_log:read',
     'workout_log:update',
     'workout_log:delete',
   ],
-  member: [
-    // Organization (read only)
-    'organization:read',
-    // Members (read only)
-    'members:read',
-    // Athletes (can write but not delete)
-    'athletes:read',
-    'athletes:write',
-    // Programs (read only for members)
+  athlete: [
     'programs:read',
-    // Exercises (read only for members)
-    'exercises:read',
-    // Workout Logs (read only for members)
+    'workout_log:create',
     'workout_log:read',
+    'workout_log:update',
   ],
 }
 
-export function hasPermission(role: Role, permission: Permission): boolean {
-  const permissions = ROLE_PERMISSIONS[role]
-  return permissions?.includes(permission) ?? false
+export function hasPermission(roles: OrganizationRole[], permission: Permission): boolean {
+  return roles.some((role) => {
+    const permissions = ROLE_PERMISSIONS[role]
+    return permissions?.includes(permission) ?? false
+  })
 }
 
-export function getPermissions(role: Role): readonly Permission[] {
+export function getPermissions(role: OrganizationRole): readonly Permission[] {
   return ROLE_PERMISSIONS[role] ?? []
 }
 
-export function hasHigherOrEqualRole(role: Role, targetRole: Role): boolean {
-  const roleLevel = ROLE_HIERARCHY[role] ?? 0
-  const targetLevel = ROLE_HIERARCHY[targetRole] ?? 0
-  return roleLevel >= targetLevel
-}
-
-export function isValidRole(role: string): role is Role {
-  return role === 'owner' || role === 'admin' || role === 'member'
+export function isValidRole(role: string): role is OrganizationRole {
+  return ORGANIZATION_ROLES.includes(role as OrganizationRole)
 }
