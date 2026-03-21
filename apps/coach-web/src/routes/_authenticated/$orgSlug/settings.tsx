@@ -1,8 +1,12 @@
 import { createFileRoute, Link, Outlet, useMatchRoute } from '@tanstack/react-router'
-import { UserIcon } from 'lucide-react'
+import { BuildingIcon, UserIcon, UsersIcon } from 'lucide-react'
 import { useOrgSlug } from '@/hooks/use-org-slug'
 
-const settingsNavItems = [{ path: 'profile', label: 'Mi Perfil', icon: UserIcon }]
+const settingsNavItems = [
+  { path: 'general', label: 'General', icon: BuildingIcon },
+  { path: 'team', label: 'Equipo', icon: UsersIcon },
+  { path: 'profile', label: 'Mi Perfil', icon: UserIcon },
+]
 
 export const Route = createFileRoute('/_authenticated/$orgSlug/settings')({
   component: SettingsLayout,
