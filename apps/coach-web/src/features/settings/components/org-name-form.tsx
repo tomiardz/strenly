@@ -32,7 +32,7 @@ export function OrgNameForm({ onSubmit, defaultValues, isSubmitting, disabled }:
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-      <fieldset disabled={isSubmitting ?? disabled} className="flex flex-col gap-6">
+      <fieldset disabled={isSubmitting || disabled} className="flex flex-col gap-6">
         <Controller
           name="name"
           control={control}
