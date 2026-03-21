@@ -3,13 +3,13 @@ import { type CreateExerciseInput, createExerciseInputSchema } from '@strenly/co
 import type { MuscleGroup } from '@strenly/contracts/exercises/muscle-group'
 import { useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useMuscleGroups } from '../hooks/queries/use-muscle-groups'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useMuscleGroups } from '../hooks/queries/use-muscle-groups'
 
 const MOVEMENT_PATTERN_OPTIONS = [
   { value: 'push', label: 'Push' },
@@ -159,11 +159,7 @@ export function ExerciseForm({ id, onSubmit, defaultValues, isSubmitting }: Exer
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>Músculos primarios</FieldLabel>
               <FieldContent>
-                <MuscleGroupSelector
-                  options={muscleGroupOptions}
-                  value={field.value ?? []}
-                  onChange={field.onChange}
-                />
+                <MuscleGroupSelector options={muscleGroupOptions} value={field.value ?? []} onChange={field.onChange} />
                 <FieldError errors={[fieldState.error]} />
               </FieldContent>
             </Field>
@@ -177,11 +173,7 @@ export function ExerciseForm({ id, onSubmit, defaultValues, isSubmitting }: Exer
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel>Músculos secundarios</FieldLabel>
               <FieldContent>
-                <MuscleGroupSelector
-                  options={muscleGroupOptions}
-                  value={field.value ?? []}
-                  onChange={field.onChange}
-                />
+                <MuscleGroupSelector options={muscleGroupOptions} value={field.value ?? []} onChange={field.onChange} />
                 <FieldError errors={[fieldState.error]} />
               </FieldContent>
             </Field>
@@ -193,11 +185,7 @@ export function ExerciseForm({ id, onSubmit, defaultValues, isSubmitting }: Exer
           control={control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid} orientation="horizontal" className="gap-2">
-              <Checkbox
-                id="isUnilateral"
-                checked={field.value ?? false}
-                onCheckedChange={field.onChange}
-              />
+              <Checkbox id="isUnilateral" checked={field.value ?? false} onCheckedChange={field.onChange} />
               <FieldLabel htmlFor="isUnilateral">Ejercicio unilateral</FieldLabel>
             </Field>
           )}
@@ -235,11 +223,7 @@ function MuscleGroupSelector({
       {options.map((option) => {
         const isSelected = value?.includes(option.value) ?? false
         return (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => handleToggle(option.value)}
-          >
+          <button key={option.value} type="button" onClick={() => handleToggle(option.value)}>
             <Badge variant={isSelected ? 'default' : 'outline'}>{option.label}</Badge>
           </button>
         )

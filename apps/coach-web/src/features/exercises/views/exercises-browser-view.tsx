@@ -3,8 +3,8 @@ import type { MovementPattern, MuscleGroup } from '@strenly/contracts/exercises/
 import type { SortingState } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
-import { ExerciseForm } from '../components/exercise-form'
 import { ExerciseFilters } from '../components/exercise-filters'
+import { ExerciseForm } from '../components/exercise-form'
 import { ExercisesTable } from '../components/exercises-table'
 import { useArchiveExercise } from '../hooks/mutations/use-archive-exercise'
 import { useCloneExercise } from '../hooks/mutations/use-clone-exercise'
@@ -198,11 +198,7 @@ export function ExercisesBrowserView() {
               onMovementPatternChange={handleMovementPatternChange}
             />
             <Field orientation="horizontal" className="gap-2">
-              <Checkbox
-                id="include-archived"
-                checked={includeArchived}
-                onCheckedChange={handleIncludeArchivedChange}
-              />
+              <Checkbox id="include-archived" checked={includeArchived} onCheckedChange={handleIncludeArchivedChange} />
               <FieldLabel htmlFor="include-archived" className="font-normal text-sm">
                 Mostrar archivados
               </FieldLabel>
