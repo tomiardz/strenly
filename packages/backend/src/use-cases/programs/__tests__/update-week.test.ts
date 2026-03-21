@@ -188,7 +188,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
 
   describe('[3.33-UNIT] @p0 Authorization', () => {
     it('[3.33-UNIT-004] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createCoachContext() // Member role lacks write permission
+      const ctx = createManagerContext() // Manager role lacks coaching/write permission
       const weekId = 'week-1'
 
       const updateWeek = makeUpdateWeek({

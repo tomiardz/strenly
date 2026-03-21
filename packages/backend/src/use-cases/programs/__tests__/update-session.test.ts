@@ -188,7 +188,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
 
   describe('[3.32-UNIT] @p0 Authorization', () => {
     it('[3.32-UNIT-004] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createCoachContext() // Member role lacks write permission
+      const ctx = createManagerContext() // Manager role lacks coaching/write permission
       const sessionId = 'session-1'
 
       const updateSession = makeUpdateSession({

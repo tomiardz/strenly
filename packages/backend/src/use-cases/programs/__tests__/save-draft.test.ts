@@ -205,7 +205,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
 
   describe('[3.28-UNIT] @p0 Authorization', () => {
     it('[3.28-UNIT-004] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createCoachContext() // Member role lacks write permission
+      const ctx = createManagerContext() // Manager role lacks coaching/write permission
       const programId = 'program-1'
       const programData = createProgramDataInput()
 

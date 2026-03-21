@@ -91,7 +91,7 @@ describe('deleteLog use case', () => {
 
   describe('Authorization', () => {
     it('[5.2-UNIT-001] @p0 should return forbidden error when user lacks workout_log:delete permission', async () => {
-      const ctx = createCoachContext() // Member lacks delete permission
+      const ctx = createManagerContext() // Manager lacks coaching/delete permission
       const logId = 'log-1'
 
       const deleteLog = makeDeleteLog({

@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramRepositoryMock } from '../../../__tests__/factories/program-repository-mock'
-import { createCoachContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeSaveAsTemplate } from '../save-as-template'
 
 describe('[3.27-UNIT] @p2 saveAsTemplate use case', () => {
@@ -114,7 +114,7 @@ describe('[3.27-UNIT] @p2 saveAsTemplate use case', () => {
 
   describe('[3.27-UNIT] @p0 Authorization', () => {
     it('[3.27-UNIT-002] @p0 should return forbidden when user lacks programs:write permission', async () => {
-      const ctx = createCoachContext() // Member has no write permission
+      const ctx = createManagerContext() // Manager lacks coaching/write permission
 
       const saveAsTemplate = makeSaveAsTemplate({
         programRepository: mockProgramRepository,
