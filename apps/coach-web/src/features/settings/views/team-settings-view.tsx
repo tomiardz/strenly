@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { useUserRole } from '@/hooks/use-user-role'
 import { InviteMemberDialog } from '../components/invite-member-dialog'
 import { MemberList } from '../components/member-list'
+import { PendingInvitations } from '../components/pending-invitations'
 import { useOrgMembers } from '../hooks/use-org-members'
 
 /**
@@ -12,7 +13,7 @@ import { useOrgMembers } from '../hooks/use-org-members'
  * Displays org members in a table with loading and error states.
  */
 export function TeamSettingsView() {
-  const { members, isLoading, error } = useOrgMembers()
+  const { members, invitations, isLoading, error } = useOrgMembers()
   const { role, canInviteMembers } = useUserRole()
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
 
@@ -30,6 +31,12 @@ export function TeamSettingsView() {
           </Button>
         )}
       </div>
+
+      <PendingInvitations
+        invitations={invitations}
+        isLoading={isLoading}
+        canInviteMembers={canInviteMembers}
+      />
 
       {error ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
