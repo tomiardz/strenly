@@ -6,10 +6,5 @@ export const Route = createFileRoute('/_authenticated/$orgSlug/templates')({
 })
 
 function TemplatesPage() {
-  return (
-    <ComingSoon
-      title="Plantillas"
-      description="La gestion de plantillas estara disponible proximamente."
-    />
-  )
+  return <ComingSoon title="Plantillas" description="La gestion de plantillas estara disponible proximamente." />
 }

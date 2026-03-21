@@ -6,10 +6,5 @@ export const Route = createFileRoute('/_authenticated/$orgSlug/help')({
 })
 
 function HelpPage() {
-  return (
-    <ComingSoon
-      title="Centro de Ayuda"
-      description="El centro de ayuda estara disponible proximamente."
-    />
-  )
+  return <ComingSoon title="Centro de Ayuda" description="El centro de ayuda estara disponible proximamente." />
 }

@@ -19,9 +19,7 @@ export function ComingSoon({
       <ConstructionIcon className="h-12 w-12 text-muted-foreground" />
       <h1 className="font-bold text-2xl">{title}</h1>
       <p className="max-w-md text-center text-muted-foreground">{description}</p>
-      <Button render={<Link to="/$orgSlug/dashboard" params={{ orgSlug }} />}>
-        Volver al panel
-      </Button>
+      <Button render={<Link to="/$orgSlug/dashboard" params={{ orgSlug }} />}>Volver al panel</Button>
     </div>
   )
 }
