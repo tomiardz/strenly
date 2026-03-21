@@ -52,13 +52,7 @@ export function OrgNameForm({ onSubmit, defaultValues, isSubmitting, disabled }:
         <Field>
           <FieldLabel htmlFor="org-slug">URL</FieldLabel>
           <FieldContent>
-            <Input
-              id="org-slug"
-              value={defaultValues.slug}
-              readOnly
-              disabled
-              className="opacity-60"
-            />
+            <Input id="org-slug" value={defaultValues.slug} readOnly disabled className="opacity-60" />
             <FieldDescription>La URL de la organizacion no se puede cambiar.</FieldDescription>
           </FieldContent>
         </Field>

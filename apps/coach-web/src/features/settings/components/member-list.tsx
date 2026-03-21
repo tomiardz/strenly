@@ -7,7 +7,7 @@ type Member = {
   id: string
   userId: string
   role: string
-  createdAt: string
+  createdAt: Date | string
   user: {
     name: string
     email: string
@@ -45,7 +45,7 @@ function getInitials(name: string): string {
     .toUpperCase()
 }
 
-function formatDate(dateString: string): string {
+function formatDate(dateString: Date | string): string {
   return new Date(dateString).toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'short',
@@ -67,9 +67,7 @@ export function MemberList({ members, isLoading }: MemberListProps) {
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
         <p className="font-medium text-sm">No hay otros miembros en tu organizacion</p>
-        <p className="mt-1 text-muted-foreground text-sm">
-          Invita a miembros de tu equipo para colaborar juntos.
-        </p>
+        <p className="mt-1 text-muted-foreground text-sm">Invita a miembros de tu equipo para colaborar juntos.</p>
       </div>
     )
   }
@@ -90,9 +88,7 @@ export function MemberList({ members, isLoading }: MemberListProps) {
             <TableCell>
               <div className="flex items-center gap-2">
                 <Avatar size="sm">
-                  {member.user.image ? (
-                    <AvatarImage src={member.user.image} alt={member.user.name} />
-                  ) : null}
+                  {member.user.image ? <AvatarImage src={member.user.image} alt={member.user.name} /> : null}
                   <AvatarFallback>{getInitials(member.user.name)}</AvatarFallback>
                 </Avatar>
                 <span className="font-medium">{member.user.name}</span>

@@ -1,5 +1,5 @@
-import { useOrganization } from '@/contexts/organization-context'
 import { hasPermission, isValidRole } from '@strenly/core/services/authorization'
+import { useOrganization } from '@/contexts/organization-context'
 
 /**
  * Hook to get the current user's role in the active organization
