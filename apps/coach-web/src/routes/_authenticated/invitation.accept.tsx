@@ -190,7 +190,9 @@ function InvitationAcceptPage() {
             <CardDescription>{state.message}</CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
-            <Button variant="outline" render={<Link to="/" />}>Volver al inicio</Button>
+            <Button variant="outline" render={<Link to="/" />}>
+              Volver al inicio
+            </Button>
           </CardFooter>
         </Card>
       </div>
@@ -212,7 +214,9 @@ function InvitationAcceptPage() {
                 Ir a la organizacion
               </Button>
             ) : (
-              <Button variant="outline" render={<Link to="/" />}>Volver al inicio</Button>
+              <Button variant="outline" render={<Link to="/" />}>
+                Volver al inicio
+              </Button>
             )}
           </CardFooter>
         </Card>
