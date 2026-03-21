@@ -18,6 +18,7 @@ describe('[1.11-UNIT] createAthlete use case - Success Cases', () => {
       update: vi.fn(),
       archive: vi.fn(),
       findByLinkedUserId: vi.fn(),
+      count: vi.fn(),
     }
 
     // Mock ID generator

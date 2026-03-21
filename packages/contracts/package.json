@@ -28,7 +28,8 @@
     "./workout-logs/create-log": "./src/workout-logs/create-log.ts",
     "./workout-logs/save-log": "./src/workout-logs/save-log.ts",
     "./workout-logs/list-logs": "./src/workout-logs/list-logs.ts",
-    "./workout-logs/session-log-search": "./src/workout-logs/session-log-search.ts"
+    "./workout-logs/session-log-search": "./src/workout-logs/session-log-search.ts",
+    "./dashboard/summary": "./src/dashboard/summary.ts"
   },
   "scripts": {
     "format": "pnpm biome format --write src",

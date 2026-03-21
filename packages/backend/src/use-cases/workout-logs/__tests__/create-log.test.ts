@@ -42,6 +42,7 @@ describe('createLog use case', () => {
       update: vi.fn(),
       archive: vi.fn(),
       findByLinkedUserId: vi.fn(),
+      count: vi.fn(),
     }
     mockGenerateId = vi.fn(() => faker.string.uuid())
   })

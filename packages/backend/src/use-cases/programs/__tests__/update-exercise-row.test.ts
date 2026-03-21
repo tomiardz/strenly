@@ -43,6 +43,7 @@ describe('[3.29-UNIT] @p2 updateExerciseRow use case', () => {
       duplicateWeek: vi.fn(),
       repositionRowToEndOfSession: vi.fn(),
       findExerciseRowsBySessionId: vi.fn(),
+      countByStatus: vi.fn(),
     }
 
     // Mock ALL exercise repository methods

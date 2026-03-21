@@ -1915,5 +1915,26 @@ export function createProgramRepository(db: DbClient): ProgramRepositoryPort {
         return ok(result.data)
       })
     },
+
+    countByStatus(
+      ctx: OrganizationContext,
+    ): ResultAsync<{ draft: number; active: number; archived: number }, ProgramRepositoryError> {
+      return RA.fromPromise(
+        db
+          .select({
+            draft: count(sql`CASE WHEN ${programs.status} = 'draft' THEN 1 END`),
+            active: count(sql`CASE WHEN ${programs.status} = 'active' THEN 1 END`),
+            archived: count(sql`CASE WHEN ${programs.status} = 'archived' THEN 1 END`),
+          })
+          .from(programs)
+          .where(eq(programs.organizationId, ctx.organizationId))
+          .then((rows) => ({
+            draft: rows[0]?.draft ?? 0,
+            active: rows[0]?.active ?? 0,
+            archived: rows[0]?.archived ?? 0,
+          })),
+        wrapDbError,
+      )
+    },
   }
 }

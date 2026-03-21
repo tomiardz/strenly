@@ -1,4 +1,5 @@
 import { athletes } from './athletes'
+import { dashboard } from './dashboard'
 import { exercises } from './exercises'
 import { health } from './health/health'
 import { programs } from './programs'
@@ -17,6 +18,7 @@ import { workoutLogs } from './workout-logs'
  */
 export const router = {
   athletes,
+  dashboard,
   exercises,
   health,
   programs,
