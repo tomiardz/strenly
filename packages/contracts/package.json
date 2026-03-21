@@ -15,6 +15,7 @@
     "./athletes/athlete": "./src/athletes/athlete.ts",
     "./athletes/invitation": "./src/athletes/invitation.ts",
     "./auth/auth": "./src/auth/auth.ts",
+    "./auth/member-invitation": "./src/auth/member-invitation.ts",
     "./auth/organization": "./src/auth/organization.ts",
     "./programs/template": "./src/programs/template.ts",
     "./programs/program": "./src/programs/program.ts",

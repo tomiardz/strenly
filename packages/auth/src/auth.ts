@@ -91,8 +91,9 @@ export function createAuth(env: AuthEnv, db: DB) {
         allowUserToCreateOrganization: async () => true,
         creatorRole: 'owner',
         membershipLimit: 100,
-        // Roles: owner (full control), admin (manage members), member (basic access)
+        // Custom roles: owner, manager, coach, athlete — stored as-is by Better-Auth
         // Subscription creation handled by oRPC createSubscription procedure after org creation
+        // No sendInvitationEmail configured — invitation links are shared manually via the UI
       }),
     ],
   })
