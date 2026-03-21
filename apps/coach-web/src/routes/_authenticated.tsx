@@ -39,7 +39,7 @@ export const Route = createFileRoute('/_authenticated')({
         name: org.name,
         slug: org.slug,
         logo: org.logo,
-        role: 'member',
+        role: 'role' in org && typeof org.role === 'string' ? org.role : 'member',
         metadata,
       }
     })
