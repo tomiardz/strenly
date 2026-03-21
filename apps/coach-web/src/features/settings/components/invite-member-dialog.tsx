@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type InviteMemberInput, inviteMemberInputSchema } from '@strenly/contracts/auth/member-invitation'
+import { type InviteMemberOwnerInput, inviteMemberOwnerInputSchema } from '@strenly/contracts/auth/member-invitation'
 import { Check, Copy } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -44,8 +44,8 @@ export function InviteMemberDialog({ open, onOpenChange, isOwner }: InviteMember
 
   const roleOptions = isOwner ? [...ROLE_OPTIONS, OWNER_ROLE_OPTION] : ROLE_OPTIONS
 
-  const { handleSubmit, control, reset } = useForm<InviteMemberInput>({
-    resolver: zodResolver(inviteMemberInputSchema),
+  const { handleSubmit, control, reset } = useForm<InviteMemberOwnerInput>({
+    resolver: zodResolver(inviteMemberOwnerInputSchema),
     defaultValues: {
       email: '',
       role: 'coach',
@@ -62,7 +62,7 @@ export function InviteMemberDialog({ open, onOpenChange, isOwner }: InviteMember
     onOpenChange(value)
   }
 
-  const onSubmit = (data: InviteMemberInput) => {
+  const onSubmit = (data: InviteMemberOwnerInput) => {
     inviteMutation.mutate(data, {
       onSuccess: (result) => {
         const url = `${window.location.origin}/invitation/accept?id=${result.id}`
