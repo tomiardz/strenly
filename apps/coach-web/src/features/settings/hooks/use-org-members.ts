@@ -26,6 +26,7 @@ export function useOrgMembers() {
 
   return {
     members: data?.members ?? [],
+    invitations: data?.invitations ?? [],
     isLoading,
     error,
   }

@@ -1,3 +1,4 @@
+import { MemberActions } from './member-actions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -18,6 +19,9 @@ type Member = {
 type MemberListProps = {
   members: Member[]
   isLoading: boolean
+  currentUserId: string
+  canUpdateRoles: boolean
+  canRemoveMembers: boolean
 }
 
 const roleBadgeVariant: Record<string, 'default' | 'secondary' | 'outline' | 'ghost'> = {
@@ -58,7 +62,9 @@ function formatDate(dateString: Date | string): string {
  * Displays org members in a table with avatar, name, email, role badge, and join date.
  * Includes skeleton loading and empty states.
  */
-export function MemberList({ members, isLoading }: MemberListProps) {
+export function MemberList({ members, isLoading, currentUserId, canUpdateRoles, canRemoveMembers }: MemberListProps) {
+  const ownerCount = members.filter((m) => m.role === 'owner').length
+  const showActions = canUpdateRoles || canRemoveMembers
   if (isLoading) {
     return <MemberListSkeleton />
   }
@@ -80,6 +86,7 @@ export function MemberList({ members, isLoading }: MemberListProps) {
           <TableHead>Email</TableHead>
           <TableHead>Rol</TableHead>
           <TableHead>Ingreso</TableHead>
+          {showActions && <TableHead>Acciones</TableHead>}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -101,6 +108,17 @@ export function MemberList({ members, isLoading }: MemberListProps) {
               </Badge>
             </TableCell>
             <TableCell className="text-muted-foreground">{formatDate(member.createdAt)}</TableCell>
+            {showActions && (
+              <TableCell>
+                <MemberActions
+                  member={member}
+                  currentUserId={currentUserId}
+                  canUpdateRoles={canUpdateRoles}
+                  canRemoveMembers={canRemoveMembers}
+                  ownerCount={ownerCount}
+                />
+              </TableCell>
+            )}
           </TableRow>
         ))}
       </TableBody>
