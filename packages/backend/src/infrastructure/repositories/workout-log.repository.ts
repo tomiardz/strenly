@@ -12,6 +12,7 @@ import { isLogStatus } from '@strenly/core/domain/entities/workout-log/types'
 import { reconstituteWorkoutLog } from '@strenly/core/domain/entities/workout-log/workout-log'
 import type {
   PendingWorkout,
+  RecentActivityEntry,
   WorkoutLogFilters,
   WorkoutLogRepositoryError,
   WorkoutLogRepositoryPort,
@@ -550,6 +551,66 @@ export function createWorkoutLogRepository(db: DbClient): WorkoutLogRepositoryPo
         }
         return ok(undefined)
       })
+    },
+
+    // -------------------------------------------------------------------------
+    // countCompletedSince - Count completed/partial logs since a date
+    // -------------------------------------------------------------------------
+
+    countCompletedSince(
+      ctx: OrganizationContext,
+      since: Date,
+    ): ResultAsync<number, WorkoutLogRepositoryError> {
+      return RA.fromPromise(
+        db
+          .select({ count: count() })
+          .from(workoutLogs)
+          .where(
+            and(
+              eq(workoutLogs.organizationId, ctx.organizationId),
+              gte(workoutLogs.logDate, since),
+              inArray(workoutLogs.status, ['completed', 'partial']),
+            ),
+          )
+          .then((rows) => rows[0]?.count ?? 0),
+        wrapDbError,
+      )
+    },
+
+    // -------------------------------------------------------------------------
+    // listRecent - Most recent workout logs with denormalized fields
+    // -------------------------------------------------------------------------
+
+    listRecent(
+      ctx: OrganizationContext,
+      limit: number,
+    ): ResultAsync<RecentActivityEntry[], WorkoutLogRepositoryError> {
+      return RA.fromPromise(
+        db
+          .select({
+            id: workoutLogs.id,
+            athleteName: workoutLogs.athleteName,
+            sessionName: workoutLogs.sessionName,
+            programName: workoutLogs.programName,
+            logDate: workoutLogs.logDate,
+            status: workoutLogs.status,
+          })
+          .from(workoutLogs)
+          .where(eq(workoutLogs.organizationId, ctx.organizationId))
+          .orderBy(desc(workoutLogs.logDate))
+          .limit(limit)
+          .then((rows) =>
+            rows.map((row) => ({
+              id: row.id,
+              athleteName: row.athleteName,
+              sessionName: row.sessionName,
+              programName: row.programName,
+              logDate: row.logDate,
+              status: isLogStatus(row.status) ? row.status : ('partial' as const),
+            })),
+          ),
+        wrapDbError,
+      )
     },
   }
 }

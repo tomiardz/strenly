@@ -436,4 +436,11 @@ export type ProgramRepositoryPort = {
     ctx: OrganizationContext,
     sessionId: string,
   ): ResultAsync<ProgramExerciseRow[], ProgramRepositoryError>
+
+  /**
+   * Count programs grouped by status for the organization.
+   */
+  countByStatus(
+    ctx: OrganizationContext,
+  ): ResultAsync<{ draft: number; active: number; archived: number }, ProgramRepositoryError>
 }
