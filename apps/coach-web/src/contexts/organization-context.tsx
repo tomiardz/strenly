@@ -9,6 +9,7 @@ export type OrganizationContextValue = {
   name: string
   slug: string
   logo?: string | null
+  role: string
   metadata?: {
     type?: string
     status?: string

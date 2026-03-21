@@ -24,6 +24,7 @@ export const MOCK_ORGANIZATIONS = [
     name: 'Test Organization',
     slug: 'test',
     logo: null,
+    role: 'owner',
     metadata: { type: 'gym', status: 'active' },
     createdAt: '2024-01-01T00:00:00.000Z',
   },

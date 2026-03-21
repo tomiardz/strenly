@@ -31,6 +31,7 @@
     "@orpc/react-query": "^1.13.0",
     "@strenly/backend": "workspace:^",
     "@strenly/contracts": "workspace:^",
+    "@strenly/core": "workspace:^",
     "@t3-oss/env-core": "^0.11.1",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "catalog:",
