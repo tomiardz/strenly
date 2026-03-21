@@ -78,7 +78,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
 
   describe('[3.28-UNIT] @p0 Happy Path', () => {
     it('[3.28-UNIT-001] @p0 should save draft successfully without conflict check', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput({ name: 'Updated Program' })
 
@@ -119,7 +119,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
     })
 
     it('[3.28-UNIT-002] @p2 should save draft with conflict check when lastLoadedAt is provided', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput({ name: 'Updated Program' })
 
@@ -164,7 +164,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
     })
 
     it('[3.28-UNIT-003] @p2 should detect conflict when program was modified after lastLoadedAt', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput({ name: 'Updated Program' })
 
@@ -257,7 +257,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
 
   describe('[3.28-UNIT] @p1 Validation Errors', () => {
     it('[3.28-UNIT-006] @p1 should return validation error when program name is empty', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput({ name: '' })
 
@@ -286,7 +286,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
     })
 
     it('[3.28-UNIT-007] @p1 should return validation error for aggregate validation failures', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       // Invalid: week with negative orderIndex (domain validation should catch this)
       const programData = createProgramDataInput({
@@ -331,7 +331,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
 
   describe('[3.28-UNIT] @p1 Program Not Found Errors', () => {
     it('[3.28-UNIT-008] @p1 should return program_not_found error when conflict check finds no program', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'non-existent-program'
       const programData = createProgramDataInput()
       const lastLoadedAt = new Date()
@@ -367,7 +367,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
 
   describe('[3.28-UNIT] @p1 Repository Errors', () => {
     it('[3.28-UNIT-009] @p1 should return repository error when conflict check fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput()
       const lastLoadedAt = new Date()
@@ -403,7 +403,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
     })
 
     it('[3.28-UNIT-010] @p1 should return repository error when save fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput()
 
@@ -439,7 +439,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
 
   describe('[3.28-UNIT] @p2 Edge Cases', () => {
     it('[3.28-UNIT-011] @p2 should handle program with no weeks', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput({ weeks: [] })
 
@@ -459,7 +459,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
     })
 
     it('[3.28-UNIT-012] @p2 should handle template program', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'template-1'
       const programData = createProgramDataInput({
         isTemplate: true,
@@ -482,7 +482,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
     })
 
     it('[3.28-UNIT-013] @p2 should handle complex aggregate with multiple weeks and sessions', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const programData = createProgramDataInput({
         weeks: [

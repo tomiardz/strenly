@@ -3,7 +3,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity } from '../../../__tests__/factories/athlete-factory'
 import { createAthleteRepositoryMock } from '../../../__tests__/factories/athlete-repository-mock'
-import { createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeGetAthlete } from '../get-athlete'
 
 describe('[1.2-UNIT] getAthlete use case', () => {
@@ -15,7 +15,7 @@ describe('[1.2-UNIT] getAthlete use case', () => {
 
   describe('Happy Path', () => {
     it('[1.2-UNIT-001] @p0 should get athlete successfully with admin role', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -50,7 +50,7 @@ describe('[1.2-UNIT] getAthlete use case', () => {
     })
 
     it('[1.2-UNIT-002] @p0 should get active athlete', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -79,7 +79,7 @@ describe('[1.2-UNIT] getAthlete use case', () => {
 
   describe('Not Found Errors', () => {
     it('[1.2-UNIT-003] @p1 should return not_found error when athlete does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'non-existent-athlete'
 
       vi.mocked(mockAthleteRepository.findById).mockReturnValue(okAsync(null))
@@ -107,7 +107,7 @@ describe('[1.2-UNIT] getAthlete use case', () => {
 
   describe('Repository Errors', () => {
     it('[1.2-UNIT-004] @p1 should return repository error when findById fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       vi.mocked(mockAthleteRepository.findById).mockReturnValue(
@@ -140,7 +140,7 @@ describe('[1.2-UNIT] getAthlete use case', () => {
 
   describe('Edge Cases', () => {
     it('[1.2-UNIT-005] @p2 should handle getting multiple athletes in sequence', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId1 = 'athlete-1'
       const athleteId2 = 'athlete-2'
 

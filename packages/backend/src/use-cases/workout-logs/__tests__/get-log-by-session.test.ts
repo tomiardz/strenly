@@ -3,7 +3,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createWorkoutLogEntity } from '../../../__tests__/factories/workout-log-factory'
 import { createWorkoutLogRepositoryMock } from '../../../__tests__/factories/workout-log-repository-mock'
-import { createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeGetLogBySession } from '../get-log-by-session'
 
 describe('getLogBySession use case', () => {
@@ -15,7 +15,7 @@ describe('getLogBySession use case', () => {
 
   describe('Happy Path', () => {
     it('[5.1-UNIT-001] @p0 should get workout log by session successfully', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
       const sessionId = 'session-1'
       const weekId = 'week-1'
@@ -62,7 +62,7 @@ describe('getLogBySession use case', () => {
     })
 
     it('[5.1-UNIT-002] @p1 should return null when log does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
       const sessionId = 'session-1'
       const weekId = 'week-1'
@@ -89,7 +89,7 @@ describe('getLogBySession use case', () => {
 
   describe('Repository Errors', () => {
     it('[5.2-UNIT-001] @p1 should return repository error when findByAthleteSessionWeek fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
       const sessionId = 'session-1'
       const weekId = 'week-1'
@@ -126,7 +126,7 @@ describe('getLogBySession use case', () => {
 
   describe('Edge Cases', () => {
     it('[5.3-UNIT-001] @p2 should handle querying multiple sessions in sequence', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
       const sessionId1 = 'session-1'
       const sessionId2 = 'session-2'

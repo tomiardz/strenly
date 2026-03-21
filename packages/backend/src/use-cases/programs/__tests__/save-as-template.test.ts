@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramRepositoryMock } from '../../../__tests__/factories/program-repository-mock'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeSaveAsTemplate } from '../save-as-template'
 
 describe('[3.27-UNIT] @p2 saveAsTemplate use case', () => {
@@ -20,7 +20,7 @@ describe('[3.27-UNIT] @p2 saveAsTemplate use case', () => {
 
   describe('[3.27-UNIT] @p0 Happy Path', () => {
     it('[3.27-UNIT-001] @p2 should save program as template with correct flags', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'program-1'
 
       // Create a source program (regular program with athlete)
@@ -144,7 +144,7 @@ describe('[3.27-UNIT] @p2 saveAsTemplate use case', () => {
 
   describe('[3.27-UNIT] @p1 Error Delegation from duplicate-program', () => {
     it('[3.27-UNIT-003] @p2 should return not_found when source program does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const nonExistentId = 'non-existent-program'
 
       // Mock repository returns null (not found)
@@ -173,7 +173,7 @@ describe('[3.27-UNIT] @p2 saveAsTemplate use case', () => {
     })
 
     it('[3.27-UNIT-004] @p1 should return validation_error when duplicate-program validation fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'program-2'
 
       // Create source program
@@ -218,7 +218,7 @@ describe('[3.27-UNIT] @p2 saveAsTemplate use case', () => {
     })
 
     it('[3.27-UNIT-005] @p1 should return repository_error when duplicate-program repository fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'program-3'
 
       // Create source program

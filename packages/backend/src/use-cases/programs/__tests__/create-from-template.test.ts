@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramRepositoryMock } from '../../../__tests__/factories/program-repository-mock'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeCreateFromTemplate } from '../create-from-template'
 
 describe('[3.20-UNIT] @p2 createFromTemplate use case', () => {
@@ -20,7 +20,7 @@ describe('[3.20-UNIT] @p2 createFromTemplate use case', () => {
 
   describe('[3.20-UNIT] @p0 Happy Path', () => {
     it('[3.20-UNIT-001] @p0 should create program from template successfully', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const templateId = 'template-1'
 
       // Create a template program (isTemplate: true, no athlete)
@@ -139,7 +139,7 @@ describe('[3.20-UNIT] @p2 createFromTemplate use case', () => {
     })
 
     it('[3.20-UNIT-002] @p2 should create program from template with athleteId assigned', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const templateId = 'template-2'
       const athleteId = 'athlete-123'
 
@@ -233,7 +233,7 @@ describe('[3.20-UNIT] @p2 createFromTemplate use case', () => {
 
   describe('[3.20-UNIT] @p1 Not Found', () => {
     it('[3.20-UNIT-004] @p2 should return not_found when template does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const nonExistentId = 'non-existent-template'
 
       // Mock repository returns null (not found)
@@ -264,7 +264,7 @@ describe('[3.20-UNIT] @p2 createFromTemplate use case', () => {
 
   describe('[3.20-UNIT] @p1 Template Validation', () => {
     it('[3.20-UNIT-005] @p2 should return not_a_template when source program is not a template', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const regularProgramId = 'regular-program-1'
 
       // Create a REGULAR program (not a template)
@@ -320,7 +320,7 @@ describe('[3.20-UNIT] @p2 createFromTemplate use case', () => {
 
   describe('[3.20-UNIT] @p1 Error Delegation from duplicate-program', () => {
     it('[3.20-UNIT-006] @p1 should return repository_error when duplicate-program repository fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const templateId = 'template-3'
 
       // Create valid template

@@ -45,7 +45,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
 
   describe('[3.33-UNIT] @p0 Happy Path', () => {
     it('[3.33-UNIT-001] @p0 should update week name successfully', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'week-1'
 
       // Mock existing week
@@ -106,7 +106,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
     })
 
     it('[3.33-UNIT-002] @p2 should update with same name (idempotent)', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'week-1'
 
       const existingWeek: ProgramWeek = {
@@ -145,7 +145,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
     })
 
     it('[3.33-UNIT-003] @p2 should update week in multi-week program', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'week-2'
 
       const existingWeek: ProgramWeek = {
@@ -255,7 +255,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
 
   describe('[3.33-UNIT] @p1 Validation Errors', () => {
     it('[3.33-UNIT-006] @p2 should return not_found when weekId does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'non-existent-week'
 
       // Mock repository returning null (not found)
@@ -286,7 +286,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
     })
 
     it('[3.33-UNIT-007] @p1 should return validation_error when name is too long', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'week-1'
 
       const existingWeek: ProgramWeek = {
@@ -327,7 +327,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
 
   describe('[3.33-UNIT] @p1 Repository Errors', () => {
     it('[3.33-UNIT-008] @p1 should return repository error when findWeekById fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'week-1'
 
       // Mock repository findWeekById failure
@@ -362,7 +362,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
 
   describe('[3.33-UNIT] @p2 Edge Cases', () => {
     it('[3.33-UNIT-009] @p2 should update week with special characters in name', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'week-1'
 
       const existingWeek: ProgramWeek = {
@@ -402,7 +402,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
     })
 
     it('[3.33-UNIT-010] @p3 should use default name when input is empty', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const weekId = 'week-1'
 
       const existingWeek: ProgramWeek = {

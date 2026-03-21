@@ -2,7 +2,7 @@ import type { PendingWorkout, WorkoutLogRepositoryPort } from '@strenly/core/por
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createWorkoutLogRepositoryMock } from '../../../__tests__/factories/workout-log-repository-mock'
-import { createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeListPendingWorkouts } from '../list-pending-workouts'
 
 // Helper to create pending workout data
@@ -29,7 +29,7 @@ describe('listPendingWorkouts use case', () => {
 
   describe('Happy Path', () => {
     it('[5.1-UNIT-001] @p0 should list pending workouts successfully', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       const pendingWorkouts = [
         createPendingWorkout({ athleteId: 'athlete-1', sessionId: 'session-1' }),
@@ -64,7 +64,7 @@ describe('listPendingWorkouts use case', () => {
     })
 
     it('[5.1-UNIT-002] @p2 should apply default pagination', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockWorkoutLogRepository.listPendingWorkouts).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -84,7 +84,7 @@ describe('listPendingWorkouts use case', () => {
     })
 
     it('[5.1-UNIT-003] @p2 should apply custom pagination', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockWorkoutLogRepository.listPendingWorkouts).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -106,7 +106,7 @@ describe('listPendingWorkouts use case', () => {
 
   describe('Repository Errors', () => {
     it('[5.2-UNIT-001] @p1 should return repository error when listPendingWorkouts fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockWorkoutLogRepository.listPendingWorkouts).mockReturnValue(
         errAsync({
@@ -135,7 +135,7 @@ describe('listPendingWorkouts use case', () => {
 
   describe('Edge Cases', () => {
     it('[5.3-UNIT-001] @p2 should return empty list when no pending workouts exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockWorkoutLogRepository.listPendingWorkouts).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 

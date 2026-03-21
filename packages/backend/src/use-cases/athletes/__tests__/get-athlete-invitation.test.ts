@@ -11,7 +11,7 @@ import {
   createInvitationData,
   createRevokedInvitation,
 } from '../../../__tests__/factories/invitation-factory'
-import { createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeGetAthleteInvitation } from '../get-athlete-invitation'
 
 describe('[1.8-UNIT] getAthleteInvitation use case', () => {
@@ -25,7 +25,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
 
   describe('Happy Path', () => {
     it('[1.8-UNIT-001] @p0 should get pending invitation successfully', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
       const appUrl = 'https://app.example.com'
 
@@ -69,7 +69,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
     })
 
     it('[1.8-UNIT-002] @p0 should get accepted invitation', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -104,7 +104,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
     })
 
     it('[1.8-UNIT-003] @p1 should get expired invitation', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -138,7 +138,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
     })
 
     it('[1.8-UNIT-004] @p1 should get revoked invitation', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -174,7 +174,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
 
   describe('Not Found Errors', () => {
     it('[1.8-UNIT-005] @p1 should return athlete_not_found error when athlete does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'non-existent-athlete'
 
       vi.mocked(mockAthleteRepository.findById).mockReturnValue(okAsync(null))
@@ -204,7 +204,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
     })
 
     it('[1.8-UNIT-006] @p1 should return no_invitation error when invitation does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -240,7 +240,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
 
   describe('Repository Errors', () => {
     it('[1.8-UNIT-007] @p1 should return repository error when athlete findById fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       vi.mocked(mockAthleteRepository.findById).mockReturnValue(
@@ -273,7 +273,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
     })
 
     it('[1.8-UNIT-008] @p1 should return repository error when invitation findByAthleteId fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const athlete = createAthleteEntity({
@@ -314,7 +314,7 @@ describe('[1.8-UNIT] getAthleteInvitation use case', () => {
 
   describe('Edge Cases', () => {
     it('[1.8-UNIT-009] @p2 should handle getting invitations for multiple athletes', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const athleteId1 = 'athlete-1'
       const athleteId2 = 'athlete-2'
 

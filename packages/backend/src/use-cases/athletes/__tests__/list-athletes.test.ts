@@ -3,7 +3,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity } from '../../../__tests__/factories/athlete-factory'
 import { createAthleteRepositoryMock } from '../../../__tests__/factories/athlete-repository-mock'
-import { createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeListAthletes } from '../list-athletes'
 
 describe('[1.3-UNIT] listAthletes use case', () => {
@@ -15,7 +15,7 @@ describe('[1.3-UNIT] listAthletes use case', () => {
 
   describe('Happy Path', () => {
     it('[1.3-UNIT-001] @p0 should list athletes successfully', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       const athletes = [
         createAthleteEntity({ id: 'athlete-1', organizationId: ctx.organizationId }),
@@ -48,7 +48,7 @@ describe('[1.3-UNIT] listAthletes use case', () => {
     })
 
     it('[1.3-UNIT-002] @p2 should filter by status', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockAthleteRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -70,7 +70,7 @@ describe('[1.3-UNIT] listAthletes use case', () => {
     })
 
     it('[1.3-UNIT-003] @p2 should apply search filter', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockAthleteRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -92,7 +92,7 @@ describe('[1.3-UNIT] listAthletes use case', () => {
     })
 
     it('[1.3-UNIT-004] @p2 should apply pagination', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockAthleteRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 
@@ -118,7 +118,7 @@ describe('[1.3-UNIT] listAthletes use case', () => {
 
   describe('Repository Errors', () => {
     it('[1.3-UNIT-005] @p1 should return repository error when findAll fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockAthleteRepository.findAll).mockReturnValue(
         errAsync({
@@ -147,7 +147,7 @@ describe('[1.3-UNIT] listAthletes use case', () => {
 
   describe('Edge Cases', () => {
     it('[1.3-UNIT-006] @p2 should return empty list when no athletes exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockAthleteRepository.findAll).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
 

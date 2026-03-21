@@ -45,7 +45,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
 
   describe('[3.32-UNIT] @p0 Happy Path', () => {
     it('[3.32-UNIT-001] @p0 should update session name successfully', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'session-1'
 
       // Mock existing session
@@ -106,7 +106,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
     })
 
     it('[3.32-UNIT-002] @p2 should update with same name (idempotent)', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'session-1'
 
       const existingSession: ProgramSession = {
@@ -145,7 +145,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
     })
 
     it('[3.32-UNIT-003] @p2 should update session in multi-session program', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'session-3'
 
       const existingSession: ProgramSession = {
@@ -255,7 +255,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
 
   describe('[3.32-UNIT] @p1 Validation Errors', () => {
     it('[3.32-UNIT-006] @p2 should return not_found when sessionId does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'non-existent-session'
 
       // Mock repository returning null (not found)
@@ -286,7 +286,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
     })
 
     it('[3.32-UNIT-007] @p1 should return validation_error when name is too long', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'session-1'
 
       const existingSession: ProgramSession = {
@@ -327,7 +327,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
 
   describe('[3.32-UNIT] @p1 Repository Errors', () => {
     it('[3.32-UNIT-008] @p1 should return repository error when findSessionById fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'session-1'
 
       // Mock repository findSessionById failure
@@ -362,7 +362,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
 
   describe('[3.32-UNIT] @p2 Edge Cases', () => {
     it('[3.32-UNIT-009] @p2 should update session with special characters in name', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'session-1'
 
       const existingSession: ProgramSession = {
@@ -402,7 +402,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
     })
 
     it('[3.32-UNIT-010] @p1 should return validation_error when name is empty', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const sessionId = 'session-1'
 
       const existingSession: ProgramSession = {

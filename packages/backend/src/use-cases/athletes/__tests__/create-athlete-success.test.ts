@@ -2,7 +2,7 @@ import type { AthleteRepositoryPort } from '@strenly/core/ports/athlete-reposito
 import { okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity, createAthleteInput } from '../../../__tests__/factories/athlete-factory'
-import { createManagerContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeCreateAthlete } from '../create-athlete'
 
 describe('[1.11-UNIT] createAthlete use case - Success Cases', () => {
@@ -76,7 +76,7 @@ describe('[1.11-UNIT] createAthlete use case - Success Cases', () => {
     })
 
     it('[1.11-UNIT-002] @p0 should create athlete with minimal required fields', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const input = { name: 'Jane Doe' } // Only required field
 
       const athlete = createAthleteEntity({
@@ -110,7 +110,7 @@ describe('[1.11-UNIT] createAthlete use case - Success Cases', () => {
 
   describe('Edge Cases', () => {
     it('[1.11-UNIT-003] @p2 should handle null optional fields correctly', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const input = createAthleteInput({
         email: null,
         phone: null,
@@ -149,7 +149,7 @@ describe('[1.11-UNIT] createAthlete use case - Success Cases', () => {
     })
 
     it('[1.11-UNIT-004] @p2 should create multiple athletes with unique IDs in parallel', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       let idCounter = 0
       const generateUniqueId = vi.fn(() => `athlete-${++idCounter}`)
 

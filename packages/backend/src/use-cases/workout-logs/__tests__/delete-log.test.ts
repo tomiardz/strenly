@@ -22,7 +22,7 @@ describe('deleteLog use case', () => {
 
   describe('Happy Path', () => {
     it('[5.1-UNIT-001] @p0 should delete workout log successfully with admin role', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -50,7 +50,7 @@ describe('deleteLog use case', () => {
         expect.objectContaining({
           organizationId: ctx.organizationId,
           userId: ctx.userId,
-          roles: ['manager'],
+          roles: ['coach'],
         }),
         logId,
       )
@@ -64,7 +64,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.1-UNIT-002] @p1 should delete completed log', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -146,7 +146,7 @@ describe('deleteLog use case', () => {
 
   describe('Not Found Errors', () => {
     it('[5.3-UNIT-001] @p0 should return not_found error when log does not exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const logId = 'non-existent-log'
 
       // Mock repository returning null (not found)
@@ -178,7 +178,7 @@ describe('deleteLog use case', () => {
 
   describe('Repository Errors', () => {
     it('[5.4-UNIT-001] @p1 should return repository error when findById fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const logId = 'log-1'
 
       // Mock repository failure
@@ -210,7 +210,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.4-UNIT-002] @p1 should return repository error when delete fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({
@@ -251,7 +251,7 @@ describe('deleteLog use case', () => {
 
   describe('Edge Cases', () => {
     it('[5.5-UNIT-001] @p2 should handle deleting multiple logs in sequence', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const logId1 = 'log-1'
       const logId2 = 'log-2'
 
@@ -276,7 +276,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.5-UNIT-002] @p2 should be idempotent - trying to delete non-existent log after successful deletion', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
       const logId = 'log-1'
 
       // First call: log exists

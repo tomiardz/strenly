@@ -77,7 +77,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
 
   describe('[2.7-UNIT] Repository Errors', () => {
     it('[2.7-UNIT-003] @p1 should return repository error when database fails', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       // Mock repository failure
       vi.mocked(mockMuscleGroupRepository.findAll).mockReturnValue(
@@ -107,7 +107,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
 
   describe('[2.7-UNIT] Edge Cases', () => {
     it('[2.7-UNIT-004] @p2 should return empty list when no muscle groups exist', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockMuscleGroupRepository.findAll).mockReturnValue(okAsync([]))
 
@@ -125,7 +125,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
     })
 
     it('[2.7-UNIT-005] @p2 should handle muscle groups with all fields populated', async () => {
-      const ctx = createManagerContext()
+      const ctx = createCoachContext()
 
       const muscleGroups = [
         {
