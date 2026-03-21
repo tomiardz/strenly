@@ -29,7 +29,7 @@ export const makeListPendingWorkouts =
   (deps: Dependencies) =>
   (input: ListPendingWorkoutsInput): ResultAsync<ListPendingWorkoutsResult, ListPendingWorkoutsError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'workout_log:read')) {
+    if (!hasPermission(input.roles, 'workout_log:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to read workout logs',
@@ -39,7 +39,7 @@ export const makeListPendingWorkouts =
     // 2. Query repository for pending workouts
     return deps.workoutLogRepository
       .listPendingWorkouts(
-        { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole },
+        { organizationId: input.organizationId, userId: input.userId, roles: input.roles },
         {
           limit: input.limit ?? 50,
           offset: input.offset ?? 0,

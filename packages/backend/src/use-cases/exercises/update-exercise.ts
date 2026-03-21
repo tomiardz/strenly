@@ -34,7 +34,7 @@ export const makeUpdateExercise =
   (deps: Dependencies) =>
   (input: UpdateExerciseInput): ResultAsync<Exercise, UpdateExerciseError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'exercises:write')) {
+    if (!hasPermission(input.roles, 'exercises:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to update exercises',
@@ -45,7 +45,7 @@ export const makeUpdateExercise =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
     return deps.exerciseRepository
       .findById(ctx, input.exerciseId)

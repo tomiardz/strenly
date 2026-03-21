@@ -30,7 +30,7 @@ export const duplicateProgram = authProcedure
     const result = await duplicateProgramUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       sourceProgramId: input.sourceProgramId,
       name: input.name,
       athleteId: input.athleteId ?? null,

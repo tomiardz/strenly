@@ -5,6 +5,7 @@ import type {
   AthleteInvitationRepositoryPort,
 } from '@strenly/core/ports/athlete-invitation-repository.port'
 import type { AthleteRepositoryPort } from '@strenly/core/ports/athlete-repository.port'
+import type { OrganizationRole } from '@strenly/core/services/authorization'
 import { errAsync, okAsync, type ResultAsync } from 'neverthrow'
 
 export type AcceptInvitationInput = {
@@ -90,7 +91,7 @@ export const makeAcceptInvitation =
             const ctx = {
               organizationId: invitation.organizationId,
               userId: input.userId,
-              memberRole: 'member' as const,
+              roles: ['athlete'] as OrganizationRole[],
             }
 
             return deps.athleteRepository

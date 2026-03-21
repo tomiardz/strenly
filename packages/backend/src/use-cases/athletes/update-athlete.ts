@@ -30,14 +30,14 @@ export const makeUpdateAthlete =
   (deps: Dependencies) =>
   (input: UpdateAthleteInput): ResultAsync<Athlete, UpdateAthleteError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'athletes:write')) {
+    if (!hasPermission(input.roles, 'athletes:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to update athletes',
       })
     }
 
-    const ctx = { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }
+    const ctx = { organizationId: input.organizationId, userId: input.userId, roles: input.roles }
 
     // 2. Fetch existing athlete
     return deps.athleteRepository

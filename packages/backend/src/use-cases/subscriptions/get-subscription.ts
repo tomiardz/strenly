@@ -28,7 +28,7 @@ export const makeGetSubscription =
   (deps: Dependencies) =>
   (input: GetSubscriptionInput): ResultAsync<GetSubscriptionResult, GetSubscriptionError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'billing:read')) {
+    if (!hasPermission(input.roles, 'billing:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to view subscription',

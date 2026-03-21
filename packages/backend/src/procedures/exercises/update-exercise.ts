@@ -27,7 +27,7 @@ export const updateExercise = authProcedure
     const result = await updateExerciseUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       exerciseId: input.exerciseId,
       name: input.name,
       description: input.description,

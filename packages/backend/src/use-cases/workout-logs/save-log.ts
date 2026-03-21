@@ -41,7 +41,7 @@ export const makeSaveLog =
   (deps: Dependencies) =>
   (input: SaveLogInput): ResultAsync<WorkoutLog, SaveLogError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'workout_log:update')) {
+    if (!hasPermission(input.roles, 'workout_log:update')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to save workout logs',
@@ -51,7 +51,7 @@ export const makeSaveLog =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Calculate status automatically

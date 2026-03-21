@@ -34,7 +34,7 @@ export const makeGenerateInvitation =
   (deps: Dependencies) =>
   (input: GenerateInvitationInput): ResultAsync<GenerateInvitationResult, GenerateInvitationError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'athletes:write')) {
+    if (!hasPermission(input.roles, 'athletes:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to generate athlete invitations',
@@ -44,7 +44,7 @@ export const makeGenerateInvitation =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Fetch athlete

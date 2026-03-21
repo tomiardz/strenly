@@ -1,12 +1,13 @@
 import { z } from 'zod'
 
 /**
- * Organization member roles
+ * Organization member roles (multi-role model)
  * - owner: Full control of organization
- * - admin: Manage members and settings
- * - member: Basic access to organization resources
+ * - manager: Org management, members, billing (no coaching)
+ * - coach: Athlete/program/exercise/workout management
+ * - athlete: Self-access only (programs:read, workout logs)
  */
-export const memberRoleSchema = z.enum(['owner', 'admin', 'member'], {
-  error: 'Rol de miembro inválido',
+export const organizationRoleSchema = z.enum(['owner', 'manager', 'coach', 'athlete'], {
+  error: 'Rol de organización inválido',
 })
-export type MemberRole = z.infer<typeof memberRoleSchema>
+export type OrganizationRole = z.infer<typeof organizationRoleSchema>

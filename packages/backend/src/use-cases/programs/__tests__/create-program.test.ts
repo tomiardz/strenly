@@ -4,7 +4,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createAthleteEntity } from '../../../__tests__/factories/athlete-factory'
 import { createProgramInput, createTemplateProgramInput } from '../../../__tests__/factories/program-factory'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeCreateProgram } from '../create-program'
 
 describe('[3.1-UNIT] createProgram use case', () => {
@@ -36,7 +36,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
 
   describe('[3.1-UNIT] @p0 Happy Path', () => {
     it('[3.1-UNIT-001] @p0 should create program successfully with admin role', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
       const input = createProgramInput({ name: 'Strength Program', athleteId })
 
@@ -84,7 +84,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
     })
 
     it('[3.1-UNIT-002] @p0 should create program with default 4 weeks and 3 sessions', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       // Omit weeksCount and sessionsCount to use defaults
       const input = { name: 'Default Program', athleteId: null }
 
@@ -108,7 +108,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
     })
 
     it('[3.1-UNIT-003] @p1 should create program with custom weeks and sessions count', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createProgramInput({
         name: 'Custom Program',
         athleteId: null,
@@ -136,7 +136,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
     })
 
     it('[3.1-UNIT-004] @p1 should create template program without athlete', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createTemplateProgramInput({ name: 'Template Program' })
 
       vi.mocked(mockProgramRepository.saveProgramAggregate).mockReturnValue(okAsync({ updatedAt: new Date() }))
@@ -164,7 +164,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
 
   describe('[3.2-UNIT] @p0 Authorization', () => {
     it('[3.2-UNIT-001] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext() // Member role lacks write permission
+      const ctx = createManagerContext() // Member role lacks write permission
       const input = createProgramInput()
 
       const createProgram = makeCreateProgram({
@@ -191,7 +191,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
     })
 
     it('[3.2-UNIT-002] @p0 should succeed when user has admin role (has programs:write)', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createProgramInput({ athleteId: null })
 
       vi.mocked(mockProgramRepository.saveProgramAggregate).mockReturnValue(okAsync({ updatedAt: new Date() }))
@@ -210,7 +210,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
 
   describe('[3.3-UNIT] @p1 Validation Errors', () => {
     it('[3.3-UNIT-001] @p1 should return validation error when name is empty', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createProgramInput({ name: '', athleteId: null })
 
       const createProgram = makeCreateProgram({
@@ -238,7 +238,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
 
   describe('[3.4-UNIT] @p1 Athlete Not Found Errors', () => {
     it('[3.4-UNIT-001] @p1 should return athlete_not_found error when athlete does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'non-existent-athlete'
       const input = createProgramInput({ athleteId })
 
@@ -270,7 +270,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
 
   describe('[3.5-UNIT] @p2 Repository Errors', () => {
     it('[3.5-UNIT-001] @p2 should return repository error when athlete lookup fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
       const input = createProgramInput({ athleteId })
 
@@ -302,7 +302,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
     })
 
     it('[3.5-UNIT-002] @p2 should return repository error when program save fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createProgramInput({ athleteId: null })
 
       // Mock program save failure
@@ -335,7 +335,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
 
   describe('[3.6-UNIT] @p2 Edge Cases', () => {
     it('[3.6-UNIT-001] @p2 should generate unique IDs for weeks and sessions', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createProgramInput({
         name: 'Program',
         athleteId: null,
@@ -370,7 +370,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
     })
 
     it('[3.6-UNIT-002] @p2 should set correct order indices for weeks and sessions', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createProgramInput({
         name: 'Program',
         athleteId: null,
@@ -408,7 +408,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
     })
 
     it('[3.6-UNIT-003] @p3 should set default Spanish names for weeks and sessions', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const input = createProgramInput({
         name: 'Program',
         athleteId: null,

@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramRepositoryMock } from '../../../__tests__/factories/program-repository-mock'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeDuplicateProgram } from '../duplicate-program'
 
 describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
@@ -20,7 +20,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
 
   describe('[3.24-UNIT] @p0 Happy Path', () => {
     it('[3.24-UNIT-001] @p0 should duplicate program successfully with all nested structure', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'source-program-1'
 
       // Create a source program with nested structure
@@ -164,7 +164,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
     })
 
     it('[3.24-UNIT-002] @p2 should duplicate program with custom isTemplate and athleteId flags', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'source-program-2'
 
       // Create a minimal source program
@@ -221,7 +221,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
 
   describe('[3.24-UNIT] @p0 Authorization', () => {
     it('[3.24-UNIT-003] @p0 should return forbidden when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext() // Member has no write permission
+      const ctx = createManagerContext() // Manager lacks coaching/write permission
 
       const duplicateProgram = makeDuplicateProgram({
         programRepository: mockProgramRepository,
@@ -251,7 +251,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
 
   describe('[3.24-UNIT] @p1 Not Found', () => {
     it('[3.24-UNIT-004] @p2 should return not_found when source program does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const nonExistentId = 'non-existent-program'
 
       // Mock repository returns null (not found)
@@ -282,7 +282,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
 
   describe('[3.24-UNIT] @p1 Validation Errors', () => {
     it('[3.24-UNIT-005] @p1 should return validation_error when createProgram fails due to invalid name', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'source-program-3'
 
       // Create source program with valid data
@@ -329,7 +329,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
     })
 
     it('[3.24-UNIT-006] @p1 should return validation_error when weeks structure is invalid', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'source-program-4'
 
       // Create source program with invalid weeks (duplicate orderIndex)
@@ -385,7 +385,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
 
   describe('[3.24-UNIT] @p1 Repository Errors', () => {
     it('[3.24-UNIT-007] @p1 should return repository_error when loadProgramAggregate fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'source-program-5'
 
       // Mock database error
@@ -416,7 +416,7 @@ describe('[3.24-UNIT] @p2 duplicateProgram use case', () => {
     })
 
     it('[3.24-UNIT-008] @p1 should return repository_error when saveProgramAggregate fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const sourceProgramId = 'source-program-6'
 
       // Create valid source program

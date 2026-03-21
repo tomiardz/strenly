@@ -25,7 +25,7 @@ export const updateProgram = authProcedure
     const result = await updateProgramUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       name: input.name,
       description: input.description,

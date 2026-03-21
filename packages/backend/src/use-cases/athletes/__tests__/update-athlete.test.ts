@@ -1,7 +1,7 @@
 import type { AthleteRepositoryPort } from '@strenly/core/ports/athlete-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAdminContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createNoPermissionContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateAthlete } from '../update-athlete'
 
 describe('[1.4-UNIT] updateAthlete use case', () => {
@@ -20,7 +20,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
 
   describe('Happy Path', () => {
     it('[1.4-UNIT-001] @p0 should update athlete successfully', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const existingAthlete = {
         id: 'athlete-123',
         organizationId: ctx.organizationId,
@@ -72,7 +72,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
     })
 
     it('[1.4-UNIT-002] @p0 should update only specified fields', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const existingAthlete = {
         id: 'athlete-123',
         organizationId: ctx.organizationId,
@@ -115,7 +115,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
     })
 
     it('[1.4-UNIT-003] @p1 should allow setting fields to null', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const existingAthlete = {
         id: 'athlete-123',
         organizationId: ctx.organizationId,
@@ -184,7 +184,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
 
   describe('Not Found Errors', () => {
     it('[1.4-UNIT-005] @p1 should return not_found when athlete does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
 
       // Mock findById - return null (not found)
       vi.mocked(mockAthleteRepository.findById).mockReturnValue(okAsync(null))
@@ -215,7 +215,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
 
   describe('Validation Errors', () => {
     it('[1.4-UNIT-006] @p1 should return validation error when name is empty', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const existingAthlete = {
         id: 'athlete-123',
         organizationId: ctx.organizationId,
@@ -254,7 +254,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
     })
 
     it('[1.4-UNIT-007] @p1 should return validation error for invalid email', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const existingAthlete = {
         id: 'athlete-123',
         organizationId: ctx.organizationId,
@@ -293,7 +293,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
 
   describe('Repository Errors', () => {
     it('[1.4-UNIT-008] @p1 should return repository error when findById fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockAthleteRepository.findById).mockReturnValue(
         errAsync({
@@ -320,7 +320,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
     })
 
     it('[1.4-UNIT-009] @p1 should return repository error when update fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const existingAthlete = {
         id: 'athlete-123',
         organizationId: ctx.organizationId,
@@ -365,7 +365,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
 
   describe('Edge Cases', () => {
     it('[1.4-UNIT-010] @p2 should handle partial updates correctly', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const existingAthlete = {
         id: 'athlete-123',
         organizationId: ctx.organizationId,

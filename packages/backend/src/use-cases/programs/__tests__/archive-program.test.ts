@@ -5,7 +5,7 @@ import {
   createProgramWithStructure,
   createTemplateProgram,
 } from '../../../__tests__/factories/program-structure-factory'
-import { createAdminContext, createMemberContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import { makeArchiveProgram } from '../archive-program'
 
 describe('[3.11-UNIT] archiveProgram use case', () => {
@@ -49,7 +49,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
 
   describe('[3.11-UNIT] @p0 Happy Path', () => {
     it('[3.11-UNIT-001] @p0 should archive active program', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
 
       // Mock existing active program
@@ -106,7 +106,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
     })
 
     it('[3.11-UNIT-002] @p0 should archive draft program', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
 
       // Mock existing draft program
@@ -143,7 +143,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
     })
 
     it('[3.11-UNIT-003] @p2 should verify updatedAt timestamp is set', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
 
       const existingProgram = createProgramWithStructure({
@@ -182,7 +182,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
 
   describe('[3.12-UNIT] @p0 Authorization', () => {
     it('[3.12-UNIT-001] @p0 should return forbidden error when user lacks programs:delete permission', async () => {
-      const ctx = createMemberContext() // Member role lacks delete permission
+      const ctx = createManagerContext() // Member role lacks delete permission
       const programId = 'program-1'
 
       const archiveProgram = makeArchiveProgram({
@@ -244,7 +244,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
 
   describe('[3.13-UNIT] @p1 Validation Errors', () => {
     it('[3.13-UNIT-001] @p1 should return not_found when program does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'non-existent-program'
 
       // Mock repository returning null (not found)
@@ -274,7 +274,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
     })
 
     it('[3.13-UNIT-002] @p1 should return invalid_transition when already archived', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
 
       // Mock existing archived program
@@ -312,7 +312,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
 
   describe('[3.14-UNIT] @p2 Repository Errors', () => {
     it('[3.14-UNIT-001] @p2 should return repository error when findById fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
 
       // Mock repository findById failure
@@ -346,7 +346,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
 
   describe('[3.15-UNIT] @p2 Edge Cases', () => {
     it('[3.15-UNIT-001] @p2 should archive template program', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
 
       // Mock existing template program
@@ -385,7 +385,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
     })
 
     it('[3.15-UNIT-002] @p2 should archive program with athletes assigned', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const programId = 'program-1'
       const athleteId = 'athlete-1'
 

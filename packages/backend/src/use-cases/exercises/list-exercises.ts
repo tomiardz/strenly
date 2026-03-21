@@ -30,7 +30,7 @@ export const makeListExercises =
   (deps: Dependencies) =>
   (input: ListExercisesInput): ResultAsync<ListExercisesResult, ListExercisesError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'exercises:read')) {
+    if (!hasPermission(input.roles, 'exercises:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to list exercises',
@@ -38,7 +38,7 @@ export const makeListExercises =
     }
 
     // 2. Query repository - includes curated (null orgId) + org's custom exercises
-    const ctx = { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }
+    const ctx = { organizationId: input.organizationId, userId: input.userId, roles: input.roles }
     return deps.exerciseRepository
       .findAll(ctx, {
         movementPattern: input.movementPattern,

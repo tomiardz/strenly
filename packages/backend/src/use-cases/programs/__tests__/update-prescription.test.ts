@@ -1,7 +1,7 @@
 import type { ProgramRepositoryPort } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdatePrescription } from '../update-prescription'
 
 describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
@@ -45,7 +45,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
 
   describe('[3.30-UNIT] @p0 Happy Path', () => {
     it('[3.30-UNIT-001] @p2 should update with valid notation "3x8@120kg"', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -88,7 +88,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-002] @p3 should update with empty string (clears cell)', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -124,7 +124,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-003] @p2 should update with notation "-" (rest day)', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -160,7 +160,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-004] @p2 should update existing prescription (upsert)', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -191,7 +191,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-005] @p2 should handle notation with sets and reps only', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -219,7 +219,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
 
   describe('[3.30-UNIT] @p0 Authorization', () => {
     it('[3.30-UNIT-006] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext() // Member role lacks write permission
+      const ctx = createManagerContext() // Member role lacks write permission
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -250,7 +250,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-007] @p0 should succeed when user has admin role (has programs:write)', async () => {
-      const ctx = createAdminContext() // Admin role has write permission
+      const ctx = createCoachContext() // Admin role has write permission
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -273,7 +273,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
 
   describe('[3.30-UNIT] @p1 Validation Errors', () => {
     it('[3.30-UNIT-008] @p2 should return not_found when row does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'non-existent-row'
       const weekId = 'week-1'
 
@@ -310,7 +310,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-009] @p2 should return not_found when week does not exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'non-existent-week'
 
@@ -347,7 +347,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-010] @p1 should return validation_error for invalid notation format', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -377,7 +377,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-011] @p1 should return validation_error for invalid series values', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -407,7 +407,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
 
   describe('[3.30-UNIT] @p1 Repository Errors', () => {
     it('[3.30-UNIT-012] @p1 should return repository error when database fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -444,7 +444,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
 
   describe('[3.30-UNIT] @p2 Edge Cases', () => {
     it('[3.30-UNIT-013] @p2 should handle updating multiple cells in sequence', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -479,7 +479,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-014] @p2 should handle notation with percentage "3x8@70%"', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 
@@ -505,7 +505,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
     })
 
     it('[3.30-UNIT-015] @p2 should handle whitespace in notation', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const exerciseRowId = 'row-1'
       const weekId = 'week-1'
 

@@ -1,38 +1,49 @@
 import { faker } from '@faker-js/faker'
+import type { OrganizationRole } from '@strenly/core/services/authorization'
 import type { OrganizationContext } from '@strenly/core/types/organization-context'
 
 /**
  * Create a test OrganizationContext with customizable properties
  *
  * @example
- * const ctx = createTestContext({ memberRole: 'admin' })
+ * const ctx = createTestContext({ roles: ['manager'] })
  * const result = await createAthlete(ctx, input)
  */
 export function createTestContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
   return {
     organizationId: overrides.organizationId ?? faker.string.uuid(),
     userId: overrides.userId ?? faker.string.uuid(),
-    memberRole: overrides.memberRole ?? 'owner',
+    roles: overrides.roles ?? ['owner'],
     ...overrides,
   }
 }
 
 /**
- * Create a test context with member role (read-only permissions)
+ * Create a test context with coach role (coaching permissions)
  */
-export function createMemberContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
+export function createCoachContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
   return createTestContext({
-    memberRole: 'member',
+    roles: ['coach'],
     ...overrides,
   })
 }
 
 /**
- * Create a test context with admin role (all permissions except billing)
+ * Create a test context with athlete role (self-access only)
  */
-export function createAdminContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
+export function createAthleteContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
   return createTestContext({
-    memberRole: 'admin',
+    roles: ['athlete'],
+    ...overrides,
+  })
+}
+
+/**
+ * Create a test context with manager role (org management permissions)
+ */
+export function createManagerContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
+  return createTestContext({
+    roles: ['manager'],
     ...overrides,
   })
 }
@@ -42,18 +53,18 @@ export function createAdminContext(overrides: Partial<OrganizationContext> = {})
  */
 export function createOwnerContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
   return createTestContext({
-    memberRole: 'owner',
+    roles: ['owner'],
     ...overrides,
   })
 }
 
 /**
- * Create a test context with an unmapped role (simulates a role with no permissions).
+ * Create a test context with no permissions (empty roles array).
  * Used to test forbidden paths in use cases when no standard role lacks a given permission.
  */
 export function createNoPermissionContext(overrides: Partial<OrganizationContext> = {}): OrganizationContext {
-  return {
-    ...createTestContext(overrides),
-    memberRole: 'viewer' as unknown as 'member',
-  }
+  return createTestContext({
+    roles: [] as OrganizationRole[],
+    ...overrides,
+  })
 }

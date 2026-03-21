@@ -29,7 +29,7 @@ export const makeGetProgram =
   (deps: Dependencies) =>
   (input: GetProgramInput): ResultAsync<Program, GetProgramError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:read')) {
+    if (!hasPermission(input.roles, 'programs:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to view programs',
@@ -39,7 +39,7 @@ export const makeGetProgram =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Load full program aggregate

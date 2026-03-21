@@ -39,7 +39,7 @@ export const saveAsTemplateProcedure = authProcedure
     const result = await saveAsTemplateUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       name: input.name,
       description: input.description ?? null,
@@ -91,7 +91,7 @@ export const createFromTemplateProcedure = authProcedure
     const result = await createFromTemplateUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       templateId: input.templateId,
       name: input.name,
       athleteId: input.athleteId ?? null,
@@ -142,7 +142,7 @@ export const listTemplatesProcedure = authProcedure
     const result = await listProgramsUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       isTemplate: true, // Only templates
       status: 'active', // Only active templates
       search: input.search,

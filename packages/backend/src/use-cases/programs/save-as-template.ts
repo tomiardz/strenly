@@ -33,7 +33,7 @@ export const makeSaveAsTemplate =
   (deps: Dependencies) =>
   (input: SaveAsTemplateInput): ResultAsync<Program, SaveAsTemplateError> => {
     // 1. Authorization FIRST - saving as template requires programs:write
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to create templates',
@@ -47,7 +47,7 @@ export const makeSaveAsTemplate =
     return duplicateProgramUseCase({
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
       sourceProgramId: input.programId,
       name: input.name,
       athleteId: null, // Templates have no athlete

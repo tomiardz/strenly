@@ -29,7 +29,7 @@ export const makeGetLog =
   (deps: Dependencies) =>
   (input: GetLogInput): ResultAsync<WorkoutLog, GetLogError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'workout_log:read')) {
+    if (!hasPermission(input.roles, 'workout_log:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to view workout logs',
@@ -39,7 +39,7 @@ export const makeGetLog =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Load from repository

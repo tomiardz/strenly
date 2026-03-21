@@ -24,7 +24,7 @@ export const listAthletes = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       status: input.status,
       search: input.search,
       limit: input.limit,

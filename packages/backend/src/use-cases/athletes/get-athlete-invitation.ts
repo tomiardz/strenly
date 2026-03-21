@@ -35,7 +35,7 @@ export const makeGetAthleteInvitation =
   (deps: Dependencies) =>
   (input: GetAthleteInvitationInput): ResultAsync<GetAthleteInvitationResult, GetAthleteInvitationError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'athletes:read')) {
+    if (!hasPermission(input.roles, 'athletes:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to view athlete invitations',
@@ -45,7 +45,7 @@ export const makeGetAthleteInvitation =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Verify athlete exists and belongs to org

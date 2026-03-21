@@ -34,7 +34,7 @@ export const addWeekProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       name: input.name,
     })
@@ -82,7 +82,7 @@ export const updateWeekProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       weekId: input.weekId,
       name: input.name,
     })
@@ -131,7 +131,7 @@ export const deleteWeekProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       weekId: input.weekId,
     })
@@ -176,7 +176,7 @@ export const duplicateWeekProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
       weekId: input.weekId,
       name: input.name,

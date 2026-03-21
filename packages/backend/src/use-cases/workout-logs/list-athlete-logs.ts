@@ -30,7 +30,7 @@ export const makeListAthleteLogs =
   (deps: Dependencies) =>
   (input: ListAthleteLogsInput): ResultAsync<ListAthleteLogsResult, ListAthleteLogsError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'workout_log:read')) {
+    if (!hasPermission(input.roles, 'workout_log:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to read workout logs',
@@ -49,7 +49,7 @@ export const makeListAthleteLogs =
     // 3. Query repository
     return deps.workoutLogRepository
       .listByAthlete(
-        { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole },
+        { organizationId: input.organizationId, userId: input.userId, roles: input.roles },
         input.athleteId,
         filters,
       )

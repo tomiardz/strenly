@@ -4,7 +4,7 @@ import type { ProgramRepositoryPort, ProgramWithDetails } from '@strenly/core/po
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createProgramWithStructure } from '../../../__tests__/factories/program-structure-factory'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeAddSession } from '../add-session'
 
 // Helper to create program with custom sessions
@@ -184,7 +184,7 @@ describe('[3.18-UNIT] @p2 addSession use case', () => {
 
   describe('[3.18-UNIT] @p0 Authorization', () => {
     it('[3.18-UNIT-004] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createManagerContext() // Manager role lacks programs:write permission
       const addSession = makeAddSession({
         programRepository: mockProgramRepository,
         generateId: mockGenerateId,

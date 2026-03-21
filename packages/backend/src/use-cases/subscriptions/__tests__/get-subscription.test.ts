@@ -4,7 +4,7 @@ import type { PlanRepositoryPort } from '@strenly/core/ports/plan-repository.por
 import type { SubscriptionRepositoryPort } from '@strenly/core/ports/subscription-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
 import { makeGetSubscription } from '../get-subscription'
 
 // Helper to create plan entity
@@ -70,7 +70,7 @@ describe('getSubscription use case', () => {
 
   describe('Happy Path', () => {
     it('[4.1-UNIT-001] @p0 should get subscription with plan successfully', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const planId = 'plan-456'
 
       const subscription = createSubscription(ctx.organizationId, planId)
@@ -110,7 +110,7 @@ describe('getSubscription use case', () => {
     })
 
     it('[4.1-UNIT-002] @p1 should get active subscription', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const planId = 'plan-456'
 
       const subscription = createSubscription(ctx.organizationId, planId)
@@ -134,7 +134,7 @@ describe('getSubscription use case', () => {
     })
 
     it('[4.1-UNIT-003] @p2 should get subscription with athlete count', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const planId = 'plan-456'
 
       const subscription = createSubscription(ctx.organizationId, planId)
@@ -162,7 +162,7 @@ describe('getSubscription use case', () => {
   describe('Authorization', () => {
     it('[4.2-UNIT-001] @p0 should return forbidden error when user lacks billing:read permission', async () => {
       // Create context with role that lacks billing permission
-      const ctx = createMemberContext() // Member lacks billing:read
+      const ctx = createCoachContext() // Member lacks billing:read
 
       const getSubscription = makeGetSubscription({
         subscriptionRepository: mockSubscriptionRepository,
@@ -188,7 +188,7 @@ describe('getSubscription use case', () => {
     })
 
     it('[4.2-UNIT-002] @p0 should succeed when user has admin role (has billing:read)', async () => {
-      const ctx = createAdminContext() // Admin has billing permission
+      const ctx = createManagerContext() // Admin has billing permission
       const planId = 'plan-456'
 
       const subscription = createSubscription(ctx.organizationId, planId)
@@ -210,7 +210,7 @@ describe('getSubscription use case', () => {
 
   describe('Not Found Errors', () => {
     it('[4.3-UNIT-001] @p0 should return subscription_not_found error when organization has no subscription', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock repository returning null (no subscription)
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(okAsync(null))
@@ -237,7 +237,7 @@ describe('getSubscription use case', () => {
     })
 
     it('[4.3-UNIT-002] @p1 should return plan_not_found error when subscription references non-existent plan', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const planId = 'non-existent-plan'
 
       const subscription = createSubscription(ctx.organizationId, planId)
@@ -267,7 +267,7 @@ describe('getSubscription use case', () => {
 
   describe('Repository Errors', () => {
     it('[4.4-UNIT-001] @p1 should return repository error when subscription lookup fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
 
       // Mock repository failure
       vi.mocked(mockSubscriptionRepository.findByOrganizationId).mockReturnValue(
@@ -296,7 +296,7 @@ describe('getSubscription use case', () => {
     })
 
     it('[4.4-UNIT-002] @p1 should return repository error when plan lookup fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const planId = 'plan-456'
 
       const subscription = createSubscription(ctx.organizationId, planId)
@@ -332,7 +332,7 @@ describe('getSubscription use case', () => {
 
   describe('Edge Cases', () => {
     it('[4.5-UNIT-001] @p2 should handle subscription with cancelAtPeriodEnd flag', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const planId = 'plan-456'
 
       const now = new Date()
@@ -372,7 +372,7 @@ describe('getSubscription use case', () => {
     })
 
     it('[4.5-UNIT-002] @p3 should handle subscription near period end', async () => {
-      const ctx = createAdminContext()
+      const ctx = createManagerContext()
       const planId = 'plan-456'
 
       const now = new Date()

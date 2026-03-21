@@ -30,7 +30,7 @@ export const makeRevokeInvitation =
   (deps: Dependencies) =>
   (input: RevokeInvitationInput): ResultAsync<void, RevokeInvitationError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'athletes:write')) {
+    if (!hasPermission(input.roles, 'athletes:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to revoke athlete invitations',
@@ -40,7 +40,7 @@ export const makeRevokeInvitation =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Find invitation for athlete

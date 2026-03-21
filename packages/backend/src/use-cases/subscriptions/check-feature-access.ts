@@ -26,7 +26,7 @@ export const makeCheckFeatureAccess =
   (deps: Dependencies) =>
   (input: CheckFeatureAccessInput): ResultAsync<boolean, CheckFeatureAccessError> => {
     // 1. Authorization FIRST (read permission sufficient for checking access)
-    if (!hasPermission(input.memberRole, 'organization:read')) {
+    if (!hasPermission(input.roles, 'organization:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to check feature access',

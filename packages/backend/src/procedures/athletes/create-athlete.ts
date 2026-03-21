@@ -25,7 +25,7 @@ export const createAthlete = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       name: input.name,
       email: input.email || null,
       phone: input.phone || null,

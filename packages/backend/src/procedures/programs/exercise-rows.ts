@@ -39,7 +39,7 @@ export const addExerciseRowProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       sessionId: input.sessionId,
       exerciseId: input.exerciseId,
       groupId: input.groupId ?? null,
@@ -98,7 +98,7 @@ export const updateExerciseRowProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       rowId: input.rowId,
       exerciseId: input.exerciseId,
       groupId: input.groupId,
@@ -156,7 +156,7 @@ export const deleteExerciseRowProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       rowId: input.rowId,
     })
 
@@ -193,7 +193,7 @@ export const reorderExerciseRowsProcedure = authProcedure
     const result = await useCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       sessionId: input.sessionId,
       rowIds: input.rowIds,
     })

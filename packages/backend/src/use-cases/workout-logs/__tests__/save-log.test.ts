@@ -1,7 +1,7 @@
 import type { WorkoutLogRepositoryPort } from '@strenly/core/ports/workout-log-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeSaveLog } from '../save-log'
 
 describe('saveLog use case', () => {
@@ -207,7 +207,7 @@ describe('saveLog use case', () => {
 
   describe('Authorization', () => {
     it('[5.2-UNIT-001] @p0 should return forbidden error when user lacks workout_log:update permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createManagerContext()
       const saveLog = makeSaveLog({ workoutLogRepository: mockWorkoutLogRepository })
 
       const result = await saveLog({

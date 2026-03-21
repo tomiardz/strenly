@@ -25,7 +25,7 @@ export const makeCloneExercise =
   (deps: Dependencies) =>
   (input: CloneExerciseInput): ResultAsync<Exercise, CloneExerciseError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'exercises:write')) {
+    if (!hasPermission(input.roles, 'exercises:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to clone exercises',
@@ -36,7 +36,7 @@ export const makeCloneExercise =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
     return deps.exerciseRepository
       .findById(ctx, input.sourceExerciseId)

@@ -1,7 +1,7 @@
 import { os } from '@orpc/server'
-import { memberRoleSchema } from '@strenly/contracts/common/roles'
 import type { AuthContext, BaseContext, SessionContext } from './context'
 import { authErrors, commonErrors } from './errors'
+import { parseRoles } from './roles'
 
 /**
  * Public procedure - No authentication required
@@ -84,13 +84,6 @@ export const authProcedure = os
       throw errors.NOT_A_MEMBER()
     }
 
-    // Validate role against schema to ensure type safety without casting
-    const roleResult = memberRoleSchema.safeParse(membership.role)
-    if (!roleResult.success) {
-      // Role from Better-Auth doesn't match expected values - treat as forbidden
-      throw errors.FORBIDDEN()
-    }
-
     // Explicitly map user fields to avoid leaking Better-Auth implementation details
     const user = {
       id: session.user.id,
@@ -110,7 +103,7 @@ export const authProcedure = os
         },
         membership: {
           id: membership.id,
-          role: roleResult.data,
+          roles: parseRoles(membership.role),
         },
       } satisfies AuthContext,
     })

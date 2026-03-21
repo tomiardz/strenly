@@ -25,7 +25,7 @@ export const archiveProgram = authProcedure
     const result = await archiveProgramUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       programId: input.programId,
     })
 

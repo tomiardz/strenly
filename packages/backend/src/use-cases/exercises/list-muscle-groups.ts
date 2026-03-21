@@ -17,7 +17,7 @@ export const makeListMuscleGroups =
   (deps: Dependencies) =>
   (input: ListMuscleGroupsInput): ResultAsync<MuscleGroupData[], ListMuscleGroupsError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'exercises:read')) {
+    if (!hasPermission(input.roles, 'exercises:read')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to list muscle groups',

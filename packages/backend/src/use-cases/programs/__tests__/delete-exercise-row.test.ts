@@ -1,7 +1,7 @@
 import type { ProgramRepositoryPort } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeDeleteExerciseRow } from '../delete-exercise-row'
 
 describe('[3.21-UNIT] @p2 deleteExerciseRow use case', () => {
@@ -59,7 +59,7 @@ describe('[3.21-UNIT] @p2 deleteExerciseRow use case', () => {
 
   describe('[3.21-UNIT] @p0 Authorization', () => {
     it('[3.21-UNIT-003] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createManagerContext() // Manager lacks coaching/write permission
       const deleteExerciseRow = makeDeleteExerciseRow({
         programRepository: mockProgramRepository,
       })

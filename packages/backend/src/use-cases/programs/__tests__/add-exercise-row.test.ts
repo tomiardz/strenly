@@ -4,7 +4,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity } from '../../../__tests__/factories/exercise-factory'
-import { createMemberContext, createTestContext } from '../../../__tests__/helpers/test-context'
+import { createManagerContext, createTestContext } from '../../../__tests__/helpers/test-context'
 import { makeAddExerciseRow } from '../add-exercise-row'
 
 describe('[3.17-UNIT] @p2 addExerciseRow use case', () => {
@@ -249,7 +249,7 @@ describe('[3.17-UNIT] @p2 addExerciseRow use case', () => {
 
   describe('[3.17-UNIT] @p0 Authorization', () => {
     it('[3.17-UNIT-005] @p0 should return forbidden error when user lacks programs:write permission', async () => {
-      const ctx = createMemberContext()
+      const ctx = createManagerContext()
       const addExerciseRow = makeAddExerciseRow({
         programRepository: mockProgramRepository,
         exerciseRepository: mockExerciseRepository,

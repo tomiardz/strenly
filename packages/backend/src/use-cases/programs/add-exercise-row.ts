@@ -32,14 +32,14 @@ export const makeAddExerciseRow =
   (deps: Dependencies) =>
   (input: AddExerciseRowInput): ResultAsync<AddExerciseRowResult, AddExerciseRowError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to modify programs',
       })
     }
 
-    const ctx = { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }
+    const ctx = { organizationId: input.organizationId, userId: input.userId, roles: input.roles }
     const now = new Date()
 
     // 2. Get max order index to append at end

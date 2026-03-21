@@ -32,7 +32,7 @@ export const makeCreateExercise =
   (deps: Dependencies) =>
   (input: CreateExerciseInput): ResultAsync<Exercise, CreateExerciseError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'exercises:write')) {
+    if (!hasPermission(input.roles, 'exercises:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to create exercises',
@@ -64,7 +64,7 @@ export const makeCreateExercise =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     return deps.exerciseRepository.create(ctx, exerciseResult.value).mapErr(

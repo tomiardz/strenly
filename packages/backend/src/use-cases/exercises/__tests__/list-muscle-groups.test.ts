@@ -2,7 +2,7 @@ import type { MuscleGroupRepositoryPort } from '@strenly/core/ports/muscle-group
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createMuscleGroupRepositoryMock } from '../../../__tests__/factories/muscle-group-repository-mock'
-import { createAdminContext, createMemberContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import { makeListMuscleGroups } from '../list-muscle-groups'
 
 describe('[2.7-UNIT] listMuscleGroups use case', () => {
@@ -14,7 +14,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
 
   describe('[2.7-UNIT] Happy Path', () => {
     it('[2.7-UNIT-001] @p0 should list muscle groups successfully with member role', async () => {
-      const ctx = createMemberContext() // Member has read permission
+      const ctx = createCoachContext() // Member has read permission
 
       const muscleGroups = [
         { id: 'chest', name: 'chest' as const, displayName: 'Chest', bodyRegion: 'upper' as const },
@@ -55,7 +55,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
     })
 
     it('[2.7-UNIT-002] @p0 should succeed with admin role', async () => {
-      const ctx = createAdminContext()
+      const ctx = createOwnerContext()
 
       const muscleGroups = [{ id: 'chest', name: 'chest' as const, displayName: 'Chest', bodyRegion: 'upper' as const }]
 
@@ -77,7 +77,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
 
   describe('[2.7-UNIT] Repository Errors', () => {
     it('[2.7-UNIT-003] @p1 should return repository error when database fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
 
       // Mock repository failure
       vi.mocked(mockMuscleGroupRepository.findAll).mockReturnValue(
@@ -107,7 +107,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
 
   describe('[2.7-UNIT] Edge Cases', () => {
     it('[2.7-UNIT-004] @p2 should return empty list when no muscle groups exist', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
 
       vi.mocked(mockMuscleGroupRepository.findAll).mockReturnValue(okAsync([]))
 
@@ -125,7 +125,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
     })
 
     it('[2.7-UNIT-005] @p2 should handle muscle groups with all fields populated', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
 
       const muscleGroups = [
         {

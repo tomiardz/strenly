@@ -23,14 +23,14 @@ export const makeDeleteWeek =
   (deps: Dependencies) =>
   (input: DeleteWeekInput): ResultAsync<void, DeleteWeekError> => {
     // 1. Authorization FIRST
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to modify programs',
       })
     }
 
-    const ctx = { organizationId: input.organizationId, userId: input.userId, memberRole: input.memberRole }
+    const ctx = { organizationId: input.organizationId, userId: input.userId, roles: input.roles }
 
     // 2. Get program details to verify week count
     return deps.programRepository

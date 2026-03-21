@@ -23,7 +23,7 @@ export const listExercises = authProcedure
     const result = await listExercisesUseCase({
       organizationId: context.organization.id,
       userId: context.user.id,
-      memberRole: context.membership.role,
+      roles: context.membership.roles,
       movementPattern: input.movementPattern,
       muscleGroup: input.muscleGroup,
       search: input.search,

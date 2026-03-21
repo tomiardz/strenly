@@ -3,7 +3,7 @@ import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createWorkoutLogEntity } from '../../../__tests__/factories/workout-log-factory'
 import { createWorkoutLogRepositoryMock } from '../../../__tests__/factories/workout-log-repository-mock'
-import { createAdminContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext } from '../../../__tests__/helpers/test-context'
 import { makeListAthleteLogs } from '../list-athlete-logs'
 
 describe('listAthleteLogs use case', () => {
@@ -15,7 +15,7 @@ describe('listAthleteLogs use case', () => {
 
   describe('Happy Path', () => {
     it('[5.1-UNIT-001] @p0 should list athlete logs successfully', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       const logs = [
@@ -53,7 +53,7 @@ describe('listAthleteLogs use case', () => {
     })
 
     it('[5.1-UNIT-002] @p1 should filter by status', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       vi.mocked(mockWorkoutLogRepository.listByAthlete).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
@@ -78,7 +78,7 @@ describe('listAthleteLogs use case', () => {
     })
 
     it('[5.1-UNIT-003] @p2 should apply pagination', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       vi.mocked(mockWorkoutLogRepository.listByAthlete).mockReturnValue(okAsync({ items: [], totalCount: 0 }))
@@ -107,7 +107,7 @@ describe('listAthleteLogs use case', () => {
 
   describe('Repository Errors', () => {
     it('[5.2-UNIT-001] @p1 should return repository error when listByAthlete fails', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       vi.mocked(mockWorkoutLogRepository.listByAthlete).mockReturnValue(
@@ -140,7 +140,7 @@ describe('listAthleteLogs use case', () => {
 
   describe('Edge Cases', () => {
     it('[5.3-UNIT-001] @p2 should return empty list when athlete has no logs', async () => {
-      const ctx = createAdminContext()
+      const ctx = createCoachContext()
       const athleteId = 'athlete-1'
 
       vi.mocked(mockWorkoutLogRepository.listByAthlete).mockReturnValue(okAsync({ items: [], totalCount: 0 }))

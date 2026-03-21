@@ -33,7 +33,7 @@ export const makeCreateFromTemplate =
   (deps: Dependencies) =>
   (input: CreateFromTemplateInput): ResultAsync<Program, CreateFromTemplateError> => {
     // 1. Authorization FIRST - creating from template requires programs:write
-    if (!hasPermission(input.memberRole, 'programs:write')) {
+    if (!hasPermission(input.roles, 'programs:write')) {
       return errAsync({
         type: 'forbidden',
         message: 'No permission to create programs',
@@ -43,7 +43,7 @@ export const makeCreateFromTemplate =
     const ctx: OrganizationContext = {
       organizationId: input.organizationId,
       userId: input.userId,
-      memberRole: input.memberRole,
+      roles: input.roles,
     }
 
     // 2. Verify the source is actually a template
@@ -77,7 +77,7 @@ export const makeCreateFromTemplate =
         return duplicateProgramUseCase({
           organizationId: input.organizationId,
           userId: input.userId,
-          memberRole: input.memberRole,
+          roles: input.roles,
           sourceProgramId: input.templateId,
           name: input.name,
           athleteId: input.athleteId ?? null, // Can be assigned to an athlete
