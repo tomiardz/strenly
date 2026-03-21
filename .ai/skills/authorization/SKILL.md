@@ -2,54 +2,45 @@
 name: authorization
 description: >-
   Role-based access control (RBAC) with permission checks in use cases.
-  Use this skill when adding authorization to use cases, defining new permissions,
-  restricting actions by role, preventing role escalation, or reviewing code for
-  missing permission checks. Also use when adding new resources that need RBAC.
-  Do NOT load for authentication flows, login/logout, session management, or token handling.
+  Use this skill when adding, modifying, or migrating authorization in use cases,
+  changing the role model or permission matrix, refactoring role types or names,
+  updating hasPermission signatures, defining new permissions, restricting actions
+  by role, preventing role escalation, migrating test context factories for roles,
+  or reviewing code for missing permission checks. Also use when adding new
+  resources that need RBAC. Triggers on: roles, permissions, hasPermission,
+  ROLE_PERMISSIONS, OrganizationRole, memberRole, parseRoles, RBAC, authorization
+  refactor.
+  Do NOT load for authentication flows, login/logout, session management, or
+  token handling.
 scope: ["clean-architecture"]
 ---
 
 # Authorization (RBAC)
 
-Implements role-based access control using pure functions from the core services layer. Authorization is a **use case concern** — every use case that mutates data or accesses restricted resources MUST check permissions before any business logic.
+Implements role-based access control using pure functions from the core services layer. Authorization is a **use case concern** — every use case that mutates data or accesses restricted resources checks permissions before any business logic.
 
-> **Before implementing**: Read your project's authorization service at `{core}/services/authorization.ts` (or `{core}/domain/services/authorization.ts`) to discover the **actual roles**, **permissions**, and **function signatures**. The patterns below are generic — adapt role names and permissions to your project.
+## Critical: Read the Project First
 
-## Quick Start
+Before implementing or modifying anything authorization-related, **always** read these files to discover the actual roles, permissions, and function signatures:
 
-1. Import `hasPermission` from the project's authorization service
-2. Add `memberRoles: Role[]` to use case input type
-3. Check permission **FIRST** in the use case (before any logic)
-4. Add `FORBIDDEN` error to procedure and map it
+1. `{core}/services/authorization.ts` — the role type, permission type, `ROLE_PERMISSIONS` matrix, and all exported functions
+2. `{core}/types/organization-context.ts` — how roles are carried through the system (field name and type)
+3. `{backend}/lib/context.ts` — the `AuthContext` shape (how roles arrive from the middleware)
 
-```typescript
-import { hasPermission, type Role } from '{core}/services/authorization'
-
-if (!hasPermission(input.memberRoles, '{entities}:write')) {
-  return errAsync({ type: 'forbidden', message: 'Insufficient permissions' })
-}
-```
+The patterns below are **structural conventions** — adapt the actual role names, permission names, field names, and function signatures to match what you find in the project. Never assume role names.
 
 ## Authorization Service Structure
 
 The authorization service is a **pure module** in the core layer — no dependency injection, no side effects. It exports types, constants, and pure functions.
 
-### Role Hierarchy
+### Role Type
 
-Roles have numeric levels for comparison. Higher number = more privilege.
+The project defines its own role union type. Role names vary per project — discover them by reading the source.
 
 ```typescript
-// {core}/services/authorization.ts
-export type Role = 'owner' | 'admin' | 'member'  // Read your project's actual roles
-
-export const ROLE_HIERARCHY: Record<Role, number> = {
-  owner: 100,
-  admin: 80,
-  member: 40,
-}
+// {core}/services/authorization.ts — read the actual file to find the real roles
+export type {RoleType} = 'role_a' | 'role_b' | 'role_c' // project-specific
 ```
-
-> Projects define their own role names and levels. Common patterns: 3-tier (owner > admin > member), 4-tier (owner > admin > member > viewer). Some projects have domain-specific roles (e.g., accountant). Always read the project's service to discover the real roles.
 
 ### Permission Format
 
@@ -57,128 +48,74 @@ Permissions follow the `resource:action` convention:
 
 ```typescript
 export type Permission =
-  | 'organization:read' | 'organization:manage' | 'organization:delete'
-  | 'members:read' | 'members:invite' | 'members:remove' | 'members:update_role'
-  | '{entities}:read' | '{entities}:write' | '{entities}:delete'
-  | 'billing:read' | 'billing:manage'
+  | 'resource_a:read' | 'resource_a:write' | 'resource_a:delete'
+  | 'resource_b:read' | 'resource_b:write'
+  // ... project defines its own set
 ```
 
-### Role-Permission Mapping
+### Role-Permission Matrix
 
-Each role maps to an explicit list of permissions — no inheritance, no wildcards. This makes the matrix auditable.
+Each role maps to an explicit list of permissions. The matrix structure is always `Record<{RoleType}, readonly Permission[]>`, but the contents are project-specific. **Read the actual matrix** — do not assume which roles have which permissions.
 
 ```typescript
-export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
-  owner: [
-    'organization:read', 'organization:manage', 'organization:delete',
-    'members:read', 'members:invite', 'members:remove', 'members:update_role',
-    '{entities}:read', '{entities}:write', '{entities}:delete',
-    'billing:read', 'billing:manage',
-  ],
-  admin: [
-    'organization:read', 'organization:manage',
-    'members:read', 'members:invite', 'members:remove',
-    '{entities}:read', '{entities}:write', '{entities}:delete',
-  ],
-  member: [
-    'organization:read',
-    'members:read',
-    '{entities}:read', '{entities}:write',
-  ],
+export const ROLE_PERMISSIONS: Record<{RoleType}, readonly Permission[]> = {
+  role_a: [ /* ... read the actual file ... */ ],
+  role_b: [ /* ... */ ],
+  role_c: [ /* ... */ ],
 }
 ```
 
 ### Core Functions
 
+Projects may export some or all of these. Read the actual exports to know what's available.
+
 ```typescript
-// Multi-role: user can hold multiple roles (e.g., via Better Auth organization plugin).
-// hasPermission checks if ANY of the user's roles grants the permission.
-export const hasPermission = (roles: Role[], permission: Permission): boolean => {
+// Multi-role: hasPermission checks if ANY of the user's roles grants the permission.
+export const hasPermission = (roles: {RoleType}[], permission: Permission): boolean => {
   return roles.some((role) => ROLE_PERMISSIONS[role]?.includes(permission) ?? false)
 }
 
 // Union of all permissions across the user's roles
-export const getPermissions = (roles: Role[]): readonly Permission[] => {
-  const permissionSet = new Set(roles.flatMap((role) => ROLE_PERMISSIONS[role] ?? []))
-  return [...permissionSet]
+export const getPermissions = (role: {RoleType}): readonly Permission[] => {
+  return ROLE_PERMISSIONS[role] ?? []
 }
 
-// Compare hierarchy levels (uses highest role in array)
-export const hasHigherOrEqualRole = (role: Role, targetRole: Role): boolean => {
-  return ROLE_HIERARCHY[role] >= ROLE_HIERARCHY[targetRole]
-}
-
-// Get the highest-privilege role from a roles array
-export const getHighestRole = (roles: Role[]): Role => {
-  return roles.reduce((highest, role) =>
-    ROLE_HIERARCHY[role] > ROLE_HIERARCHY[highest] ? role : highest
-  )
-}
-
-// Parse roles from Better Auth format (comma-separated string)
-export const parseRoles = (roleString: string): Role[] => {
-  return roleString.split(',').filter((r): r is Role => r in ROLE_HIERARCHY)
+// Validate a string is a valid role
+export const isValidRole = (value: string): value is {RoleType} => {
+  return VALID_ROLES.includes(value as {RoleType})
 }
 ```
 
+Some projects also have role parsing (e.g., from comma-separated DB strings) and role hierarchy functions. Check the exports.
+
 ## Use Case Pattern
 
-Authorization is checked via direct import — `hasPermission` is a pure function, not an injected dependency.
+Authorization is checked via direct import — `hasPermission` is a pure function, not an injected dependency. The input field that carries roles comes from `OrganizationContext` — read it to find the actual field name (e.g., `roles`, `memberRoles`, `memberRole`).
 
 ```typescript
-import { hasPermission, type Role } from '{core}/services/authorization'
-import { errAsync, type ResultAsync } from 'neverthrow'
+import { hasPermission } from '{core}/services/authorization'
+import { errAsync } from 'neverthrow'
 
-type Update{Entity}Input = {
-  organizationId: string
-  memberId: string
-  memberRoles: Role[]
-  {entity}Id: string
-  data: { name?: string }
+// 1. Authorization check FIRST — before any business logic or DB calls
+if (!hasPermission(input.{rolesField}, '{resource}:write')) {
+  return errAsync({
+    type: 'forbidden',
+    message: 'Insufficient permissions',
+  })
 }
 
-type Update{Entity}Error =
-  | { type: 'forbidden'; message: string }
-  | { type: 'not_found'; message: string }
-  | { type: 'validation_error'; message: string }
-  | { type: 'repository_error'; cause: unknown }
-
-export const makeUpdate{Entity} =
-  (deps: Dependencies) =>
-  (input: Update{Entity}Input): ResultAsync<{Entity}, Update{Entity}Error> => {
-    // 1. Authorization check FIRST — before any business logic or DB calls
-    if (!hasPermission(input.memberRoles, '{entities}:write')) {
-      return errAsync({
-        type: 'forbidden',
-        message: 'Insufficient permissions',
-      })
-    }
-
-    // 2. Business logic after authorization passes
-    const ctx = { organizationId: input.organizationId }
-
-    return deps.{entity}Repository
-      .findById(ctx, input.{entity}Id)
-      .andThen(({entity}) => {
-        const result = create{Entity}({ ...{entity}, ...input.data })
-        if (result.isErr()) {
-          return errAsync({ type: 'validation_error', message: result.error.message })
-        }
-        return deps.{entity}Repository.update(ctx, input.{entity}Id, result.value)
-      })
-  }
+// 2. Business logic after authorization passes
 ```
 
 ## Procedure Pattern
 
-The procedure passes member info from the authenticated context. The `role` field from Better Auth's organization plugin contains the comma-separated roles string — parse it before passing to the use case.
+The procedure passes member info from the authenticated context to the use case. Read `{backend}/lib/context.ts` to find the actual field path (e.g., `context.membership.roles`).
 
 ```typescript
 export const update{Entity} = authProcedure
   .errors({
     FORBIDDEN: { message: 'Insufficient permissions' },
     NOT_FOUND: { message: '{Entity} not found' },
-    VALIDATION_ERROR: { message: 'Validation failed' },
   })
   .input(update{Entity}InputSchema)
   .output({entity}Schema)
@@ -187,8 +124,7 @@ export const update{Entity} = authProcedure
       {entity}Repository: create{Entity}Repository(context.db),
     })({
       organizationId: context.organization.id,
-      memberId: context.organization.memberId,
-      memberRoles: parseRoles(context.organization.role),
+      {rolesField}: context.membership.{rolesField},  // read context.ts for actual path
       {entity}Id: input.id,
       data: input,
     })
@@ -199,8 +135,6 @@ export const update{Entity} = authProcedure
           throw errors.FORBIDDEN()
         case 'not_found':
           throw errors.NOT_FOUND()
-        case 'validation_error':
-          throw errors.VALIDATION_ERROR({ message: result.error.message })
         case 'repository_error':
           console.error('Repository error:', result.error.cause)
           throw new Error('Internal error')
@@ -211,152 +145,64 @@ export const update{Entity} = authProcedure
   })
 ```
 
-## Role Hierarchy Checks
+## Migrating the Role Model
 
-Beyond permission checks, some operations require comparing role levels directly.
+When refactoring roles (renaming, adding, removing, changing from single-role to multi-role):
 
-### Preventing Role Escalation
+### 1. Understand Permission Semantics, Not Names
 
-Users can only assign roles **lower** than their own highest role:
+When mapping old roles to new roles, **match by permissions, not by name**. A role rename isn't always a 1:1 mapping — the new role with a similar name might have completely different permissions.
 
-```typescript
-import { getHighestRole, hasHigherOrEqualRole } from '{core}/services/authorization'
+Before migrating tests or use cases:
+1. Read the **old** `ROLE_PERMISSIONS` matrix (from git history or the plan)
+2. Read the **new** `ROLE_PERMISSIONS` matrix (from `authorization.ts`)
+3. For each old role used in tests, find the new role whose **permissions** match what the test expects — not the role whose **name** sounds similar
 
-// In a use case that updates member roles
-const actorHighest = getHighestRole(input.memberRoles)
+Example: if old `admin` had write permissions and new `manager` does NOT have write permissions, then tests using `admin` for write-access scenarios should NOT use `manager` — they should use whichever new role has those write permissions.
 
-if (!hasHigherOrEqualRole(actorHighest, input.targetRole)) {
-  return errAsync({
-    type: 'forbidden',
-    message: 'Cannot assign a role equal to or higher than your own',
-  })
-}
-```
+### 2. Migration Checklist
 
-> Use **strict greater-than** (`>` not `>=`) when checking role assignment to prevent same-level assignment. Use `hasHigherOrEqualRole` for "can this user manage this other user" checks.
-
-### Owner-Only Actions
-
-For actions restricted to the organization owner (e.g., delete org, manage billing):
-
-```typescript
-import { getHighestRole } from '{core}/services/authorization'
-
-if (getHighestRole(input.memberRoles) !== 'owner') {
-  return errAsync({
-    type: 'forbidden',
-    message: 'Only the organization owner can perform this action',
-  })
-}
-```
+- [ ] Read the new authorization service to understand the actual role type, permissions, and functions
+- [ ] Update `OrganizationContext` type (core) — field name and type
+- [ ] Update `AuthContext` type (backend) — field name and type
+- [ ] Update auth middleware — role parsing/validation
+- [ ] Update contracts — role schema if it exists
+- [ ] Update all use cases — `hasPermission` call site (field name in input)
+- [ ] Update all procedures — context extraction (field name from context)
+- [ ] Update test context factories — map old roles to new roles **by permission semantics**
+- [ ] Update all test files — use the correct context factory per test scenario
+- [ ] Verify: `typecheck`, `lint`, `test` all pass
+- [ ] Verify: grep for old role names/field names returns zero results
 
 ## Adding New Permissions
 
 When adding a new resource to the system:
 
-### 1. Add to Permission Type
-
-```typescript
-// {core}/services/authorization.ts
-export type Permission =
-  | /* ... existing ... */
-  | '{newresource}:read'
-  | '{newresource}:write'
-  | '{newresource}:delete'
-```
-
-### 2. Assign to Roles
-
-Decide which roles get which permissions. Follow **principle of least privilege** — start restrictive, widen later.
-
-```typescript
-export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
-  owner: [
-    // ... existing
-    '{newresource}:read', '{newresource}:write', '{newresource}:delete',
-  ],
-  admin: [
-    // ... existing
-    '{newresource}:read', '{newresource}:write', '{newresource}:delete',
-  ],
-  member: [
-    // ... existing
-    '{newresource}:read', '{newresource}:write',
-  ],
-}
-```
-
-### 3. Use in Use Case
-
-```typescript
-if (!hasPermission(input.memberRoles, '{newresource}:write')) {
-  return errAsync({ type: 'forbidden', message: 'Insufficient permissions' })
-}
-```
+1. Add permissions to the `Permission` type in `{core}/services/authorization.ts`
+2. Assign them to roles in `ROLE_PERMISSIONS` — follow **principle of least privilege**
+3. Use `hasPermission` in the use case as the first check
 
 ## Common Violations
 
-**1. Missing authorization check**
+**1. Missing authorization check** — use case performs business logic without checking permissions first.
 
-```typescript
-// WRONG — No permission check
-export const makeCreate{Entity} = (deps) => (input) => {
-  return deps.repository.create(ctx, input)
-}
+**2. Authorization after business logic** — permission check happens inside a `.andThen()` chain after a DB call. Check **before** any work.
 
-// CORRECT — Authorization FIRST
-export const makeCreate{Entity} = (deps) => (input) => {
-  if (!hasPermission(input.memberRoles, '{entities}:write')) {
-    return errAsync({ type: 'forbidden', message: 'Insufficient permissions' })
-  }
-  return deps.repository.create(ctx, input)
-}
-```
+**3. Passing raw role string instead of parsed roles** — if roles come as a comma-separated string from the DB, parse them before passing to `hasPermission`.
 
-**2. Authorization after business logic**
+**4. Missing FORBIDDEN error in procedure** — any procedure calling an authorized use case needs `FORBIDDEN` in its `.errors()` definition.
 
-```typescript
-// WRONG — Authorization happens after DB call
-return deps.repository.findById(ctx, id)
-  .andThen((entity) => {
-    if (!hasPermission(input.memberRoles, '{entities}:write')) {  // Too late!
-      return errAsync({ type: 'forbidden', message: '...' })
-    }
-    return deps.repository.update(ctx, id, entity)
-  })
+**5. Role mapping by name instead of permissions** — when migrating roles, using name similarity (`admin` → `manager`) instead of checking which new role actually has the permissions the code expects.
 
-// CORRECT — Check before any work
-if (!hasPermission(input.memberRoles, '{entities}:write')) {
-  return errAsync({ type: 'forbidden', message: 'Insufficient permissions' })
-}
-return deps.repository.findById(ctx, id)
-  .andThen((entity) => deps.repository.update(ctx, id, entity))
-```
+## Test Context Factories
 
-**3. Passing raw role string instead of parsed roles**
+Test helpers typically provide factory functions for creating contexts with specific roles. When these exist, the role used by each factory must match the **permission set** needed by the test scenario:
 
-```typescript
-// WRONG — Passing unparsed string from context
-memberRole: context.organization.role,  // "admin,member" string
+- Happy-path tests for write operations → use a factory whose role has write permissions
+- Forbidden tests → use a factory whose role lacks the required permission
+- Multi-role tests → use a factory that accepts a roles array
 
-// CORRECT — Parse roles before passing to use case
-memberRoles: parseRoles(context.organization.role),  // ['admin', 'member']
-```
-
-**4. Missing FORBIDDEN error in procedure**
-
-```typescript
-// WRONG — No FORBIDDEN in error definitions
-.errors({
-  NOT_FOUND: { message: 'Not found' },
-})
-
-// CORRECT — Include FORBIDDEN for any authorized procedure
-.errors({
-  FORBIDDEN: { message: 'Insufficient permissions' },
-  NOT_FOUND: { message: 'Not found' },
-})
-```
+Always read `{backend}/__tests__/helpers/test-context.ts` (or equivalent) to discover available factories and which roles they use.
 
 ## Best Practices
 
@@ -364,29 +210,17 @@ memberRoles: parseRoles(context.organization.role),  // ['admin', 'member']
 2. **Pure functions** — Authorization service has no side effects, no DI needed
 3. **Principle of least privilege** — Default unknown roles to zero permissions
 4. **Explicit deny** — If a permission isn't in the role's list, it's denied
-5. **Typed roles** — Never use raw strings for roles; use the `Role` type
+5. **Typed roles** — Never use raw strings for roles; use the project's role type
 6. **Multi-role union** — When a user has multiple roles, permissions are the union of all roles
-7. **Read the project** — Always read the project's actual authorization service before implementing; don't assume role names or permissions
-
-## Success Criteria
-
-When adding authorization to a use case:
-
-- [ ] Read project's authorization service to discover real roles and permissions
-- [ ] Import `hasPermission` (and `parseRoles` if needed) from authorization service
-- [ ] Add `memberRoles: Role[]` to input type
-- [ ] Add `{ type: 'forbidden'; message: string }` to error union
-- [ ] Check permission **FIRST** in the use case — before any business logic
-- [ ] Add `FORBIDDEN` error to procedure's `.errors()` definition
-- [ ] Map `forbidden` error to `errors.FORBIDDEN()` in procedure's exhaustive switch
-- [ ] If adding a new resource: add permissions to `Permission` type and assign to roles
+7. **Read the project** — Always read the project's actual authorization service before implementing; never assume role names or permissions
+8. **Map by permissions** — When migrating roles, match old → new by permission sets, not by name similarity
 
 ## Cross-References
 
 | Skill | Relationship |
 |-------|-------------|
-| `/clean-architecture` | Authorization is step 4 in the inside-out pipeline |
+| `/clean-architecture` | Authorization is a step in the inside-out pipeline |
 | `/use-case` | Authorization checks live inside use cases |
-| `/procedure` | Procedures pass `memberRoles` from context and map `FORBIDDEN` errors |
+| `/procedure` | Procedures pass roles from context and map `FORBIDDEN` errors |
 | `/domain` | Domain entities define what needs protecting; authorization decides who can act |
 | `/port` | Ports don't know about authorization — that's a use case concern |
