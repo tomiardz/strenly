@@ -1,5 +1,4 @@
 import { useNavigate } from '@tanstack/react-router'
-import { useOrgSlug } from '@/hooks/use-org-slug'
 import { LogOutIcon, MonitorIcon, MoonIcon, SettingsIcon, SunIcon } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -14,6 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useOrgSlug } from '@/hooks/use-org-slug'
 import { signOut } from '@/lib/auth-client'
 import { useTheme } from '@/lib/theme'
 

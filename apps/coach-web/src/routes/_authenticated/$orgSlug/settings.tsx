@@ -1,4 +1,4 @@
-import { Link, Outlet, createFileRoute, useMatchRoute } from '@tanstack/react-router'
+import { createFileRoute, Link, Outlet, useMatchRoute } from '@tanstack/react-router'
 import { UserIcon } from 'lucide-react'
 import { useOrgSlug } from '@/hooks/use-org-slug'
 

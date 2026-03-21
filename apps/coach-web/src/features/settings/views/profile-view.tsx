@@ -1,10 +1,10 @@
 import type { UpdateProfileInput } from '@strenly/contracts/auth/auth'
 import { useState } from 'react'
-import { useAuth } from '@/contexts/auth-context'
-import { authClient } from '@/lib/auth-client'
-import { clearAuthCache } from '@/lib/auth-cache'
-import { toast } from '@/lib/toast'
 import { ProfileForm } from '../components/profile-form'
+import { useAuth } from '@/contexts/auth-context'
+import { clearAuthCache } from '@/lib/auth-cache'
+import { authClient } from '@/lib/auth-client'
+import { toast } from '@/lib/toast'
 
 /**
  * Profile settings view.
@@ -49,9 +49,7 @@ export function ProfileView() {
     <div className="space-y-6">
       <div className="space-y-1">
         <h1 className="font-semibold text-2xl">Mi Perfil</h1>
-        <p className="text-muted-foreground text-sm">
-          Actualiza tu informacion personal y avatar.
-        </p>
+        <p className="text-muted-foreground text-sm">Actualiza tu informacion personal y avatar.</p>
       </div>
 
       <div className="max-w-lg">

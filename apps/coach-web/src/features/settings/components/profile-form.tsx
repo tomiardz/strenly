@@ -66,21 +66,10 @@ export function ProfileForm({ onSubmit, defaultValues, isSubmitting }: ProfileFo
             <AvatarFallback className="text-lg">{userInitials}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => fileInputRef.current?.click()}
-            >
+            <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
               Cambiar avatar
             </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-            />
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
             <p className="text-muted-foreground text-xs">JPG, PNG o GIF. Max 4MB.</p>
           </div>
         </div>
@@ -112,9 +101,7 @@ export function ProfileForm({ onSubmit, defaultValues, isSubmitting }: ProfileFo
               disabled
               className="opacity-60"
             />
-            <FieldDescription>
-              El correo electronico no se puede cambiar desde aqui.
-            </FieldDescription>
+            <FieldDescription>El correo electronico no se puede cambiar desde aqui.</FieldDescription>
           </FieldContent>
         </Field>
       </fieldset>
