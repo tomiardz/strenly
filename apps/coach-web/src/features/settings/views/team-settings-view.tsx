@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/contexts/auth-context'
 import { useUserRole } from '@/hooks/use-user-role'
 import { InviteMemberDialog } from '../components/invite-member-dialog'
 import { MemberList } from '../components/member-list'
@@ -14,7 +15,8 @@ import { useOrgMembers } from '../hooks/use-org-members'
  */
 export function TeamSettingsView() {
   const { members, invitations, isLoading, error } = useOrgMembers()
-  const { role, canInviteMembers } = useUserRole()
+  const { role, canInviteMembers, canUpdateRoles, canRemoveMembers } = useUserRole()
+  const { user } = useAuth()
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
 
   return (
@@ -46,7 +48,13 @@ export function TeamSettingsView() {
           </p>
         </div>
       ) : (
-        <MemberList members={members} isLoading={isLoading} />
+        <MemberList
+          members={members}
+          isLoading={isLoading}
+          currentUserId={user.id}
+          canUpdateRoles={canUpdateRoles}
+          canRemoveMembers={canRemoveMembers}
+        />
       )}
 
       {canInviteMembers && (
