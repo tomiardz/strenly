@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOrgSlugRouteImport } from './routes/_authenticated/$orgSlug'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthenticatedInvitationAcceptRouteImport } from './routes/_authenticated/invitation.accept'
 import { Route as AuthenticatedOrgSlugSettingsRouteImport } from './routes/_authenticated/$orgSlug/settings'
 import { Route as AuthenticatedOrgSlugExercisesRouteImport } from './routes/_authenticated/$orgSlug/exercises'
 import { Route as AuthenticatedOrgSlugDashboardRouteImport } from './routes/_authenticated/$orgSlug/dashboard'
@@ -64,6 +65,12 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthenticatedInvitationAcceptRoute =
+  AuthenticatedInvitationAcceptRouteImport.update({
+    id: '/invitation/accept',
+    path: '/invitation/accept',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedOrgSlugSettingsRoute =
   AuthenticatedOrgSlugSettingsRouteImport.update({
     id: '/settings',
@@ -158,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
   '/$orgSlug/exercises': typeof AuthenticatedOrgSlugExercisesRoute
   '/$orgSlug/settings': typeof AuthenticatedOrgSlugSettingsRouteWithChildren
+  '/invitation/accept': typeof AuthenticatedInvitationAcceptRoute
   '/$orgSlug/programs/$programId': typeof AuthenticatedOrgSlugProgramsProgramIdRoute
   '/$orgSlug/programs/new': typeof AuthenticatedOrgSlugProgramsNewRoute
   '/$orgSlug/settings/general': typeof AuthenticatedOrgSlugSettingsGeneralRoute
@@ -178,6 +186,7 @@ export interface FileRoutesByTo {
   '/$orgSlug': typeof AuthenticatedOrgSlugRouteWithChildren
   '/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
   '/$orgSlug/exercises': typeof AuthenticatedOrgSlugExercisesRoute
+  '/invitation/accept': typeof AuthenticatedInvitationAcceptRoute
   '/$orgSlug/programs/$programId': typeof AuthenticatedOrgSlugProgramsProgramIdRoute
   '/$orgSlug/programs/new': typeof AuthenticatedOrgSlugProgramsNewRoute
   '/$orgSlug/settings/general': typeof AuthenticatedOrgSlugSettingsGeneralRoute
@@ -202,6 +211,7 @@ export interface FileRoutesById {
   '/_authenticated/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
   '/_authenticated/$orgSlug/exercises': typeof AuthenticatedOrgSlugExercisesRoute
   '/_authenticated/$orgSlug/settings': typeof AuthenticatedOrgSlugSettingsRouteWithChildren
+  '/_authenticated/invitation/accept': typeof AuthenticatedInvitationAcceptRoute
   '/_authenticated/$orgSlug/programs/$programId': typeof AuthenticatedOrgSlugProgramsProgramIdRoute
   '/_authenticated/$orgSlug/programs/new': typeof AuthenticatedOrgSlugProgramsNewRoute
   '/_authenticated/$orgSlug/settings/general': typeof AuthenticatedOrgSlugSettingsGeneralRoute
@@ -225,6 +235,7 @@ export interface FileRouteTypes {
     | '/$orgSlug/dashboard'
     | '/$orgSlug/exercises'
     | '/$orgSlug/settings'
+    | '/invitation/accept'
     | '/$orgSlug/programs/$programId'
     | '/$orgSlug/programs/new'
     | '/$orgSlug/settings/general'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/$orgSlug'
     | '/$orgSlug/dashboard'
     | '/$orgSlug/exercises'
+    | '/invitation/accept'
     | '/$orgSlug/programs/$programId'
     | '/$orgSlug/programs/new'
     | '/$orgSlug/settings/general'
@@ -268,6 +280,7 @@ export interface FileRouteTypes {
     | '/_authenticated/$orgSlug/dashboard'
     | '/_authenticated/$orgSlug/exercises'
     | '/_authenticated/$orgSlug/settings'
+    | '/_authenticated/invitation/accept'
     | '/_authenticated/$orgSlug/programs/$programId'
     | '/_authenticated/$orgSlug/programs/new'
     | '/_authenticated/$orgSlug/settings/general'
@@ -338,6 +351,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/login'
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
+    }
+    '/_authenticated/invitation/accept': {
+      id: '/_authenticated/invitation/accept'
+      path: '/invitation/accept'
+      fullPath: '/invitation/accept'
+      preLoaderRoute: typeof AuthenticatedInvitationAcceptRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/$orgSlug/settings': {
       id: '/_authenticated/$orgSlug/settings'
@@ -514,10 +534,12 @@ const AuthenticatedOrgSlugRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedOrgSlugRoute: typeof AuthenticatedOrgSlugRouteWithChildren
+  AuthenticatedInvitationAcceptRoute: typeof AuthenticatedInvitationAcceptRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedOrgSlugRoute: AuthenticatedOrgSlugRouteWithChildren,
+  AuthenticatedInvitationAcceptRoute: AuthenticatedInvitationAcceptRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

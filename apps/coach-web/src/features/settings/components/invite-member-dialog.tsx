@@ -3,13 +3,13 @@ import { type InviteMemberInput, inviteMemberInputSchema } from '@strenly/contra
 import { Check, Copy } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useInviteMember } from '../hooks/use-invite-member'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Field, FieldContent, FieldError, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { toast } from '@/lib/toast'
-import { useInviteMember } from '../hooks/use-invite-member'
 
 type InviteMemberDialogProps = {
   open: boolean
@@ -93,7 +93,7 @@ export function InviteMemberDialog({ open, onOpenChange, isOwner }: InviteMember
 
         {invitationUrl ? (
           <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Comparte este link con el miembro para que se una a tu organizacion.
             </p>
             <div className="space-y-2">

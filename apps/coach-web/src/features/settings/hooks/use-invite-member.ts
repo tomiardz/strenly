@@ -13,7 +13,7 @@ export function useInviteMember() {
 
   return useMutation({
     mutationFn: async (data: { email: string; role: string }) => {
-      const result = await authClient.organization.createInvitation({
+      const result = await authClient.organization.inviteMember({
         email: data.email,
         role: data.role,
         organizationId: org.id,

@@ -1,12 +1,12 @@
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { useAuth } from '@/contexts/auth-context'
-import { useUserRole } from '@/hooks/use-user-role'
 import { InviteMemberDialog } from '../components/invite-member-dialog'
 import { MemberList } from '../components/member-list'
 import { PendingInvitations } from '../components/pending-invitations'
 import { useOrgMembers } from '../hooks/use-org-members'
+import { Button } from '@/components/ui/button'
+import { useAuth } from '@/contexts/auth-context'
+import { useUserRole } from '@/hooks/use-user-role'
 
 /**
  * Team settings view.
@@ -34,11 +34,7 @@ export function TeamSettingsView() {
         )}
       </div>
 
-      <PendingInvitations
-        invitations={invitations}
-        isLoading={isLoading}
-        canInviteMembers={canInviteMembers}
-      />
+      <PendingInvitations invitations={invitations} isLoading={isLoading} canInviteMembers={canInviteMembers} />
 
       {error ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
@@ -58,11 +54,7 @@ export function TeamSettingsView() {
       )}
 
       {canInviteMembers && (
-        <InviteMemberDialog
-          open={inviteDialogOpen}
-          onOpenChange={setInviteDialogOpen}
-          isOwner={role === 'owner'}
-        />
+        <InviteMemberDialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen} isOwner={role === 'owner'} />
       )}
     </div>
   )

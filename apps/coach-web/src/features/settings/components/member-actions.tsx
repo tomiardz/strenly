@@ -1,10 +1,10 @@
 import { Trash2Icon } from 'lucide-react'
 import { useState } from 'react'
+import { useUpdateMemberRole } from '../hooks/use-update-member-role'
+import { RemoveMemberDialog } from './remove-member-dialog'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { toast } from '@/lib/toast'
-import { useUpdateMemberRole } from '../hooks/use-update-member-role'
-import { RemoveMemberDialog } from './remove-member-dialog'
 
 type Member = {
   id: string
@@ -39,14 +39,21 @@ const roleItems = [
  * - Prevents removing self (shows toast)
  * - Prevents removing last owner (shows toast)
  */
-export function MemberActions({ member, currentUserId, canUpdateRoles, canRemoveMembers, ownerCount }: MemberActionsProps) {
+export function MemberActions({
+  member,
+  currentUserId,
+  canUpdateRoles,
+  canRemoveMembers,
+  ownerCount,
+}: MemberActionsProps) {
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
   const updateRole = useUpdateMemberRole()
 
   const isSelf = member.userId === currentUserId
   const isLastOwner = member.role === 'owner' && ownerCount <= 1
 
-  const handleRoleChange = (value: string) => {
+  const handleRoleChange = (value: string | null) => {
+    if (!value) return
     if (isSelf) {
       toast.error('No puedes cambiar tu propio rol')
       return
@@ -94,12 +101,7 @@ export function MemberActions({ member, currentUserId, canUpdateRoles, canRemove
 
       {canRemoveMembers && (
         <>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleRemoveClick}
-            aria-label="Eliminar miembro"
-          >
+          <Button variant="ghost" size="icon" onClick={handleRemoveClick} aria-label="Eliminar miembro">
             <Trash2Icon className="h-4 w-4" />
           </Button>
 

@@ -1,9 +1,9 @@
 import { X } from 'lucide-react'
+import { useCancelInvitation } from '../hooks/use-cancel-invitation'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useCancelInvitation } from '../hooks/use-cancel-invitation'
 
 type Invitation = {
   id: string
@@ -87,11 +87,7 @@ export function PendingInvitations({ invitations, isLoading, canInviteMembers }:
         </TableHeader>
         <TableBody>
           {pendingInvitations.map((invitation) => (
-            <PendingInvitationRow
-              key={invitation.id}
-              invitation={invitation}
-              canCancel={canInviteMembers}
-            />
+            <PendingInvitationRow key={invitation.id} invitation={invitation} canCancel={canInviteMembers} />
           ))}
         </TableBody>
       </Table>
@@ -99,13 +95,7 @@ export function PendingInvitations({ invitations, isLoading, canInviteMembers }:
   )
 }
 
-function PendingInvitationRow({
-  invitation,
-  canCancel,
-}: {
-  invitation: Invitation
-  canCancel: boolean
-}) {
+function PendingInvitationRow({ invitation, canCancel }: { invitation: Invitation; canCancel: boolean }) {
   const cancelMutation = useCancelInvitation()
 
   return (

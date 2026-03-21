@@ -1,12 +1,12 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { Loader2, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react'
+import { AlertTriangle, CheckCircle2, Loader2, XCircle } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { z } from 'zod'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { authClient } from '@/lib/auth-client'
 import { clearAuthCache } from '@/lib/auth-cache'
+import { authClient } from '@/lib/auth-client'
 import { toast } from '@/lib/toast'
 
 const invitationSearchSchema = z.object({
@@ -65,7 +65,10 @@ function InvitationAcceptPage() {
     })
 
     if (result.error) {
-      setState({ status: 'error', message: 'No se pudo cargar la invitacion. Es posible que haya expirado o no exista.' })
+      setState({
+        status: 'error',
+        message: 'No se pudo cargar la invitacion. Es posible que haya expirado o no exista.',
+      })
       return
     }
 
@@ -121,8 +124,7 @@ function InvitationAcceptPage() {
       })
 
       if (result.error) {
-        const errorMessage =
-          result.error.message ?? 'Error al aceptar la invitacion'
+        const errorMessage = result.error.message ?? 'Error al aceptar la invitacion'
         // Check for already-accepted scenario
         if (errorMessage.toLowerCase().includes('already')) {
           setState({ status: 'already-accepted' })
@@ -188,9 +190,7 @@ function InvitationAcceptPage() {
             <CardDescription>{state.message}</CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
-            <Button variant="outline" asChild>
-              <Link to="/">Volver al inicio</Link>
-            </Button>
+            <Button variant="outline" render={<Link to="/" />}>Volver al inicio</Button>
           </CardFooter>
         </Card>
       </div>
@@ -208,15 +208,11 @@ function InvitationAcceptPage() {
           </CardHeader>
           <CardFooter className="justify-center">
             {state.orgSlug ? (
-              <Button asChild>
-                <Link to="/$orgSlug/dashboard" params={{ orgSlug: state.orgSlug }}>
-                  Ir a la organizacion
-                </Link>
+              <Button render={<Link to="/$orgSlug/dashboard" params={{ orgSlug: state.orgSlug }} />}>
+                Ir a la organizacion
               </Button>
             ) : (
-              <Button variant="outline" asChild>
-                <Link to="/">Volver al inicio</Link>
-              </Button>
+              <Button variant="outline" render={<Link to="/" />}>Volver al inicio</Button>
             )}
           </CardFooter>
         </Card>
@@ -234,10 +230,8 @@ function InvitationAcceptPage() {
             <CardDescription>Te has unido exitosamente a la organizacion.</CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
-            <Button asChild>
-              <Link to="/$orgSlug/dashboard" params={{ orgSlug: state.orgSlug }}>
-                Ir al dashboard
-              </Link>
+            <Button render={<Link to="/$orgSlug/dashboard" params={{ orgSlug: state.orgSlug }} />}>
+              Ir al dashboard
             </Button>
           </CardFooter>
         </Card>
@@ -259,7 +253,7 @@ function InvitationAcceptPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="rounded-lg border p-4 space-y-2">
+          <div className="space-y-2 rounded-lg border p-4">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Organizacion</span>
               <span className="font-medium">{invitation.organizationName}</span>
@@ -274,7 +268,7 @@ function InvitationAcceptPage() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex gap-3 justify-end">
+        <CardFooter className="flex justify-end gap-3">
           <Button variant="outline" onClick={handleDecline} disabled={isAccepting || isDeclining}>
             {isDeclining ? 'Rechazando...' : 'Rechazar'}
           </Button>

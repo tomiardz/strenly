@@ -1,3 +1,4 @@
+import { useRemoveMember } from '../hooks/use-remove-member'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,7 +9,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { useRemoveMember } from '../hooks/use-remove-member'
 
 type RemoveMemberDialogProps = {
   open: boolean
