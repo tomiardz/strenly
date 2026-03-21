@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { OrganizationProvider } from '@/contexts/organization-context'
 import { setCurrentOrgSlug } from '@/lib/api-client'
+import { authClient } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/_authenticated/$orgSlug')({
   beforeLoad: async ({ params, context, location }) => {
@@ -21,7 +22,15 @@ export const Route = createFileRoute('/_authenticated/$orgSlug')({
     // Set org slug for API client immediately (available before component renders)
     setCurrentOrgSlug(params.orgSlug)
 
-    return { org }
+    // Fetch the user's role in this organization
+    const userId = context.authData.user.id
+    const fullOrgResult = await authClient.organization.getFullOrganization({
+      query: { organizationId: org.id },
+    })
+    const currentMember = fullOrgResult.data?.members?.find((m) => m.userId === userId)
+    const role = currentMember?.role ?? 'member'
+
+    return { org: { ...org, role } }
   },
   component: OrgSlugLayout,
 })
