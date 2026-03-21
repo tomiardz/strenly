@@ -1,3 +1,8 @@
+import { Plus } from 'lucide-react'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { useUserRole } from '@/hooks/use-user-role'
+import { InviteMemberDialog } from '../components/invite-member-dialog'
 import { MemberList } from '../components/member-list'
 import { useOrgMembers } from '../hooks/use-org-members'
 
@@ -8,12 +13,22 @@ import { useOrgMembers } from '../hooks/use-org-members'
  */
 export function TeamSettingsView() {
   const { members, isLoading, error } = useOrgMembers()
+  const { role, canInviteMembers } = useUserRole()
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false)
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="font-semibold text-2xl">Equipo</h1>
-        <p className="text-muted-foreground text-sm">Miembros de tu organizacion.</p>
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h1 className="font-semibold text-2xl">Equipo</h1>
+          <p className="text-muted-foreground text-sm">Miembros de tu organizacion.</p>
+        </div>
+        {canInviteMembers && (
+          <Button onClick={() => setInviteDialogOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Invitar
+          </Button>
+        )}
       </div>
 
       {error ? (
@@ -25,6 +40,14 @@ export function TeamSettingsView() {
         </div>
       ) : (
         <MemberList members={members} isLoading={isLoading} />
+      )}
+
+      {canInviteMembers && (
+        <InviteMemberDialog
+          open={inviteDialogOpen}
+          onOpenChange={setInviteDialogOpen}
+          isOwner={role === 'owner'}
+        />
       )}
     </div>
   )
