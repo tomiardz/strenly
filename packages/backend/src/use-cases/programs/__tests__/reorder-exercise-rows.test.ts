@@ -40,6 +40,7 @@ describe('[3.26-UNIT] @p2 reorderExerciseRows use case', () => {
       duplicateWeek: vi.fn(),
       repositionRowToEndOfSession: vi.fn(),
       findExerciseRowsBySessionId: vi.fn(),
+      countByStatus: vi.fn(),
     }
   })
 

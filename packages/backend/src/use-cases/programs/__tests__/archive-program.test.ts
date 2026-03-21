@@ -44,6 +44,7 @@ describe('[3.11-UNIT] archiveProgram use case', () => {
       duplicateWeek: vi.fn(),
       repositionRowToEndOfSession: vi.fn(),
       findExerciseRowsBySessionId: vi.fn(),
+      countByStatus: vi.fn(),
     }
   })
 

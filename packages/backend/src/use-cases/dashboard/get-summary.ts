@@ -3,7 +3,7 @@ import type { ProgramRepositoryPort } from '@strenly/core/ports/program-reposito
 import type { RecentActivityEntry, WorkoutLogRepositoryPort } from '@strenly/core/ports/workout-log-repository.port'
 import { hasPermission } from '@strenly/core/services/authorization'
 import type { OrganizationContext } from '@strenly/core/types/organization-context'
-import { ResultAsync, errAsync } from 'neverthrow'
+import { errAsync, ResultAsync } from 'neverthrow'
 
 // ============================================================================
 // Types
@@ -19,9 +19,7 @@ export type DashboardSummary = {
   recentActivity: RecentActivityEntry[]
 }
 
-export type GetSummaryError =
-  | { type: 'forbidden'; message: string }
-  | { type: 'repository_error'; message: string }
+export type GetSummaryError = { type: 'forbidden'; message: string } | { type: 'repository_error'; message: string }
 
 type Dependencies = {
   athleteRepository: AthleteRepositoryPort

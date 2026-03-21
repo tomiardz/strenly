@@ -21,6 +21,8 @@ describe('saveLog use case', () => {
       listByAthlete: vi.fn(),
       listPendingWorkouts: vi.fn(),
       delete: vi.fn(),
+      countCompletedSince: vi.fn(),
+      listRecent: vi.fn(),
     }
   })
 

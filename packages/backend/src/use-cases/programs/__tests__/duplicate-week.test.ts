@@ -46,6 +46,7 @@ describe('[3.25-UNIT] @p2 duplicateWeek use case', () => {
       duplicateWeek: vi.fn(),
       repositionRowToEndOfSession: vi.fn(),
       findExerciseRowsBySessionId: vi.fn(),
+      countByStatus: vi.fn(),
     }
 
     // Mock ID generator

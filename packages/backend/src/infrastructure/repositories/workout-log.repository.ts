@@ -557,10 +557,7 @@ export function createWorkoutLogRepository(db: DbClient): WorkoutLogRepositoryPo
     // countCompletedSince - Count completed/partial logs since a date
     // -------------------------------------------------------------------------
 
-    countCompletedSince(
-      ctx: OrganizationContext,
-      since: Date,
-    ): ResultAsync<number, WorkoutLogRepositoryError> {
+    countCompletedSince(ctx: OrganizationContext, since: Date): ResultAsync<number, WorkoutLogRepositoryError> {
       return RA.fromPromise(
         db
           .select({ count: count() })
@@ -581,10 +578,7 @@ export function createWorkoutLogRepository(db: DbClient): WorkoutLogRepositoryPo
     // listRecent - Most recent workout logs with denormalized fields
     // -------------------------------------------------------------------------
 
-    listRecent(
-      ctx: OrganizationContext,
-      limit: number,
-    ): ResultAsync<RecentActivityEntry[], WorkoutLogRepositoryError> {
+    listRecent(ctx: OrganizationContext, limit: number): ResultAsync<RecentActivityEntry[], WorkoutLogRepositoryError> {
       return RA.fromPromise(
         db
           .select({

@@ -10,6 +10,7 @@ export function createAthleteRepositoryMock(overrides: Partial<AthleteRepository
     update: vi.fn().mockReturnValue(okAsync(undefined)),
     archive: vi.fn().mockReturnValue(okAsync(undefined)),
     findByLinkedUserId: vi.fn().mockReturnValue(okAsync(null)),
+    count: vi.fn().mockReturnValue(okAsync(0)),
     ...overrides,
   }
 }

@@ -12,6 +12,8 @@ export function createWorkoutLogRepositoryMock(
     delete: vi.fn().mockReturnValue(okAsync(undefined)),
     listByAthlete: vi.fn().mockReturnValue(okAsync({ items: [], totalCount: 0 })),
     listPendingWorkouts: vi.fn().mockReturnValue(okAsync({ items: [], totalCount: 0 })),
+    countCompletedSince: vi.fn().mockReturnValue(okAsync(0)),
+    listRecent: vi.fn().mockReturnValue(okAsync([])),
     ...overrides,
   }
 }

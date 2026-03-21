@@ -217,10 +217,7 @@ export function createAthleteRepository(db: DbClient): AthleteRepositoryPort {
       })
     },
 
-    count(
-      ctx: OrganizationContext,
-      options?: { status?: AthleteStatus },
-    ): ResultAsync<number, AthleteRepositoryError> {
+    count(ctx: OrganizationContext, options?: { status?: AthleteStatus }): ResultAsync<number, AthleteRepositoryError> {
       const conditions = [eq(athletes.organizationId, ctx.organizationId)]
 
       if (options?.status) {
