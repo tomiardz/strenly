@@ -2,7 +2,7 @@ import type { MuscleGroupRepositoryPort } from '@strenly/core/ports/muscle-group
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createMuscleGroupRepositoryMock } from '../../../__tests__/factories/muscle-group-repository-mock'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import { makeListMuscleGroups } from '../list-muscle-groups'
 
 describe('[2.7-UNIT] listMuscleGroups use case', () => {
@@ -55,7 +55,7 @@ describe('[2.7-UNIT] listMuscleGroups use case', () => {
     })
 
     it('[2.7-UNIT-002] @p0 should succeed with admin role', async () => {
-      const ctx = createManagerContext()
+      const ctx = createOwnerContext()
 
       const muscleGroups = [{ id: 'chest', name: 'chest' as const, displayName: 'Chest', bodyRegion: 'upper' as const }]
 

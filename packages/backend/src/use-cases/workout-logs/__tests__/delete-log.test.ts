@@ -2,7 +2,7 @@ import type { WorkoutLogRepositoryPort } from '@strenly/core/ports/workout-log-r
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createWorkoutLogEntity } from '../../../__tests__/factories/workout-log-factory'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import { makeDeleteLog } from '../delete-log'
 
 describe('deleteLog use case', () => {
@@ -120,7 +120,7 @@ describe('deleteLog use case', () => {
     })
 
     it('[5.2-UNIT-002] @p0 should succeed when user has admin role (has workout_log:delete)', async () => {
-      const ctx = createManagerContext() // Admin has delete permission
+      const ctx = createOwnerContext() // Owner has delete permission
       const logId = 'log-1'
 
       const workoutLog = createWorkoutLogEntity({

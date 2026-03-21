@@ -43,7 +43,7 @@ describe('[1.2-UNIT] getAthlete use case', () => {
         expect.objectContaining({
           organizationId: ctx.organizationId,
           userId: ctx.userId,
-          roles: ['manager'],
+          roles: ['coach'],
         }),
         athleteId,
       )

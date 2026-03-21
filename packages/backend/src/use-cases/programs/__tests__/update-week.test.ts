@@ -1,7 +1,7 @@
 import type { ProgramRepositoryPort, ProgramWeek } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateWeek } from '../update-week'
 
 describe('[3.33-UNIT] @p2 updateWeek use case', () => {
@@ -218,7 +218,7 @@ describe('[3.33-UNIT] @p2 updateWeek use case', () => {
     })
 
     it('[3.33-UNIT-005] @p0 should succeed when user has admin role (has programs:write)', async () => {
-      const ctx = createManagerContext() // Admin role has write permission
+      const ctx = createOwnerContext() // Owner role has write permission
       const weekId = 'week-1'
 
       const existingWeek: ProgramWeek = {

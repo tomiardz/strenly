@@ -1,7 +1,7 @@
 import type { ProgramRepositoryPort, ProgramSession } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateSession } from '../update-session'
 
 describe('[3.32-UNIT] @p2 updateSession use case', () => {
@@ -218,7 +218,7 @@ describe('[3.32-UNIT] @p2 updateSession use case', () => {
     })
 
     it('[3.32-UNIT-005] @p0 should succeed when user has admin role (has programs:write)', async () => {
-      const ctx = createManagerContext() // Admin role has write permission
+      const ctx = createOwnerContext() // Owner role has write permission
       const sessionId = 'session-1'
 
       const existingSession: ProgramSession = {

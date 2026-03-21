@@ -2,7 +2,7 @@ import type { Program } from '@strenly/core/domain/entities/program/program'
 import type { ProgramRepositoryPort } from '@strenly/core/ports/program-repository.port'
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import type { ProgramDataInput } from '../save-draft'
 import { makeSaveDraft } from '../save-draft'
 
@@ -235,7 +235,7 @@ describe('[3.28-UNIT] @p2 saveDraft use case', () => {
     })
 
     it('[3.28-UNIT-005] @p0 should succeed when user has admin role (has programs:write)', async () => {
-      const ctx = createManagerContext()
+      const ctx = createOwnerContext()
       const programId = 'program-1'
       const programData = createProgramDataInput()
 

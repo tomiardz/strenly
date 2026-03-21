@@ -2,7 +2,7 @@ import type { ExerciseRepositoryPort } from '@strenly/core/ports/exercise-reposi
 import { errAsync, okAsync } from 'neverthrow'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createExerciseEntity } from '../../../__tests__/factories/exercise-factory'
-import { createCoachContext, createManagerContext } from '../../../__tests__/helpers/test-context'
+import { createCoachContext, createManagerContext, createOwnerContext } from '../../../__tests__/helpers/test-context'
 import { makeUpdateExercise } from '../update-exercise'
 
 describe('[2.2-UNIT] updateExercise use case', () => {
@@ -157,7 +157,7 @@ describe('[2.2-UNIT] updateExercise use case', () => {
 
   describe('[2.2-UNIT] Authorization', () => {
     it('[2.2-UNIT-004] @p0 should return forbidden error when user lacks exercises:write permission', async () => {
-      const ctx = createCoachContext() // Member role lacks write permission
+      const ctx = createManagerContext() // Manager role lacks exercises:write permission
       const exerciseId = 'exercise-1'
 
       const updateExercise = makeUpdateExercise({
@@ -187,7 +187,7 @@ describe('[2.2-UNIT] updateExercise use case', () => {
     })
 
     it('[2.2-UNIT-005] @p0 should succeed when user has admin role (has exercises:write)', async () => {
-      const ctx = createManagerContext() // Admin role has write permission
+      const ctx = createOwnerContext() // Owner role has write permission
       const exerciseId = 'exercise-1'
 
       const existingExercise = createExerciseEntity({
