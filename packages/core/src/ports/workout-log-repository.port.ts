@@ -27,6 +27,19 @@ export type WorkoutLogFilters = {
 }
 
 // ============================================================================
+// Recent Activity Entry (for dashboard)
+// ============================================================================
+
+export type RecentActivityEntry = {
+  id: string
+  athleteName: string | null
+  sessionName: string | null
+  programName: string | null
+  logDate: Date
+  status: 'completed' | 'partial' | 'skipped'
+}
+
+// ============================================================================
 // Pending Workout (for dashboard)
 // ============================================================================
 
@@ -94,4 +107,21 @@ export type WorkoutLogRepositoryPort = {
    * Cascades to logged_exercises
    */
   delete(ctx: OrganizationContext, logId: string): ResultAsync<void, WorkoutLogRepositoryError>
+
+  /**
+   * Count workout logs with status 'completed' or 'partial' since the given date.
+   */
+  countCompletedSince(
+    ctx: OrganizationContext,
+    since: Date,
+  ): ResultAsync<number, WorkoutLogRepositoryError>
+
+  /**
+   * List the N most recent workout logs with denormalized display fields.
+   * Returns entries sorted by logDate descending.
+   */
+  listRecent(
+    ctx: OrganizationContext,
+    limit: number,
+  ): ResultAsync<RecentActivityEntry[], WorkoutLogRepositoryError>
 }

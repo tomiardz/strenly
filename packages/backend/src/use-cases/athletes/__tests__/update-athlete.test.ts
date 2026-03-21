@@ -15,6 +15,7 @@ describe('[1.4-UNIT] updateAthlete use case', () => {
       update: vi.fn(),
       archive: vi.fn(),
       findByLinkedUserId: vi.fn(),
+      count: vi.fn(),
     }
   })
 

@@ -40,6 +40,7 @@ describe('[3.30-UNIT] @p2 updatePrescription use case', () => {
       duplicateWeek: vi.fn(),
       repositionRowToEndOfSession: vi.fn(),
       findExerciseRowsBySessionId: vi.fn(),
+      countByStatus: vi.fn(),
     }
   })
 

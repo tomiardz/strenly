@@ -34,6 +34,7 @@ export function createProgramRepositoryMock(overrides: Partial<ProgramRepository
     duplicateWeek: vi.fn().mockReturnValue(okAsync(undefined)),
     repositionRowToEndOfSession: vi.fn().mockReturnValue(okAsync(undefined)),
     findExerciseRowsBySessionId: vi.fn().mockReturnValue(okAsync([])),
+    countByStatus: vi.fn().mockReturnValue(okAsync({ draft: 0, active: 0, archived: 0 })),
     ...overrides,
   }
 }

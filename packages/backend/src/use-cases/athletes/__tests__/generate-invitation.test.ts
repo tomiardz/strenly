@@ -22,6 +22,7 @@ describe('[1.7-UNIT] generateInvitation use case', () => {
       create: vi.fn(),
       update: vi.fn(),
       archive: vi.fn(),
+      count: vi.fn(),
     }
 
     mockInvitationRepository = {

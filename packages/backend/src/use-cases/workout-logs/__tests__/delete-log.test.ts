@@ -17,6 +17,8 @@ describe('deleteLog use case', () => {
       delete: vi.fn(),
       listByAthlete: vi.fn(),
       listPendingWorkouts: vi.fn(),
+      countCompletedSince: vi.fn(),
+      listRecent: vi.fn(),
     }
   })
 

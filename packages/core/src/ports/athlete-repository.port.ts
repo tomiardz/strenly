@@ -45,4 +45,12 @@ export type AthleteRepositoryPort = {
    * Archive an athlete (soft delete).
    */
   archive(ctx: OrganizationContext, id: string): ResultAsync<void, AthleteRepositoryError>
+
+  /**
+   * Count athletes in the organization with optional status filter.
+   */
+  count(
+    ctx: OrganizationContext,
+    options?: { status?: AthleteStatus },
+  ): ResultAsync<number, AthleteRepositoryError>
 }

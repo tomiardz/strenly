@@ -27,6 +27,7 @@ describe('[3.1-UNIT] createProgram use case', () => {
       update: vi.fn(),
       archive: vi.fn(),
       findByLinkedUserId: vi.fn(),
+      count: vi.fn(),
     }
 
     // Mock ID generator - generates unique IDs per test

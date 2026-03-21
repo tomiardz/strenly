@@ -18,6 +18,7 @@ describe('[1.10-UNIT] createAthlete use case - Validation & Authorization', () =
       update: vi.fn(),
       archive: vi.fn(),
       findByLinkedUserId: vi.fn(),
+      count: vi.fn(),
     }
 
     // Mock ID generator

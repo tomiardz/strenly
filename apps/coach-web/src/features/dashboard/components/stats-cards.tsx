@@ -1,10 +1,10 @@
-import { Mail, UserCheck, Users } from 'lucide-react'
-import type { DashboardStats } from '../hooks/use-dashboard-stats'
+import type { DashboardSummaryOutput } from '@strenly/contracts/dashboard/summary'
+import { Calendar, FileEdit, PlayCircle, UserCheck, Users } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
 interface StatsCardsProps {
-  stats: DashboardStats
+  data: DashboardSummaryOutput | undefined
   isLoading: boolean
 }
 
@@ -42,30 +42,44 @@ function StatCard({ icon: Icon, label, value, description, isLoading }: StatCard
 
 /**
  * Dashboard stats cards component.
- * Displays total athletes, active athletes, and pending invitations in a responsive grid.
+ * Displays total athletes, active athletes, draft/active programs, and sessions this week.
  */
-export function StatsCards({ stats, isLoading }: StatsCardsProps) {
+export function StatsCards({ data, isLoading }: StatsCardsProps) {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
       <StatCard
         icon={Users}
         label="Total de atletas"
-        value={stats.totalAthletes}
+        value={data?.totalAthletes ?? 0}
         description="en tu organizacion"
         isLoading={isLoading}
       />
       <StatCard
         icon={UserCheck}
         label="Atletas activos"
-        value={stats.activeAthletes}
+        value={data?.activeAthletes ?? 0}
         description="entrenando actualmente"
         isLoading={isLoading}
       />
       <StatCard
-        icon={Mail}
-        label="Invitaciones pendientes"
-        value={stats.pendingInvitations}
-        description="esperando aceptacion"
+        icon={FileEdit}
+        label="Programas borrador"
+        value={data?.programsByStatus.draft ?? 0}
+        description="en preparacion"
+        isLoading={isLoading}
+      />
+      <StatCard
+        icon={PlayCircle}
+        label="Programas activos"
+        value={data?.programsByStatus.active ?? 0}
+        description="en ejecucion"
+        isLoading={isLoading}
+      />
+      <StatCard
+        icon={Calendar}
+        label="Sesiones esta semana"
+        value={data?.sessionsCompletedThisWeek ?? 0}
+        description="completadas"
         isLoading={isLoading}
       />
     </div>

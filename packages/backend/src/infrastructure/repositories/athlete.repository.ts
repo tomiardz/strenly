@@ -216,5 +216,22 @@ export function createAthleteRepository(db: DbClient): AthleteRepositoryPort {
         return ok(undefined)
       })
     },
+
+    count(ctx: OrganizationContext, options?: { status?: AthleteStatus }): ResultAsync<number, AthleteRepositoryError> {
+      const conditions = [eq(athletes.organizationId, ctx.organizationId)]
+
+      if (options?.status) {
+        conditions.push(eq(athletes.status, options.status))
+      }
+
+      return RA.fromPromise(
+        db
+          .select({ count: count() })
+          .from(athletes)
+          .where(and(...conditions))
+          .then((rows) => rows[0]?.count ?? 0),
+        wrapDbError,
+      )
+    },
   }
 }
