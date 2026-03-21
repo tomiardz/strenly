@@ -102,36 +102,61 @@ Success is validated through:
 
 **Resource:** Solo developer (Tomi), AI-assisted development. No external team dependencies. Payment provider decision is the only external blocker (Phase 4).
 
-### Already Implemented (Brownfield)
+### Already Implemented (Brownfield) — Updated 2026-03-20
 
-- Auth + organizations (Better-Auth, multi-tenant)
-- Exercise library (curated + custom, muscle groups, movement patterns)
-- Program editor grid (keyboard navigation, inline editing, weeks/sessions/prescriptions) — *in testing, near complete*
-- Athlete CRUD (create, update, archive)
-- Subscription/plan model — *foundation only, no paywall/payments*
+**Backend (fully operational across 5 domains):**
+- Auth + organizations (Better-Auth, multi-tenant, Google OAuth) — 3-role model (`owner/admin/member`), RBAC refactor to 4 roles pending
+- Exercise library: 7 use cases (create, update, archive, clone, list, get, muscle-groups), full CRUD backend
+- Program management: 21 use cases, complex aggregate (Program → Weeks → Sessions → Groups → Items → Series), grid operations, templates, draft saving, duplication
+- Athlete management: 10 use cases (CRUD + invitation flow: generate, accept, revoke, info)
+- Workout logging: 7 use cases (create, save, get, list, delete, by-session, pending workouts)
+- Subscriptions: 5 use cases (list plans, create subscription, get subscription, check limits, check features) — foundation only, no real payments
+- 50 use cases, 49 procedures, 9 repositories, 50 backend unit tests
 
-### Phase 1 — Foundations & RBAC Audit
+**Coach Web Frontend (desktop SPA):**
+- Auth flows: login, signup, onboarding (plan selection → org creation)
+- Program grid editor: keyboard navigation, inline editing, supersets, drag/drop reorder, undo/redo, copy/paste, save-as-template — *has 15+ known bugs in `bugs&todo.md`*
+- Program list: search, filter by status, pagination, create from template
+- Athlete list + detail: search, status filter, create/edit form, invitation modal
+- Exercise browser: search, filter by muscle group and movement pattern — *read-only, no create/edit forms*
+- Workout logging: session logging grid, history table, log detail — *functional but UX needs polish*
+- Dashboard: basic stats (total/active athletes, pending invitations), recent athletes — *no backend endpoint, no program stats, no real activity data*
+- 27 UI primitives, 2 Zustand stores, 2 contexts, 19 E2E grid specs
+
+**Not yet started:**
+- Settings page, profile editing, member management
+- Dashboard backend endpoint with real aggregated data
+- Custom exercise create/edit UI (backend ready, frontend missing)
+- Athlete PWA (`apps/athlete-pwa/` does not exist)
+- Marketing site (`apps/marketing/` is empty)
+
+### Phase 1 — Foundations & RBAC Audit — Status: NOT STARTED
 
 - Audit roles and permissions: define Coach and Athlete roles, validate hierarchical model (Owner > Admin > Coach > Athlete)
 - Settings page implementation: organization configuration, profile management
 - Organization management: coach invitation via shareable link, role assignment
 - Athlete invitation flow refinement (coach generates link → athlete accepts in PWA)
 
-### Phase 2 — Coach Web Completion
+*Current blocker: authorization.ts still uses 3-role model (owner/admin/member). context.ts passes single role, not array. No `parseRoles()` exists. Refactoring touches core, contracts, backend, and all use cases.*
 
-- Finalize program editor based on testing feedback (grid UX polish, edge cases)
-- Program templates: save program as template, create new program from template
-- Workout logging from coach side (on behalf of athletes who don't use PWA)
-- Dashboard with real data: athlete activity, program status, session completion, key stats
-- Athlete membership/payment tracking and status visibility
+### Phase 2 — Coach Web Completion — Status: ~35% DONE
 
-### Phase 3 — Athlete PWA
+- ~~Program templates: save program as template, create new program from template~~ ✅
+- ~~Workout logging from coach side (on behalf of athletes)~~ — backend complete, frontend partially done
+- Finalize program editor based on testing feedback — 15+ known bugs in `bugs&todo.md`
+- Dashboard with real data — currently has basic athlete stats only, no backend endpoint, no program/session/payment stats
+- Athlete membership/payment tracking and status visibility — not started
+- Custom exercise create/edit UI — backend ready, frontend forms missing
+
+### Phase 3 — Athlete PWA — Status: NOT STARTED
 
 - PWA setup: app shell, auth flow, invitation acceptance and account creation
 - View assigned training programs and daily workouts
 - Workout logging: pre-loaded prescriptions, adjust only what differs, optional RPE per set
 - Training history and progress visualization
 - Personal records (PRs) automatic surfacing
+
+*`apps/athlete-pwa/` does not exist. Auth config already has trusted origins for athlete domains. Backend procedures can serve the PWA with no changes (except RBAC-gated athlete data filtering).*
 
 ### Phase 4 — Monetization (Deferred)
 

@@ -662,12 +662,19 @@ Personal records are deferred for detailed design. Current thinking:
 - Refer to `project-context.md` for the full 67-rule set; this document covers only new/supplementary decisions
 - For open questions (PR detection), do not implement until the decision is made
 
-**Implementation Sequence:**
-1. RBAC refactor (OrganizationRole multi-role) — touches core, backend. Must be first.
-2. Settings page + coach invitation — builds on RBAC.
-3. Dashboard summary endpoint — new use case + procedure.
-4. Athlete PWA scaffold — new app, copies UI components.
-5. PWA invite flow — builds on existing invitation backend.
-6. PWA workout logging — online-only, reuses existing backend.
-7. PWA history + PRs — deferred PR detection design decision.
-8. Payment integration — Phase 4, after provider decision.
+**Implementation Sequence (updated 2026-03-20):**
+1. RBAC refactor (OrganizationRole multi-role) — touches core, backend. Must be first. **NOT STARTED**
+2. Settings page + coach invitation — builds on RBAC. **NOT STARTED**
+3. Program grid bug fixes — 15+ known issues in `bugs&todo.md`. **NOT STARTED**
+4. Custom exercise create/edit UI — backend ready, frontend missing. **NOT STARTED**
+5. Dashboard summary endpoint — new use case + procedure. **NOT STARTED** (frontend shell exists with basic athlete stats)
+6. Athlete PWA scaffold — new app, copies UI components. **NOT STARTED** (`apps/athlete-pwa/` does not exist)
+7. PWA invite flow — builds on existing invitation backend. **NOT STARTED**
+8. PWA workout logging — online-only, reuses existing backend. **NOT STARTED**
+9. PWA history + PRs — deferred PR detection design decision. **NOT STARTED**
+10. Payment integration — Phase 4, after provider decision. **NOT STARTED**
+
+**Already completed (not in original sequence):**
+- Program templates (save-as-template, create-from-template) — backend + frontend done
+- Coach-side workout logging — backend done, frontend partially done
+- Athlete invitation flow — backend done, frontend modal done
