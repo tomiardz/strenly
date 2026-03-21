@@ -173,7 +173,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate({ to: '/$orgSlug/settings/profile', params: { orgSlug } })}>
                 <SettingsIcon className="mr-2 size-4" />
                 <span>Configuracion</span>
               </DropdownMenuItem>

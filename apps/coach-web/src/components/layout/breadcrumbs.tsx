@@ -15,6 +15,7 @@ const routeLabels: Record<string, string> = {
   athletes: 'Atletas',
   exercises: 'Ejercicios',
   settings: 'Configuracion',
+  profile: 'Mi Perfil',
 }
 
 function capitalizeFirst(str: string): string {

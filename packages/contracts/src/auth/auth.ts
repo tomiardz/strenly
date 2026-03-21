@@ -24,3 +24,16 @@ export const loginInputSchema = z.object({
 })
 
 export type LoginInput = z.infer<typeof loginInputSchema>
+
+/**
+ * Profile update form validation schema
+ */
+export const updateProfileInputSchema = z.object({
+  name: z
+    .string()
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(100, 'El nombre no puede superar los 100 caracteres'),
+  image: z.string().optional(),
+})
+
+export type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>

@@ -13,6 +13,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useOrgSlug } from '@/hooks/use-org-slug'
 import { signOut } from '@/lib/auth-client'
 import { useTheme } from '@/lib/theme'
 
@@ -26,6 +27,7 @@ type UserMenuProps = {
 
 export function UserMenu({ user }: UserMenuProps) {
   const navigate = useNavigate()
+  const orgSlug = useOrgSlug()
   const { theme, setTheme } = useTheme()
 
   const handleLogout = async () => {
@@ -60,7 +62,7 @@ export function UserMenu({ user }: UserMenuProps) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => navigate({ to: '/$orgSlug/settings/profile', params: { orgSlug } })}>
             <SettingsIcon className="mr-2 size-4" />
             <span>Configuracion</span>
           </DropdownMenuItem>
