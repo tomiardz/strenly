@@ -16,7 +16,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOrgSlugRouteImport } from './routes/_authenticated/$orgSlug'
 import { Route as AuthSignupRouteImport } from './routes/_auth/signup'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthenticatedOrgSlugTemplatesRouteImport } from './routes/_authenticated/$orgSlug/templates'
 import { Route as AuthenticatedOrgSlugSettingsRouteImport } from './routes/_authenticated/$orgSlug/settings'
+import { Route as AuthenticatedOrgSlugHelpRouteImport } from './routes/_authenticated/$orgSlug/help'
 import { Route as AuthenticatedOrgSlugExercisesRouteImport } from './routes/_authenticated/$orgSlug/exercises'
 import { Route as AuthenticatedOrgSlugDashboardRouteImport } from './routes/_authenticated/$orgSlug/dashboard'
 import { Route as AuthenticatedOrgSlugSettingsIndexRouteImport } from './routes/_authenticated/$orgSlug/settings/index'
@@ -64,10 +66,22 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthenticatedOrgSlugTemplatesRoute =
+  AuthenticatedOrgSlugTemplatesRouteImport.update({
+    id: '/templates',
+    path: '/templates',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
 const AuthenticatedOrgSlugSettingsRoute =
   AuthenticatedOrgSlugSettingsRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedOrgSlugRoute,
+  } as any)
+const AuthenticatedOrgSlugHelpRoute =
+  AuthenticatedOrgSlugHelpRouteImport.update({
+    id: '/help',
+    path: '/help',
     getParentRoute: () => AuthenticatedOrgSlugRoute,
   } as any)
 const AuthenticatedOrgSlugExercisesRoute =
@@ -157,7 +171,9 @@ export interface FileRoutesByFullPath {
   '/$orgSlug': typeof AuthenticatedOrgSlugRouteWithChildren
   '/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
   '/$orgSlug/exercises': typeof AuthenticatedOrgSlugExercisesRoute
+  '/$orgSlug/help': typeof AuthenticatedOrgSlugHelpRoute
   '/$orgSlug/settings': typeof AuthenticatedOrgSlugSettingsRouteWithChildren
+  '/$orgSlug/templates': typeof AuthenticatedOrgSlugTemplatesRoute
   '/$orgSlug/programs/$programId': typeof AuthenticatedOrgSlugProgramsProgramIdRoute
   '/$orgSlug/programs/new': typeof AuthenticatedOrgSlugProgramsNewRoute
   '/$orgSlug/settings/general': typeof AuthenticatedOrgSlugSettingsGeneralRoute
@@ -178,6 +194,8 @@ export interface FileRoutesByTo {
   '/$orgSlug': typeof AuthenticatedOrgSlugRouteWithChildren
   '/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
   '/$orgSlug/exercises': typeof AuthenticatedOrgSlugExercisesRoute
+  '/$orgSlug/help': typeof AuthenticatedOrgSlugHelpRoute
+  '/$orgSlug/templates': typeof AuthenticatedOrgSlugTemplatesRoute
   '/$orgSlug/programs/$programId': typeof AuthenticatedOrgSlugProgramsProgramIdRoute
   '/$orgSlug/programs/new': typeof AuthenticatedOrgSlugProgramsNewRoute
   '/$orgSlug/settings/general': typeof AuthenticatedOrgSlugSettingsGeneralRoute
@@ -201,7 +219,9 @@ export interface FileRoutesById {
   '/_authenticated/$orgSlug': typeof AuthenticatedOrgSlugRouteWithChildren
   '/_authenticated/$orgSlug/dashboard': typeof AuthenticatedOrgSlugDashboardRoute
   '/_authenticated/$orgSlug/exercises': typeof AuthenticatedOrgSlugExercisesRoute
+  '/_authenticated/$orgSlug/help': typeof AuthenticatedOrgSlugHelpRoute
   '/_authenticated/$orgSlug/settings': typeof AuthenticatedOrgSlugSettingsRouteWithChildren
+  '/_authenticated/$orgSlug/templates': typeof AuthenticatedOrgSlugTemplatesRoute
   '/_authenticated/$orgSlug/programs/$programId': typeof AuthenticatedOrgSlugProgramsProgramIdRoute
   '/_authenticated/$orgSlug/programs/new': typeof AuthenticatedOrgSlugProgramsNewRoute
   '/_authenticated/$orgSlug/settings/general': typeof AuthenticatedOrgSlugSettingsGeneralRoute
@@ -224,7 +244,9 @@ export interface FileRouteTypes {
     | '/$orgSlug'
     | '/$orgSlug/dashboard'
     | '/$orgSlug/exercises'
+    | '/$orgSlug/help'
     | '/$orgSlug/settings'
+    | '/$orgSlug/templates'
     | '/$orgSlug/programs/$programId'
     | '/$orgSlug/programs/new'
     | '/$orgSlug/settings/general'
@@ -245,6 +267,8 @@ export interface FileRouteTypes {
     | '/$orgSlug'
     | '/$orgSlug/dashboard'
     | '/$orgSlug/exercises'
+    | '/$orgSlug/help'
+    | '/$orgSlug/templates'
     | '/$orgSlug/programs/$programId'
     | '/$orgSlug/programs/new'
     | '/$orgSlug/settings/general'
@@ -267,7 +291,9 @@ export interface FileRouteTypes {
     | '/_authenticated/$orgSlug'
     | '/_authenticated/$orgSlug/dashboard'
     | '/_authenticated/$orgSlug/exercises'
+    | '/_authenticated/$orgSlug/help'
     | '/_authenticated/$orgSlug/settings'
+    | '/_authenticated/$orgSlug/templates'
     | '/_authenticated/$orgSlug/programs/$programId'
     | '/_authenticated/$orgSlug/programs/new'
     | '/_authenticated/$orgSlug/settings/general'
@@ -339,11 +365,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_authenticated/$orgSlug/templates': {
+      id: '/_authenticated/$orgSlug/templates'
+      path: '/templates'
+      fullPath: '/$orgSlug/templates'
+      preLoaderRoute: typeof AuthenticatedOrgSlugTemplatesRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
     '/_authenticated/$orgSlug/settings': {
       id: '/_authenticated/$orgSlug/settings'
       path: '/settings'
       fullPath: '/$orgSlug/settings'
       preLoaderRoute: typeof AuthenticatedOrgSlugSettingsRouteImport
+      parentRoute: typeof AuthenticatedOrgSlugRoute
+    }
+    '/_authenticated/$orgSlug/help': {
+      id: '/_authenticated/$orgSlug/help'
+      path: '/help'
+      fullPath: '/$orgSlug/help'
+      preLoaderRoute: typeof AuthenticatedOrgSlugHelpRouteImport
       parentRoute: typeof AuthenticatedOrgSlugRoute
     }
     '/_authenticated/$orgSlug/exercises': {
@@ -479,7 +519,9 @@ const AuthenticatedOrgSlugSettingsRouteWithChildren =
 interface AuthenticatedOrgSlugRouteChildren {
   AuthenticatedOrgSlugDashboardRoute: typeof AuthenticatedOrgSlugDashboardRoute
   AuthenticatedOrgSlugExercisesRoute: typeof AuthenticatedOrgSlugExercisesRoute
+  AuthenticatedOrgSlugHelpRoute: typeof AuthenticatedOrgSlugHelpRoute
   AuthenticatedOrgSlugSettingsRoute: typeof AuthenticatedOrgSlugSettingsRouteWithChildren
+  AuthenticatedOrgSlugTemplatesRoute: typeof AuthenticatedOrgSlugTemplatesRoute
   AuthenticatedOrgSlugProgramsProgramIdRoute: typeof AuthenticatedOrgSlugProgramsProgramIdRoute
   AuthenticatedOrgSlugProgramsNewRoute: typeof AuthenticatedOrgSlugProgramsNewRoute
   AuthenticatedOrgSlugAthletesIndexRoute: typeof AuthenticatedOrgSlugAthletesIndexRoute
@@ -492,8 +534,10 @@ interface AuthenticatedOrgSlugRouteChildren {
 const AuthenticatedOrgSlugRouteChildren: AuthenticatedOrgSlugRouteChildren = {
   AuthenticatedOrgSlugDashboardRoute: AuthenticatedOrgSlugDashboardRoute,
   AuthenticatedOrgSlugExercisesRoute: AuthenticatedOrgSlugExercisesRoute,
+  AuthenticatedOrgSlugHelpRoute: AuthenticatedOrgSlugHelpRoute,
   AuthenticatedOrgSlugSettingsRoute:
     AuthenticatedOrgSlugSettingsRouteWithChildren,
+  AuthenticatedOrgSlugTemplatesRoute: AuthenticatedOrgSlugTemplatesRoute,
   AuthenticatedOrgSlugProgramsProgramIdRoute:
     AuthenticatedOrgSlugProgramsProgramIdRoute,
   AuthenticatedOrgSlugProgramsNewRoute: AuthenticatedOrgSlugProgramsNewRoute,
